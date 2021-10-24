@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {Title} from "@angular/platform-browser";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -10,11 +9,15 @@ export class NavigationBarComponent implements OnInit {
 
   collapsed = true;
 
-  constructor(private titleService: Title) { 
-    this.titleService.setTitle("Some title");
-  }
+  @Output() signOutClicked = new EventEmitter<void>();
+
+  constructor() { }
 
   ngOnInit(): void {
   }
 
+  signOut() {
+    console.log("Signing out");
+    this.signOutClicked.emit();
+  }
 }

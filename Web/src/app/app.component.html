@@ -1,6 +1,10 @@
-<app-navigation-bar></app-navigation-bar>
-<div class="container text-center">
-    <h1 class="display-1">Heading 1</h1>
-    <h3>{{ title }}</h3>
-    <h4><i class="bi bi-bootstrap"></i> Powered by Bootstrap</h4>
+<div *ngIf="loggedIn || this.router.url === '/sign-out'; else notLoggedIn">
+  <!-- Navigation Bar and Main Content displayed when logged in, or on the Signed Out page -->
+  <app-navigation-bar (signOutClicked)="signOutClicked($event)"></app-navigation-bar>
+  <router-outlet></router-outlet>
 </div>
+
+<ng-template #notLoggedIn>
+  <!-- Login form displayed when not logged in -->
+  <app-sign-in (signInClicked)="signInClicked()"></app-sign-in>
+</ng-template>
