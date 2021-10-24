@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" [routerLink]="['']">Dashboard</a>
+      <button class="navbar-toggler" type="button" (click)="collapsed = !collapsed">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['home', { id: '1'}]">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['films']">Film Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['example']">Example (Error 404 page)</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['account']">My Account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" (click)="signOut()" [routerLink]="['sign-out']">Sign Out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
