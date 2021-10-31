@@ -1,10 +1,21 @@
 <ion-header>
-    <ion-toolbar color="primary">
-        <ion-title>Home</ion-title>
-        <ion-buttons slot="start">
-            <ion-menu-button menu="main-menu"></ion-menu-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-title> Epileptic Patient Warning App </ion-title>
+  </ion-toolbar>
 </ion-header>
-<ion-content>
+
+<ion-content class="auth-form">
+  <ion-grid>
+    <ion-row>
+      <ion-col align-self-center>
+        <ion-button
+          [routerLink]="['/registration']"
+          expand="block"
+          color="primary"> Register
+        </ion-button>
+        <span class="already">Already a user?</span>
+        <ion-button [routerLink]="['/login']" expand="block" color="danger"> Sign In </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

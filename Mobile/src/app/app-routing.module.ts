@@ -7,6 +7,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/home-screen/home-screen.module').then(m => m.HomeScreenPageModule)
     },
     {
+      path: 'login',
+      loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+    },
+    {
         path: 'user-profile',
         loadChildren: () => import('./pages/user-profile/user-profile.module').then(m => m.UserProfilePageModule)
     },
@@ -22,10 +26,9 @@ const routes: Routes = [
         path: 'film-list',
         loadChildren: () => import('./pages/film-list/film-list.module').then(m => m.FilmListPageModule)
     },  {
-    path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
-  }
-
+    path: 'welcome',
+    loadChildren: () => import('./pages/welcome/welcome.module').then( m => m.WelcomePageModule)
+  },
 
 
 ];
