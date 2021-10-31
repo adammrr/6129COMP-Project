@@ -12,6 +12,7 @@ import { SignInComponent } from './shared/sign-in/sign-in.component';
 import { FilmPageComponent } from './film-page/film-page.component';
 import { ManageAccountPageComponent } from './manage-account-page/manage-account-page.component';
 import { AuthService } from './services/auth.service';
+import { NavCardComponent } from './dashboard-page/shared/nav-card/nav-card.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AuthService } from './services/auth.service';
     DashboardPageComponent,
     FilmPageComponent,
     ManageAccountPageComponent,
+    NavCardComponent,
   ],
   imports: [
     BrowserModule,

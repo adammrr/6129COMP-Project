@@ -1,0 +1,8 @@
+.card {
+  cursor: pointer;
+  transition: transform .1s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
