@@ -13,6 +13,7 @@ import { FilmPageComponent } from './film-page/film-page.component';
 import { ManageAccountPageComponent } from './manage-account-page/manage-account-page.component';
 import { AuthService } from './services/auth.service';
 import { NavCardComponent } from './dashboard-page/shared/nav-card/nav-card.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NavCardComponent } from './dashboard-page/shared/nav-card/nav-card.comp
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    NoopAnimationsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
