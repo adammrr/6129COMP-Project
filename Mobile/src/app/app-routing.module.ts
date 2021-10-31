@@ -21,7 +21,11 @@ const routes: Routes = [
     {
         path: 'film-list',
         loadChildren: () => import('./pages/film-list/film-list.module').then(m => m.FilmListPageModule)
-    }
+    },  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+  }
+
 
 
 ];
