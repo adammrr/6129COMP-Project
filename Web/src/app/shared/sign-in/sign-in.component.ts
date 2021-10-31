@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -8,15 +9,13 @@ import { Title } from '@angular/platform-browser';
 })
 export class SignInComponent implements OnInit {
 
-  constructor(private titleService: Title) { this.titleService.setTitle("Sign In"); }
-
-  @Output() signInClicked = new EventEmitter<void>();
+  constructor(private titleService: Title, private authService: AuthService) { this.titleService.setTitle("Sign In"); }
 
   ngOnInit(): void {
   }
 
-  signIn() {
+  signIn(accountType:number) {
     console.log("Sign In Clicked");
-    this.signInClicked.emit();
+    this.authService.signIn(accountType);
   }
 }

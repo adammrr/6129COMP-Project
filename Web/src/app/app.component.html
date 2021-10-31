@@ -1,10 +1,10 @@
 <div *ngIf="loggedIn || this.router.url === '/sign-out'; else notLoggedIn">
   <!-- Navigation Bar and Main Content displayed when logged in, or on the Signed Out page -->
-  <app-navigation-bar (signOutClicked)="signOutClicked($event)"></app-navigation-bar>
+  <app-navigation-bar ></app-navigation-bar>
   <router-outlet></router-outlet>
 </div>
 
 <ng-template #notLoggedIn>
   <!-- Login form displayed when not logged in -->
-  <app-sign-in (signInClicked)="signInClicked()"></app-sign-in>
+  <app-sign-in ></app-sign-in>
 </ng-template>
