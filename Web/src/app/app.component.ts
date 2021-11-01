@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -9,19 +10,13 @@ import { Router } from '@angular/router';
 export class AppComponent {
     loggedIn: boolean = false;
 
-    constructor(public router: Router) {
 
+    constructor(public router: Router, private authService: AuthService) {
+      this.authService.isLoggedIn().subscribe(value => this.signInState(value));
     }
 
-    signIn() {
-      this.loggedIn = true;
+    signInState(value: boolean){
+      this.loggedIn = value;
     }
 
-    signInClicked(event: void) {
-      this.loggedIn = true;
-    }
-
-    signOutClicked(event: void) {
-      this.loggedIn = false;
-    }
 }

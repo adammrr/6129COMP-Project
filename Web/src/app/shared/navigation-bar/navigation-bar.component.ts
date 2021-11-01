@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -9,15 +10,13 @@ export class NavigationBarComponent implements OnInit {
 
   collapsed = true;
 
-  @Output() signOutClicked = new EventEmitter<void>();
-
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
   signOut() {
     console.log("Signing out");
-    this.signOutClicked.emit();
+    this.authService.signOut();
   }
 }

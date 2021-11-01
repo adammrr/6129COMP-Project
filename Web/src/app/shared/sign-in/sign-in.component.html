@@ -17,7 +17,9 @@
                   <input type="password" class="form-control" id="floatingInput" placeholder="" required>
                   <label for="floatingInput">Password</label>
                 </div>
-                <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" (click)="signIn()">Sign In</button>
+                <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" (click)="signIn(0)">Sign In (Practitioner)</button>
+                <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" (click)="signIn(1)">Sign In (administrator)</button>
+
                 <br><a class="text-muted">Forgot password?</a>
               </form>
             </div>

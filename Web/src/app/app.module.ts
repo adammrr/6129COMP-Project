@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +11,9 @@ import { SignOutComponent } from './shared/sign-out/sign-out.component';
 import { SignInComponent } from './shared/sign-in/sign-in.component';
 import { FilmPageComponent } from './film-page/film-page.component';
 import { ManageAccountPageComponent } from './manage-account-page/manage-account-page.component';
+import { AuthService } from './services/auth.service';
+import { NavCardComponent } from './dashboard-page/shared/nav-card/nav-card.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -20,13 +24,16 @@ import { ManageAccountPageComponent } from './manage-account-page/manage-account
     RoutingErrorComponent,
     DashboardPageComponent,
     FilmPageComponent,
-    ManageAccountPageComponent
+    ManageAccountPageComponent,
+    NavCardComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    NoopAnimationsModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
