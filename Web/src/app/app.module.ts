@@ -14,6 +14,7 @@ import { ManageAccountPageComponent } from './manage-account-page/manage-account
 import { AuthService } from './services/auth.service';
 import { NavCardComponent } from './dashboard-page/shared/nav-card/nav-card.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     FilmPageComponent,
     ManageAccountPageComponent,
     NavCardComponent,
+    ManageUsersComponent,
   ],
   imports: [
     BrowserModule,

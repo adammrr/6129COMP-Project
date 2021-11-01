@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { FilmPageComponent } from './film-page/film-page.component';
 import { ManageAccountPageComponent } from './manage-account-page/manage-account-page.component';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { RoutingErrorComponent } from './shared/routing-error/routing-error.component';
 import { SignOutComponent } from './shared/sign-out/sign-out.component';
 
@@ -10,6 +11,9 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: 'home', component: DashboardPageComponent },
   { path: 'films', component: FilmPageComponent },
+
+  { path: 'manage-users', component: ManageUsersComponent },
+
   { path: 'account', component: ManageAccountPageComponent },
   { path: 'sign-out', component: SignOutComponent },
   { path: '**', component: RoutingErrorComponent }

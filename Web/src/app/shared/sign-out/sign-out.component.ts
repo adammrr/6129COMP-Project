@@ -16,10 +16,13 @@ export class SignOutComponent implements OnInit {
   ngOnInit(): void {
     this.authService.signOut();
 
-    var x = setInterval( () => {
+    this.countdown = 5;
+    var timer = setInterval( () => {
       if(this.countdown > 0){
         this.countdown--;
+
       }else{
+        clearInterval(timer);
         this.router.navigate(['']);
       }
 
