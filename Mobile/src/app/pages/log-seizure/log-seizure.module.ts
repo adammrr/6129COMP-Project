@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { LogSeizurePageRoutingModule } from './log-seizure-routing.module';
 
 import { LogSeizurePage } from './log-seizure.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        LogSeizurePageRoutingModule
+        LogSeizurePageRoutingModule,
+        SharedModule
     ],
     declarations: [LogSeizurePage]
 })
