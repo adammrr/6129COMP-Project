@@ -15,6 +15,7 @@ import { AuthService } from './services/auth.service';
 import { NavCardComponent } from './dashboard-page/shared/nav-card/nav-card.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,9 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

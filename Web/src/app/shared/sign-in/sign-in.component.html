@@ -6,19 +6,18 @@
           <div class="row g-0">
             <div class="card-body p-md-5 mx-md-4 text-center">
               <h4 class="mt-1 mb-5 pb-1 display-6">Epilepsy Film Warning System</h4>
-              <form>
+              <form [formGroup]='signInForm' (ngSubmit)="onSubmit()">
                 <p>Please login to your account to access this system.</p>
 
                 <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
-                  <label for="floatingInput">Email address</label>
+                  <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" required formControlName="email">
+                  <label for="emailInput">Email address</label>
                 </div>
                 <div class="form-floating mb-3">
-                  <input type="password" class="form-control" id="floatingInput" placeholder="password" required>
-                  <label for="floatingInput">Password</label>
+                  <input type="password" class="form-control" id="passwordInput" placeholder="password" required formControlName="password">
+                  <label for="passwordInput">Password</label>
                 </div>
-                <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" (click)="signIn(0)">Sign In (Practitioner)</button>
-                <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" (click)="signIn(1)">Sign In (administrator)</button>
+                <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit">Sign In</button><br>
 
                 <br><a class="text-muted">Forgot password?</a>
               </form>

@@ -8,15 +8,20 @@ import { AuthService } from './services/auth.service';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    loggedIn: boolean = false;
+    signedIn: boolean = false;
 
 
-    constructor(public router: Router, private authService: AuthService) {
-      this.authService.isLoggedIn().subscribe(value => this.signInState(value));
+    constructor(public router: Router, public authService: AuthService) {
+      this.authService.isLoggedIn().subscribe((value: boolean) => {this.signedIn = value;});
+      console.log("Changed signedIn Value to:" + this.signedIn);
     }
 
-    signInState(value: boolean){
-      this.loggedIn = value;
+    ngOnInit() {
+
     }
+
+    //signInState(value: boolean){
+    //  this.loggedIn = value;
+    //}
 
 }

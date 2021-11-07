@@ -13,20 +13,25 @@ export class SignOutComponent implements OnInit {
 
   constructor(private titleService: Title, private authService: AuthService, private router: Router) { this.titleService.setTitle("Signed Out"); }
 
+  timer:any;
+
   ngOnInit(): void {
     this.authService.signOut();
 
     this.countdown = 5;
-    var timer = setInterval( () => {
+    this.timer = setInterval( () => {
       if(this.countdown > 0){
         this.countdown--;
 
       }else{
-        clearInterval(timer);
         this.router.navigate(['']);
       }
 
     }, 1000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.timer);
   }
 
 }

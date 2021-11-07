@@ -4,17 +4,22 @@ import { DashboardPageComponent } from './dashboard-page/dashboard-page.componen
 import { FilmPageComponent } from './film-page/film-page.component';
 import { ManageAccountPageComponent } from './manage-account-page/manage-account-page.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { AuthGuard } from './services/auth.guard';
 import { RoutingErrorComponent } from './shared/routing-error/routing-error.component';
+import { SignInComponent } from './shared/sign-in/sign-in.component';
 import { SignOutComponent } from './shared/sign-out/sign-out.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
-  { path: 'home', component: DashboardPageComponent },
-  { path: 'films', component: FilmPageComponent },
 
-  { path: 'manage-users', component: ManageUsersComponent },
+  { path: 'login', component: SignInComponent },
 
-  { path: 'account', component: ManageAccountPageComponent },
+  { path: 'home', component: DashboardPageComponent, canActivate: [AuthGuard] },
+  { path: 'films', component: FilmPageComponent, canActivate: [AuthGuard] },
+
+  { path: 'manage-users', component: ManageUsersComponent, canActivate: [AuthGuard] },
+
+  { path: 'account', component: ManageAccountPageComponent, canActivate: [AuthGuard] },
   { path: 'sign-out', component: SignOutComponent },
   { path: '**', component: RoutingErrorComponent }
 ];

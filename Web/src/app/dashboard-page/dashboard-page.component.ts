@@ -10,8 +10,8 @@ import { AuthService } from '../services/auth.service';
 })
 export class DashboardPageComponent implements OnInit {
   id: any;
-  accountType: number = 0;
-
+  accountType: string = "";
+  name: string = "";
   constructor(
     private authService: AuthService,
     private titleService: Title,
@@ -19,10 +19,10 @@ export class DashboardPageComponent implements OnInit {
     ) {
       this.titleService.setTitle("Dashboard");
       this.accountType = authService.getAccountType();
+      this.name = authService.getName();
     }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id')
   }
 
 }
