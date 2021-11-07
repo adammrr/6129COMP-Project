@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CrudService } from '../services/crud.service';
+import { RestService } from '../services/rest.service';
 
 @Component({
   selector: 'app-manage-users',
@@ -11,15 +11,15 @@ export class ManageUsersComponent implements OnInit {
   patients:any = [];
   practitioners:any = [];
 
-  constructor(private crudService: CrudService) { }
+  constructor(private restService: RestService) { }
   ngOnInit(): void {
 
-    this.crudService.GetPatients().subscribe(data => {
+    this.restService.GetPatients().subscribe(data => {
       console.log(data)
       this.patients = data;
     });
 
-    this.crudService.GetPractitioners().subscribe(data => {
+    this.restService.GetPractitioners().subscribe(data => {
       console.log(data)
       this.practitioners = data;
     });
@@ -27,7 +27,7 @@ export class ManageUsersComponent implements OnInit {
   deletePatient(id:any, i:any) {
     console.log(id);
     if(window.confirm('Do you want to go ahead?')) {
-      this.crudService.deleteUser(id).subscribe((res) => {
+      this.restService.deleteUser(id).subscribe((res) => {
         console.log(this.patients.data);
         this.patients.data.splice(i, 1);
       })
@@ -36,7 +36,7 @@ export class ManageUsersComponent implements OnInit {
   deletePractitioner(id:any, i:any) {
     console.log(id);
     if(window.confirm('Do you want to go ahead?')) {
-      this.crudService.deleteUser(id).subscribe((res) => {
+      this.restService.deleteUser(id).subscribe((res) => {
         console.log(this.patients.data);
         this.patients.data.splice(i, 1);
       })

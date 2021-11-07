@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth.service';
-import { CrudService } from 'src/app/services/crud.service';
 
 @Component({
   selector: 'app-sign-in',

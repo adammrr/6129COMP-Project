@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { CrudService } from './crud.service';
+import { RestService } from './rest.service';
 import { User } from './User.model';
 
 @Injectable({
@@ -14,17 +14,17 @@ export class AuthService {
 
   private user!: User;
 
-  constructor(private router: Router, private crudService: CrudService) { }
+  constructor(private router: Router, private restService: RestService) { }
 
   signIn(email: string, password: string) {
-    this.crudService.validateUser(email, password).subscribe(async (validationResult: any) => {
+    this.restService.validateUser(email, password).subscribe(async (validationResult: any) => {
       if(validationResult.data.accountType == "patient"){
         alert("Sorry, you are unable to use this system. Please use the mobile app");
         return;
       }
       if(validationResult.data.result){
         console.log("CRUD: Validated");
-        const response = await this.crudService.getUser(validationResult.data.userId).toPromise();
+        const response = await this.restService.getUser(validationResult.data.userId).toPromise();
         this.user = new User(response.data);
         this.loggedIn.next(true);
         this.router.navigate(['']);

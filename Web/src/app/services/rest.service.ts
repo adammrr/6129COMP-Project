@@ -6,7 +6,7 @@ import { User } from './User.model';
 @Injectable({
   providedIn: 'root'
 })
-export class CrudService {
+export class RestService {
   // Node/Express API
   REST_API: string = 'http://localhost:3000';
   // Http Header
