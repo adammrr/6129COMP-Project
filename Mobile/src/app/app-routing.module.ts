@@ -4,11 +4,11 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-      loadChildren: () => import('./pages/home-screen/home-screen.module').then(m => m.HomeScreenPageModule)
+        loadChildren: () => import('./pages/home-screen/home-screen.module').then(m => m.HomeScreenPageModule)
     },
     {
-      path: 'login',
-      loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+        path: 'login',
+        loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
     },
     {
         path: 'user-profile',
@@ -26,25 +26,24 @@ const routes: Routes = [
         path: 'film-list',
         loadChildren: () => import('./pages/film-list/film-list.module').then(m => m.FilmListPageModule)
     },
-  {
-    path: 'welcome',
-    loadChildren: () => import('./pages/welcome/welcome.module').then( m => m.WelcomePageModule)
-  },
-  {
-    path: 'registration',
-    loadChildren: () => import('./pages/registration/registration.module').then( m => m.RegistrationPageModule)
-  },
-  {
-    path: 'forgot-password',
-    loadChildren: () => import('./pages/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
-  },
-  {
-    path: '**',
-    loadChildren: () => import('./pages/routing-error/routing-error.module').then( m => m.RoutingErrorPageModule)
-  }
-
-
+    {
+        path: 'welcome',
+        loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomePageModule)
+    },
+    {
+        path: 'registration',
+        loadChildren: () => import('./pages/registration/registration.module').then(m => m.RegistrationPageModule)
+    },
+    {
+        path: 'forgot-password',
+        loadChildren: () => import('./pages/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule)
+    },
+    {
+        path: '**',
+        loadChildren: () => import('./pages/routing-error/routing-error.module').then(m => m.RoutingErrorPageModule)
+    }
 ];
+
 @NgModule({
     imports: [
         RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

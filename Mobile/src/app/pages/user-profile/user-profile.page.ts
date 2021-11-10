@@ -9,7 +9,7 @@ export class UserProfilePage implements OnInit {
 
     constructor() { }
 
-    ngOnInit() {
+    public ngOnInit(): void {
     }
 
 }

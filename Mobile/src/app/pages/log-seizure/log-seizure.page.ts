@@ -9,7 +9,7 @@ export class LogSeizurePage implements OnInit {
 
     constructor() { }
 
-    ngOnInit() {
+    public ngOnInit(): void {
     }
 
 }
