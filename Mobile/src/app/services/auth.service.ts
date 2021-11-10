@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user';
+import { AlertService } from './alert.service';
 import { RestService } from './rest.service';
 
 @Injectable({
@@ -15,7 +16,8 @@ export class AuthService {
     private user!: User;
 
     constructor(
-        private restService: RestService
+        private restService: RestService,
+        private alert: AlertService
     ) { }
 
     public registerUser(registrationDetails: { firstName: string; surname: string; gender: string; dob: string; address1: string; address2: string; address3: string; email: string; password: string }): void {
@@ -32,8 +34,7 @@ export class AuthService {
                 this.loggedIn.next(true);
             } else {
                 console.log('CRUD: NOT validated');
-                //Todo Alert Service notify user wrong password
-                alert('You have entered a wrong Email/Password, please try again.');
+                this.alert.presentToast('Incorrect username or password, please try again');
             }
         });
     }
