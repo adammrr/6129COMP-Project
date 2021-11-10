@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-welcome',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WelcomePage implements OnInit {
 
-    constructor() { }
+    public userName = '';
+
+    constructor(
+        private authService: AuthService
+    ) { }
 
     public ngOnInit(): void {
+        this.userName = this.authService.getName();
     }
 
 }
