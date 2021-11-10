@@ -82,6 +82,32 @@ app.post('/validate-user', function (req, res) {
     });
 });
 
+app.post('/validate-user-mobile', function (req, res) {
+    let email = req.body.email;
+    let password = req.body.password;
+    console.log("SERVER: got email '" + email + "' and password '" + password + "'.");
+    dbConn.query(`SELECT userId, password, accountType FROM users WHERE email="${email}"`, function (error, results, fields) {
+        if (error) throw error;
+        try {
+            if (results[0].accountType == "practitioner") {
+                console.log("Practitioner logged so return");
+                return res.send({ error: false, data: { result: false, accountType: "patient" }, message: '403 Forbidden' });
+            }
+            if (password === results[0].password) {
+                console.log(password);
+                console.log("Correct Password");
+                return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId }, message: 'validated user.' });
+            } else {
+                console.log("Incorrect Password");
+                return res.send({ error: false, data: { result: false, accountType: null, userId: null }, message: '403 Forbidden' });
+            }
+        } catch (error) {
+            return res.send({ error: false, data: { result: false, accountType: null, userId: null }, message: '403 Forbidden' });
+
+        }
+    });
+});
+
 app.post('/register-user', function (req, res) {
     let email = req.body.registrationDetails.email;
     let password = req.body.registrationDetails.password;

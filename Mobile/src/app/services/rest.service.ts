@@ -35,7 +35,7 @@ export class RestService {
     // Validate User
     public validateUser(email: string, password: string) {
         console.log('CRUD: Attempting to validate \'' + email + '\' with password \'' + password + '\'.');
-        return this.httpClient.post(`${this.REST_API}/validate-user`, { email, password });
+        return this.httpClient.post(`${this.REST_API}/validate-user-mobile`, { email, password });
     }
 
     // Error
