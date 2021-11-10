@@ -1,8 +1,8 @@
+/* eslint-disable max-len */
 import { Injectable } from '@angular/core';
-import { catchError, map } from 'rxjs/operators';
-import { Observable, of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { User } from './User.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,6 +17,10 @@ export class RestService {
   // Get all Patients
   getPatients() {
     return this.httpClient.get(`${this.REST_API}/patients`);
+  }
+
+  public register(registrationDetails: { firstName: string; surname: string; gender: string; dob: string; address1: string; address2: string; address3: string; email: string; password: string }) {
+    return this.httpClient.post(`${this.REST_API}/register-user`, {registrationDetails});
   }
 
   // Error
