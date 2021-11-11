@@ -54,6 +54,16 @@ app.get('/practitioners', function (req, res) {
     });
 });
 
+// Retrieve all films 
+app.get('/films', function (req, res) {
+    console.log("SERVER: Getting Films");
+    dbConn.query('SELECT * FROM films', function (error, results, fields) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'practitioners list.' });
+    });
+});
+
+
 // Validate User credentials
 app.post('/validate-user', function (req, res) {
     let email = req.body.email;

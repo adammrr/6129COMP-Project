@@ -15,9 +15,14 @@ export class RestService {
     httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
     constructor(private httpClient: HttpClient) { }
 
-    // Get all Patients
+    // Get a list of all Patients
     public getPatients() {
         return this.httpClient.get(`${this.REST_API}/patients`);
+    }
+
+    // Get a list of all films
+    public getFilms() {
+        return this.httpClient.get(`${this.REST_API}/films`);
     }
 
     public getUser(id: any): Observable<any> {
