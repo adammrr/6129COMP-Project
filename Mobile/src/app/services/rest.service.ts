@@ -15,22 +15,17 @@ export class RestService {
     httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
     constructor(private httpClient: HttpClient) { }
 
-    // Get a list of all Patients
-    public getPatients() {
-        return this.httpClient.get(`${this.REST_API}/patients`);
-    }
+    public getUserById(id: any): Observable<any> {
+      const API_URL = `${this.REST_API}/read-user/${id}`;
+      return this.httpClient.get(API_URL, { headers: this.httpHeaders })
+          .pipe(map((res: any) => res || { error: 'ERROR' }),
+              catchError(this.handleError)
+          );
+  }
 
     // Get a list of all films
     public getFilms() {
         return this.httpClient.get(`${this.REST_API}/films`);
-    }
-
-    public getUser(id: any): Observable<any> {
-        const API_URL = `${this.REST_API}/read-user/${id}`;
-        return this.httpClient.get(API_URL, { headers: this.httpHeaders })
-            .pipe(map((res: any) => res || { error: 'ERROR' }),
-                catchError(this.handleError)
-            );
     }
 
     public register(registrationDetails: { firstName: string; surname: string; gender: string; dob: string; address1: string; address2: string; address3: string; email: string; password: string }) {

@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title>My Profile</ion-title>
+        <ion-title>{{user.firstName + user.surname}}</ion-title>
         <ion-buttons slot="start">
             <ion-menu-button menu="main-menu"></ion-menu-button>
         </ion-buttons>
@@ -8,7 +8,16 @@
 </ion-header>
 
 <ion-content>
-    <p>Profile Page</p>
+    <p>{{user.gender}}</p>
+    <p>{{user.email}}</p>
+    <p>{{user.firstName}}</p>
+    <p>{{user.surname}}</p>
+    <p>{{user.accountType}}</p>
+    <p>{{user.address1}}</p>
+    <p>{{user.address2}}</p>
+    <p>{{user.address3}}</p>
+    <p>{{user.dob}}</p>
+    <p>{{user.postcode}}</p>
 </ion-content>
 
 <app-footer></app-footer>
