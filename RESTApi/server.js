@@ -58,7 +58,10 @@ app.get('/practitioners', function (req, res) {
 app.post('/validate-user', function (req, res) {
     let email = req.body.email;
     let password = req.body.password;
+    let rememberMe = req.body.rememberMe;
+
     console.log("SERVER: got email '" + email + "' and password '" + password + "'.");
+    console.log("SERVER: Will attempt to generate cookie: " + rememberMe);
     dbConn.query(`SELECT userId, password, accountType FROM users WHERE email="${email}"`, function (error, results, fields) {
         if (error) throw error;
         try {
@@ -68,12 +71,42 @@ app.post('/validate-user', function (req, res) {
             }
             if (password === results[0].password) {
                 console.log("Correct Password");
-                return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId }, message: 'validated user.' });
+                let cookie = "";
+                if(rememberMe){
+                        let cookie = Math.floor(100000000 + Math.random() * 900000000);
+                        console.log("Trying cookie: " + cookie);
+                        dbConn.query(`SELECT COUNT(1) as cookieCount FROM cookies WHERE cookie="${210120012}"`, function (error, cookieResults, fields) {
+                            if (error) throw error;
+                            console.log("Count: " + cookieResults[0].cookieCount);
+                            if(cookieResults[0].cookieCount > 0) {
+                                console.log("Already asigned cookie: " + cookieResults[0].userId);
+                                console.log("Skipping Cookie Creation");
+                                return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId, cookie: cookie }, message: 'validated user.' });
+            
+                            } else {
+                                let expiryUnix = Math.round((new Date()).getTime() / 1000) + 86400; //cookie valid for 86400 seconds (24 hours)
+                                async function insertCookie() {
+                                    await dbConn.query(`INSERT INTO cookies (cookie, userId, expiryUnix) VALUES (${cookie}, ${results[0].userId}, ${expiryUnix})`, function (error, cookieResults, fields) {
+                                        if (error) throw error;
+                                    });
+                                    console.log("Returning cookie: " + cookie);
+                                    return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId, cookie: cookie }, message: 'validated user.' });
+                                }
+                                insertCookie();
+                            }
+                        });
+                    console.log("Set cookie: " + cookie + " for user: " + results[0].userId);
+    
+                } else {
+                    return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId }, message: 'validated user.' });
+                }      
+                
             } else {
                 console.log("Incorrect Password");
                 return res.send({ error: false, data: { result: false, accountType: null, userId: null }, message: '403 Forbidden' });
             }
         } catch (error) {
+            console.log(error);
             return res.send({ error: false, data: { result: false, accountType: null, userId: null }, message: '403 Forbidden' });
 
         }
@@ -81,7 +114,36 @@ app.post('/validate-user', function (req, res) {
 
     });
 });
+// Validate User credentials
+app.post('/validate-cookie', function (req, res) {
+    let cookie = req.body.cookie;
+  
+    console.log("SERVER: got cookie :" + cookie + ":");
+    if (cookie == '') return res.send({ error: true, data: { result: false, userId: null }, message: 'Bad Cookie' });
+    dbConn.query(`SELECT * FROM cookies WHERE cookie="${cookie}"`, function (error, results, fields) {
+        if (error) throw error;
+        try {
+            if(results){
+                console.log(results[0].cookie);
+                console.log(results[0].userId);
+                console.log(results[0].expiryUnix);
+                return res.send({ error: false, data: { result: true, userId: results[0].userId }, message: 'Good Cookie' });
 
+            } else {
+                console.log("Incorrect Cookie");
+                return res.send({ error: true, data: { result: false, userId: null }, message: 'Bad Cookie' });
+            }
+        } catch (error) {
+            console.log(error);
+            return res.send({ error: true, data: { result: false, userId: null }, message: '500 Internal Server Error' });
+
+        }
+
+
+    });
+});
+
+//Mobile login validation
 app.post('/validate-user-mobile', function (req, res) {
     let email = req.body.email;
     let password = req.body.password;
@@ -131,11 +193,9 @@ app.post('/register-user', function (req, res) {
 app.get('/read-user/:id', function (req, res) {
 
     let user_id = req.params.id;
-
     if (!user_id) {
         return res.status(400).send({ error: true, message: 'Please provide user_id' });
     }
-
     dbConn.query('SELECT * FROM users where userId=?', user_id, function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, data: results[0], message: 'users list.' });
@@ -161,5 +221,7 @@ app.delete('/delete-user/:userId', function (req, res) {
 // set port
 app.listen(3000, function () {
     console.log('Node app is running on port 3000');
+    var unixNow = Math.round((new Date()).getTime() / 1000);
+    console.log('Time: ' + unixNow);
 });
 module.exports = app;

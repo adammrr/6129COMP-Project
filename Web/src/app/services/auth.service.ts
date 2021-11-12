@@ -16,8 +16,29 @@ export class AuthService {
 
   constructor(private router: Router, private restService: RestService) { }
 
-  signIn(email: string, password: string) {
-    this.restService.validateUser(email, password).subscribe(async (validationResult: any) => {
+  setCookie(name: string, value:string , days: number) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+getCookie(name: string):string {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return "";
+}
+
+  signIn(email: string, password: string, rememberMe: boolean) {
+    this.restService.validateUser(email, password, rememberMe).subscribe(async (validationResult: any) => {
+      console.log(validationResult);
       if(validationResult.data.accountType == "patient"){
         alert("Sorry, you are unable to use this system. Please use the mobile app");
         return;
@@ -26,6 +47,11 @@ export class AuthService {
         console.log("CRUD: Validated");
         const response = await this.restService.getUser(validationResult.data.userId).toPromise();
         this.user = new User(response.data);
+        console.log(validationResult.data.cookie);
+        if(rememberMe){
+          this.setCookie("cookie", String(validationResult.data.cookie), 1);
+
+        }
         this.loggedIn.next(true);
         this.router.navigate(['']);
 
@@ -41,10 +67,25 @@ export class AuthService {
 
   signOut() {
     this.loggedIn.next(false);
+    this.setCookie("cookie", "", 0);
   }
 
   isLoggedIn(): Observable<boolean>  {
+    if(this.loggedIn.value == false){
+      this.checkCookie();
+    }
     return this.loggedIn;
+  }
+
+  checkCookie() {
+    var savedCookie = this.getCookie("cookie");
+    this.restService.validateCookie(savedCookie).subscribe(async (validationResult: any) => {
+      console.log(validationResult.data);
+      const response = await this.restService.getUser(validationResult.data.userId).toPromise();
+      this.user = new User(response.data);
+      this.loggedIn.next(true);
+      this.router.navigate(['']);
+    });
   }
 
   getAccountType() {

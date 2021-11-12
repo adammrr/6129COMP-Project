@@ -24,9 +24,15 @@ export class RestService {
   }
 
   // Validate User
-  validateUser(email: string, password: string) {
+  validateUser(email: string, password: string, rememberMe: boolean) {
     console.log("CRUD: Attempting to validate '" + email + "' with password '" + password + "'.");
-    return this.httpClient.post(`${this.REST_API}/validate-user`, {email: email, password: password});
+    console.log("CRUD: Remember me Value: " + rememberMe.valueOf());
+    return this.httpClient.post(`${this.REST_API}/validate-user`, {email: email, password: password, rememberMe: rememberMe});
+  }
+
+  //Validate Cookie
+  validateCookie(cookie: string) : Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/validate-cookie`, {cookie: cookie});
   }
 
   // Get single object
