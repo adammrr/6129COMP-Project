@@ -1,4 +1,4 @@
-  <!-- Navigation Bar displayed only if signed in -->
-  <app-navigation-bar *ngIf="authService.loggedInObs | async"></app-navigation-bar>
-  <router-outlet></router-outlet>
+<!-- Navigation Bar displayed only if signed in -->
+<app-navigation-bar *ngIf="authService.loggedInObs | async"></app-navigation-bar>
+<router-outlet></router-outlet>
 

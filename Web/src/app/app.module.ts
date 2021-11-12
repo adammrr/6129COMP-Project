@@ -16,6 +16,8 @@ import { NavCardComponent } from './dashboard-page/shared/nav-card/nav-card.comp
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ManagePracticesComponent } from './manage-practices/manage-practices.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ManageAccountPageComponent,
     NavCardComponent,
     ManageUsersComponent,
+    ManagePracticesComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,

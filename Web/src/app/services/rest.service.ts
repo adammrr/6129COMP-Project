@@ -23,6 +23,16 @@ export class RestService {
     return this.httpClient.get(`${this.REST_API}/practitioners`);
   }
 
+  getPractices(): Observable<any> {
+    return this.httpClient.get(`${this.REST_API}/practices`);
+  }
+  // Delete
+  deletePractice(id:any): Observable<any> {
+    let API_URL = `${this.REST_API}/delete-practice/${id}`;
+    return this.httpClient.delete(API_URL, { headers: this.httpHeaders}).pipe(
+        catchError(this.handleError)
+      )
+  }
   // Validate User
   validateUser(email: string, password: string, rememberMe: boolean) {
     console.log("CRUD: Attempting to validate '" + email + "' with password '" + password + "'.");
@@ -46,7 +56,13 @@ export class RestService {
       )
   }
 
-
+  // Delete User Account
+  deleteUser(id:any): Observable<any> {
+    let API_URL = `${this.REST_API}/delete-user/${id}`;
+    return this.httpClient.delete(API_URL, { headers: this.httpHeaders}).pipe(
+        catchError(this.handleError)
+      )
+  }
   //////////////Examples below////////////////////////
 
   // Add
@@ -69,13 +85,7 @@ export class RestService {
         catchError(this.handleError)
       )
   }
-  // Delete
-  deleteUser(id:any): Observable<any> {
-    let API_URL = `${this.REST_API}/delete-user/${id}`;
-    return this.httpClient.delete(API_URL, { headers: this.httpHeaders}).pipe(
-        catchError(this.handleError)
-      )
-  }
+
   // Error
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';

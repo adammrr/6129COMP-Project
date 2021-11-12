@@ -80,7 +80,9 @@ getCookie(name: string):string {
   checkCookie() {
     var savedCookie = this.getCookie("cookie");
     this.restService.validateCookie(savedCookie).subscribe(async (validationResult: any) => {
-      console.log(validationResult.data);
+      if(validationResult.data.result == false){
+        return;
+      }
       const response = await this.restService.getUser(validationResult.data.userId).toPromise();
       this.user = new User(response.data);
       this.loggedIn.next(true);

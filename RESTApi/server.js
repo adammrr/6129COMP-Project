@@ -54,6 +54,18 @@ app.get('/practitioners', function (req, res) {
     });
 });
 
+// Retrieve all practices
+app.get('/practices', function (req, res) {
+    console.log("SERVER: Getting Practices");
+    dbConn.query('SELECT * FROM practices', function (error, results, fields) {
+        if (error) throw error;
+        setTimeout(function() {
+            return res.send({ error: false, data: results, message: 'practices list.' });
+
+          }, 2000);
+    });
+});
+
 // Validate User credentials
 app.post('/validate-user', function (req, res) {
     let email = req.body.email;
@@ -96,11 +108,9 @@ app.post('/validate-user', function (req, res) {
                             }
                         });
                     console.log("Set cookie: " + cookie + " for user: " + results[0].userId);
-    
                 } else {
                     return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId }, message: 'validated user.' });
                 }      
-                
             } else {
                 console.log("Incorrect Password");
                 return res.send({ error: false, data: { result: false, accountType: null, userId: null }, message: '403 Forbidden' });
@@ -117,29 +127,20 @@ app.post('/validate-user', function (req, res) {
 // Validate User credentials
 app.post('/validate-cookie', function (req, res) {
     let cookie = req.body.cookie;
-  
-    console.log("SERVER: got cookie :" + cookie + ":");
+    console.log("SERVER: Validating :" + cookie + ":");
     if (cookie == '') return res.send({ error: true, data: { result: false, userId: null }, message: 'Bad Cookie' });
     dbConn.query(`SELECT * FROM cookies WHERE cookie="${cookie}"`, function (error, results, fields) {
         if (error) throw error;
         try {
             if(results){
-                console.log(results[0].cookie);
-                console.log(results[0].userId);
-                console.log(results[0].expiryUnix);
                 return res.send({ error: false, data: { result: true, userId: results[0].userId }, message: 'Good Cookie' });
-
             } else {
-                console.log("Incorrect Cookie");
                 return res.send({ error: true, data: { result: false, userId: null }, message: 'Bad Cookie' });
             }
         } catch (error) {
             console.log(error);
             return res.send({ error: true, data: { result: false, userId: null }, message: '500 Internal Server Error' });
-
         }
-
-
     });
 });
 
@@ -202,8 +203,6 @@ app.get('/read-user/:id', function (req, res) {
     });
 
 });
-//////////// EXAMPLES BELOW ///////////////
-
 
 //  Delete a user by userId
 app.delete('/delete-user/:userId', function (req, res) {
@@ -215,6 +214,19 @@ app.delete('/delete-user/:userId', function (req, res) {
     dbConn.query('DELETE FROM users WHERE userId = ?', [user_id], function (error, results, fields) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
+    });
+});
+
+//  Delete a practice by practiceId
+app.delete('/delete-practice/:practiceId', function (req, res) {
+    let practiceId = req.params.practiceId;
+
+    if (!practiceId) {
+        return res.status(400).send({ error: true, message: 'Please provide practiceId' });
+    }
+    dbConn.query('DELETE FROM practices WHERE practiceId = ?', [practiceId], function (error, results, fields) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'Practice has been deleted successfully.' });
     });
 });
 
