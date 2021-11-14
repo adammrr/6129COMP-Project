@@ -76,7 +76,41 @@ app.get('/read-user/:id', function (req, res) {
         if (error) throw error;
         return res.send({ error: false, data: results[0], message: 'users list.' });
     });
+});
 
+app.get('/has-epileptic-details/:id', function (req, res) {
+    let userid = req.params.id;
+    let hasDetails;
+    dbConn.query('SELECT count(*) as total FROM epilepsydetails WHERE userId =?', userid, function (error, results) {
+        if (error) throw error;
+        try {
+            if (!userid) {
+                return res.status(400).send({ error: true, message: 'Please provide user id' })
+            }
+            if (results[0].total === 0) {
+                this.hasDetails = false;
+                return res.send({ error: false, data: hasDetails, message: 'User does not have epileptic details currently set' });
+            }
+            if (results[0].total > 0) {
+                this.hasDetails = true;
+                return res.send({ error: false, data: hasDetails, message: 'This user does have epileptic details' });
+            }
+        } catch (error) {
+            return res.send({ error: false, message: '403 Forbidden' });
+        }
+    });
+});
+
+// Retrieve user by id 
+app.get('/epileptic-details/:id', function (req, res) {
+    let user_id = req.params.id;
+    if (!user_id) {
+        return res.status(400).send({ error: true, message: 'Please provide user_id' });
+    }
+    dbConn.query('SELECT userId, seizureType, frequency, yearsSuffering, triggerDetails FROM epilepsydetails WHERE userId=?', user_id, function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results[0], message: 'users list.' });
+    });
 });
 
 /** GET Ends */

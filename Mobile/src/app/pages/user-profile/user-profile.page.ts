@@ -15,9 +15,10 @@ export class UserProfilePage implements OnInit {
     public user;
     public epilepsyDetails;
     public userInformationForm!: FormGroup;
-    public seizureInformationForm!: FormGroup;
+    public epilepsyDetailsForm!: FormGroup;
     public segmentModel = 'user-information';
     public userInformationFormChanged = 0;
+    public hasEpilepsyDetails: boolean;
 
     constructor(
         private authService: AuthService,
@@ -36,6 +37,13 @@ export class UserProfilePage implements OnInit {
             postcode: '',
             email: '',
             changePassword: ''
+        });
+
+        this.epilepsyDetailsForm = this.formBuilder.group({
+            seizureType: '',
+            triggerDetails: '',
+            yearsSuffering: 0,
+            frequency: ''
         });
     }
 
@@ -56,12 +64,14 @@ export class UserProfilePage implements OnInit {
             if (statusChanges) {
                 this.userInformationFormChanged++;
             }
-
         });
-    }
+        this.restService.getHasEpilepticDetails(this.user.userId).subscribe(async (hasDetails: any) => {
+            this.hasEpilepsyDetails = hasDetails.data;
+        });
 
-    public segmentChanged(): void {
-        // TODO: Implement this.
+        this.restService.getEpilepticDetails(this.user.userId).subscribe(async (epilepticDetails: any) => {
+            this.epilepsyDetails = epilepticDetails;
+        });
     }
 
     public updateUserInformation(): void {
@@ -90,7 +100,25 @@ export class UserProfilePage implements OnInit {
         });
     }
 
-    public updateEpilepsyInformation(): void {
-        // TODO: implement this.
+    public segmentChanged(): void {
+        if (this.hasEpilepsyDetails) {
+            this.epilepsyDetailsForm.patchValue({
+                seizureType: this.epilepsyDetails.data.seizureType,
+                triggerDetails: this.epilepsyDetails.data.triggerDetails,
+                yearsSuffering: this.epilepsyDetails.data.yearsSuffering,
+                frequency: this.epilepsyDetails.data.frequency
+            });
+        }
     }
+
+    //TODO: Working on this
+    /*   public updateEpilepsyInformation(): void {
+        const formValues = this.epilepsyDetailsForm.value;
+        const updateInformation = {
+          seizureType: formValues.seizureType,
+          triggerDetails: formValues.triggerDetails,
+          yearsSuffering: formValues.yearsSuffering,
+          frequency: formValues.frequency
+        };
+      } */
 }
