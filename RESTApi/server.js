@@ -34,7 +34,7 @@ var dbConn = mysql.createPool({
     database: cd.database
 });
 
-
+/** GET */
 
 // Retrieve all patients 
 app.get('/patients', function (req, res) {
@@ -63,6 +63,25 @@ app.get('/films', function (req, res) {
     });
 });
 
+// Retrieve user by id 
+app.get('/read-user/:id', function (req, res) {
+
+    let user_id = req.params.id;
+
+    if (!user_id) {
+        return res.status(400).send({ error: true, message: 'Please provide user_id' });
+    }
+
+    dbConn.query('SELECT * FROM users where userId=?', user_id, function (error, results, fields) {
+        if (error) throw error;
+        return res.send({ error: false, data: results[0], message: 'users list.' });
+    });
+
+});
+
+/** GET Ends */
+
+/** POST */
 
 // Validate User credentials
 app.post('/validate-user', function (req, res) {
@@ -137,23 +156,29 @@ app.post('/register-user', function (req, res) {
     });
 });
 
-// Retrieve user by id 
-app.get('/read-user/:id', function (req, res) {
+/** POST Ends */
 
-    let user_id = req.params.id;
+/** PUT */
 
-    if (!user_id) {
-        return res.status(400).send({ error: true, message: 'Please provide user_id' });
-    }
+app.put('/update-user/:userId', function (req, res) {
+    let userId = req.params.userId;
+    let email = req.body.updateDetails.email;
+    let gender = req.body.updateDetails.gender;
+    let password = req.body.updateDetails.password;
+    let address1 = req.body.updateDetails.address1;
+    let address2 = req.body.updateDetails.address2;
+    let address3 = req.body.updateDetails.address3;
+    let postcode = req.body.updateDetails.postcode;
 
-    dbConn.query('SELECT * FROM users where userId=?', user_id, function (error, results, fields) {
+    dbConn.query(`UPDATE users SET email = "${email}", password = "${password}", gender = "${gender}", address1 = "${address1}", address2 = "${address2}", address3 = "${address3}", postcode = "${postcode}" where userId = "${userId}"`, function (error, results) {
         if (error) throw error;
-        return res.send({ error: false, data: results[0], message: 'users list.' });
+        return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
     });
-
 });
-//////////// EXAMPLES BELOW ///////////////
 
+/** PUT Ends */
+
+/** DELETE */
 
 //  Delete a user by userId
 app.delete('/delete-user/:userId', function (req, res) {
@@ -167,6 +192,8 @@ app.delete('/delete-user/:userId', function (req, res) {
         return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
     });
 });
+
+/** DELETE Ends */
 
 // set port
 app.listen(3000, function () {

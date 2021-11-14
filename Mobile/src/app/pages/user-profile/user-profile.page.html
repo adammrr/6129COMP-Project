@@ -1,23 +1,124 @@
 <ion-header>
-    <ion-toolbar color="primary">
-        <ion-title>{{user.firstName + user.surname}}</ion-title>
-        <ion-buttons slot="start">
-            <ion-menu-button menu="main-menu"></ion-menu-button>
-        </ion-buttons>
-    </ion-toolbar>
+	<ion-toolbar color="primary">
+		<ion-title>{{user.firstName}} {{user.surname}}</ion-title>
+		<ion-buttons slot="start">
+			<ion-menu-button menu="main-menu"></ion-menu-button>
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
 
+<ion-toolbar>
+	<ion-segment (ionChange)="segmentChanged()" value="all" color="tertiary" scrollable="true" mode="ios"
+		[(ngModel)]="segmentModel">
+
+		<ion-segment-button value="user-information">
+			<ion-label>User Information</ion-label>
+		</ion-segment-button>
+
+		<ion-segment-button value="seizure-information">
+			<ion-label>seizure Information</ion-label>
+		</ion-segment-button>
+	</ion-segment>
+</ion-toolbar>
+
+
 <ion-content>
-    <p>{{user.gender}}</p>
-    <p>{{user.email}}</p>
-    <p>{{user.firstName}}</p>
-    <p>{{user.surname}}</p>
-    <p>{{user.accountType}}</p>
-    <p>{{user.address1}}</p>
-    <p>{{user.address2}}</p>
-    <p>{{user.address3}}</p>
-    <p>{{user.dob}}</p>
-    <p>{{user.postcode}}</p>
+
+	<form [formGroup]="userInformationForm" *ngIf="segmentModel === 'user-information'"
+		(ngSubmit)="updateUserInformation()">
+
+		<ion-item lines="full">
+			<ion-label position="floating">First name</ion-label>
+			<ion-input type="text" formControlName="firstName"></ion-input>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Last name</ion-label>
+			<ion-input type="text" formControlName="surname"></ion-input>
+		</ion-item>
+
+		<ion-item>
+			<ion-label>Gender</ion-label>
+			<ion-select placeholder="Select One" formControlName="gender">
+				<ion-select-option value="female">Female</ion-select-option>
+				<ion-select-option value="male">Male</ion-select-option>
+			</ion-select>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Date of Birth</ion-label>
+			<ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" formControlName="dob">
+			</ion-datetime>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Address 1</ion-label>
+			<ion-input type="text" formControlName="address1"></ion-input>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Address 2</ion-label>
+			<ion-input type="text" formControlName="address2"></ion-input>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Address 3</ion-label>
+			<ion-input type="text" formControlName="address3"></ion-input>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Postcode</ion-label>
+			<ion-input type="text" formControlName="postcode"></ion-input>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Email</ion-label>
+			<ion-input type="email" formControlName="email"></ion-input>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Change password</ion-label>
+			<ion-input type="password" formControlName="changePassword"></ion-input>
+		</ion-item>
+
+		<ion-row>
+			<ion-col>
+				<ion-button type="submit" color="primary" expand="block">Update</ion-button>
+			</ion-col>
+		</ion-row>
+
+	</form>
+
+	<form [formGroup]="seizureInformationForm" *ngIf="segmentModel === 'seizure-information'"
+		(ngSubmit)="updateEpilepsyInformation()">
+
+		<ion-item lines="full">
+			<ion-label position="floating">Seizure Type</ion-label>
+			<ion-input type="text" formControlName="seizureType"></ion-input>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Trigger Details</ion-label>
+			<ion-input type="text" formControlName="triggerDetails"></ion-input>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Years Suffering</ion-label>
+			<ion-input type="number" formControlName="yearsSuffering"></ion-input>
+		</ion-item>
+
+		<ion-item lines="full">
+			<ion-label position="floating">Frequency</ion-label>
+			<ion-input type="text" formControlName="frequency"></ion-input>
+		</ion-item>
+
+		<ion-row>
+			<ion-col>
+				<ion-button type="submit" color="primary" expand="block">Update</ion-button>
+			</ion-col>
+		</ion-row>
+	</form>
 </ion-content>
 
 <app-footer></app-footer>
