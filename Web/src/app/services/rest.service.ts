@@ -35,8 +35,6 @@ export class RestService {
   }
   // Validate User
   validateUser(email: string, password: string, rememberMe: boolean) {
-    console.log("CRUD: Attempting to validate '" + email + "' with password '" + password + "'.");
-    console.log("CRUD: Remember me Value: " + rememberMe.valueOf());
     return this.httpClient.post(`${this.REST_API}/validate-user`, {email: email, password: password, rememberMe: rememberMe});
   }
 

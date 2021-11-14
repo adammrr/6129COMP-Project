@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingService } from '../services/loading.service';
 import { RestService } from '../services/rest.service';
 
 @Component({
@@ -11,18 +12,24 @@ export class ManageUsersComponent implements OnInit {
   patients:any = [];
   practitioners:any = [];
 
-  constructor(private restService: RestService) { }
+  constructor(private restService: RestService, public loadingService: LoadingService) { }
   ngOnInit(): void {
+    console.log("LOADING ON");
+    this.loadingService.setLoaded(false);
 
     this.restService.GetPatients().subscribe(data => {
       console.log(data)
       this.patients = data;
+
+      this.restService.GetPractitioners().subscribe(data => {
+        console.log(data)
+        this.practitioners = data;
+        this.loadingService.setLoaded(true);
+        console.log("LOADING OFF");
+      });
     });
 
-    this.restService.GetPractitioners().subscribe(data => {
-      console.log(data)
-      this.practitioners = data;
-    });
+
   }
   deletePatient(id:any, i:any) {
     console.log(id);

@@ -50,7 +50,9 @@ app.get('/practitioners', function (req, res) {
     console.log("SERVER: Getting Practitioners");
     dbConn.query('SELECT * FROM users WHERE accountType = "practitioner"', function (error, results, fields) {
         if (error) throw error;
+        setTimeout(function() { //EXAMPLE DELAY TO SHOW THE LOADING SCREEN (2 SECOND DELAY)
         return res.send({ error: false, data: results, message: 'practitioners list.' });
+          }, 500);
     });
 });
 
@@ -59,10 +61,9 @@ app.get('/practices', function (req, res) {
     console.log("SERVER: Getting Practices");
     dbConn.query('SELECT * FROM practices', function (error, results, fields) {
         if (error) throw error;
-        setTimeout(function() {
+        setTimeout(function() { //EXAMPLE DELAY TO SHOW THE LOADING SCREEN (2 SECOND DELAY)
             return res.send({ error: false, data: results, message: 'practices list.' });
-
-          }, 2000);
+          }, 500);
     });
 });
 

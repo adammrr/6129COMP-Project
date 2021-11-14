@@ -18,6 +18,7 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManagePracticesComponent } from './manage-practices/manage-practices.component';
 import { LoadingComponent } from './shared/loading/loading.component';
+import { ModalComponent } from './shared/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { LoadingComponent } from './shared/loading/loading.component';
     ManageUsersComponent,
     ManagePracticesComponent,
     LoadingComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

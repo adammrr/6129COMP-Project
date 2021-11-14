@@ -23,7 +23,7 @@ const routes: Routes = [
 
   { path: 'account', component: ManageAccountPageComponent, canActivate: [AuthGuard] },
   { path: 'sign-out', component: SignOutComponent },
-  { path: '**', component: RoutingErrorComponent }
+  { path: '**', component: RoutingErrorComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

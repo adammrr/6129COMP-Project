@@ -15,7 +15,7 @@
     <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['']" [svg]="'film'" [title]="'View Film List'" *ngIf="accountType === 'administrator'"></app-nav-card>
 
     <!-- Global Links -->
-    <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['../sign-out']" [svg]="'box-arrow-right'" [title]="'Sign Out'"></app-nav-card>
+    <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['../sign-out']" [svg]="'box-arrow-right'" [title]="'Sign Out'" (click)="authService.signOut()"></app-nav-card>
   </div>
 
 </div>

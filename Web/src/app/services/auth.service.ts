@@ -23,7 +23,7 @@ export class AuthService {
         date.setTime(date.getTime() + (days*24*60*60*1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/;secure=true";
 }
 getCookie(name: string):string {
     var nameEQ = name + "=";
@@ -38,28 +38,21 @@ getCookie(name: string):string {
 
   signIn(email: string, password: string, rememberMe: boolean) {
     this.restService.validateUser(email, password, rememberMe).subscribe(async (validationResult: any) => {
-      console.log(validationResult);
       if(validationResult.data.accountType == "patient"){
         alert("Sorry, you are unable to use this system. Please use the mobile app");
         return;
       }
       if(validationResult.data.result){
-        console.log("CRUD: Validated");
         const response = await this.restService.getUser(validationResult.data.userId).toPromise();
         this.user = new User(response.data);
-        console.log(validationResult.data.cookie);
         if(rememberMe){
           this.setCookie("cookie", String(validationResult.data.cookie), 1);
-
         }
         this.loggedIn.next(true);
         this.router.navigate(['']);
-
       }else{
-        console.log("CRUD: NOT validated");
         //Todo Alert Service notify user wrong password
         alert("You have entered a wrong Email/Password, please try again.");
-
       }
     });
 
