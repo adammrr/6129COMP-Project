@@ -41,7 +41,15 @@ const routes: Routes = [
     {
         path: '**',
         loadChildren: () => import('./pages/routing-error/routing-error.module').then(m => m.RoutingErrorPageModule)
-    }
+    },  {
+    path: 'request-newfilm',
+    loadChildren: () => import('./pages/request-newfilm/request-newfilm.module').then( m => m.RequestNewfilmPageModule)
+  },
+  {
+    path: 'request-newtrigger',
+    loadChildren: () => import('./pages/request-newtrigger/request-newtrigger.module').then( m => m.RequestNewtriggerPageModule)
+  }
+
 ];
 
 @NgModule({
