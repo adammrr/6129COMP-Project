@@ -6,13 +6,13 @@
     <!-- Practitioner Links -->
     <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['']" [svg]="'people'" [title]="'View Patients'" *ngIf="accountType === 'practitioner'"></app-nav-card>
     <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['']" [svg]="'building'" [title]="'View Practices'" *ngIf="accountType === 'practitioner'"></app-nav-card>
-    <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['']" [svg]="'film'" [title]="'View Film List'" *ngIf="accountType === 'practitioner'"></app-nav-card>
+    <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['../films']" [svg]="'film'" [title]="'View Film List'" *ngIf="accountType === 'practitioner'"></app-nav-card>
 
     <!-- Administrator Links -->
     <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['../manage-users']" [svg]="'people'" [title]="'Manage Users'" *ngIf="accountType === 'administrator'"></app-nav-card>
     <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['../manage-practices']" [svg]="'building'" [title]="'Manage Practices'" *ngIf="accountType === 'administrator'"></app-nav-card>
     <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['']" [svg]="'box-arrow-up-right'" [title]="'Manage Requests'" *ngIf="accountType === 'administrator'"></app-nav-card>
-    <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['']" [svg]="'film'" [title]="'View Film List'" *ngIf="accountType === 'administrator'"></app-nav-card>
+    <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['../films']" [svg]="'film'" [title]="'View Film List'" *ngIf="accountType === 'administrator'"></app-nav-card>
 
     <!-- Global Links -->
     <app-nav-card class="col-sm-6 col-lg-4 col-xl-3" [routerLink]="['../sign-out']" [svg]="'box-arrow-right'" [title]="'Sign Out'" (click)="authService.signOut()"></app-nav-card>
