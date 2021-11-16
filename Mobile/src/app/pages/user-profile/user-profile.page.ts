@@ -1,4 +1,7 @@
+/* eslint-disable max-len */
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
+import { async } from '@angular/core/testing';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,12 +16,12 @@ import { RestService } from 'src/app/services/rest.service';
 export class UserProfilePage implements OnInit {
 
     public user;
-    public epilepsyDetails;
+    public epilepsyInformation;
+    public today = new Date();
     public userInformationForm!: FormGroup;
-    public epilepsyDetailsForm!: FormGroup;
+    public epilepsyInformationForm!: FormGroup;
     public segmentModel = 'user-information';
     public userInformationFormChanged = 0;
-    public hasEpilepsyDetails: boolean;
 
     constructor(
         private authService: AuthService,
@@ -39,7 +42,7 @@ export class UserProfilePage implements OnInit {
             changePassword: ''
         });
 
-        this.epilepsyDetailsForm = this.formBuilder.group({
+        this.epilepsyInformationForm = this.formBuilder.group({
             seizureType: '',
             triggerDetails: '',
             yearsSuffering: 0,
@@ -65,13 +68,7 @@ export class UserProfilePage implements OnInit {
                 this.userInformationFormChanged++;
             }
         });
-        this.restService.getHasEpilepticDetails(this.user.userId).subscribe(async (hasDetails: any) => {
-            this.hasEpilepsyDetails = hasDetails.data;
-        });
-
-        this.restService.getEpilepticDetails(this.user.userId).subscribe(async (epilepticDetails: any) => {
-            this.epilepsyDetails = epilepticDetails;
-        });
+        this.getEpilepsyInformation();
     }
 
     public updateUserInformation(): void {
@@ -101,24 +98,40 @@ export class UserProfilePage implements OnInit {
     }
 
     public segmentChanged(): void {
-        if (this.hasEpilepsyDetails) {
-            this.epilepsyDetailsForm.patchValue({
-                seizureType: this.epilepsyDetails.data.seizureType,
-                triggerDetails: this.epilepsyDetails.data.triggerDetails,
-                yearsSuffering: this.epilepsyDetails.data.yearsSuffering,
-                frequency: this.epilepsyDetails.data.frequency
+        if (this.epilepsyInformation !== undefined) {
+            this.epilepsyInformationForm.patchValue({
+                seizureType: this.epilepsyInformation.seizureType,
+                triggerDetails: this.epilepsyInformation.triggerDetails,
+                yearsSuffering: this.epilepsyInformation.yearsSuffering,
+                frequency: this.epilepsyInformation.frequency
             });
         }
     }
 
-    //TODO: Working on this
-    /*   public updateEpilepsyInformation(): void {
-        const formValues = this.epilepsyDetailsForm.value;
+    public updateEpilepsyInformation(): void {
+        const formValues = this.epilepsyInformationForm.value;
         const updateInformation = {
-          seizureType: formValues.seizureType,
-          triggerDetails: formValues.triggerDetails,
-          yearsSuffering: formValues.yearsSuffering,
-          frequency: formValues.frequency
+            seizureType: formValues.seizureType,
+            triggerDetails: formValues.triggerDetails,
+            yearsSuffering: formValues.yearsSuffering,
+            frequency: formValues.frequency
         };
-      } */
+        if (this.epilepsyInformation) {
+            this.restService.updateEpilepsyInformation(this.user.userId, updateInformation).subscribe(async (result: any) => {
+                this.alertService.presentToast('Success epilepsy details for ' + this.user.firstName + ' Have been updated.');
+            });
+        }
+        else {
+            this.restService.insertEpilepsyInformation(this.user.userId, updateInformation).subscribe(async (result: any) => {
+                this.alertService.presentToast('Success epilepsy details for ' + this.user.firstName + ' Have been added.');
+                this.getEpilepsyInformation();
+            });
+        }
+    }
+
+    private getEpilepsyInformation(): void {
+        this.restService.getEpilepsyInformation(this.user.userId).subscribe(async (epilepticInformation: any) => {
+            this.epilepsyInformation = epilepticInformation.data.results;
+        });
+    }
 }

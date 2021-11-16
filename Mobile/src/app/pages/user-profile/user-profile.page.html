@@ -30,12 +30,12 @@
 
         <ion-item lines="full">
             <ion-label position="floating">First name</ion-label>
-            <ion-input type="text" formControlName="firstName"></ion-input>
+            <ion-input type="text" formControlName="firstName" [readonly]="true"></ion-input>
         </ion-item>
 
         <ion-item lines="full">
             <ion-label position="floating">Last name</ion-label>
-            <ion-input type="text" formControlName="surname"></ion-input>
+            <ion-input type="text" formControlName="surname" [readonly]="true"></ion-input>
         </ion-item>
 
         <ion-item>
@@ -48,7 +48,8 @@
 
         <ion-item lines="full">
             <ion-label position="floating">Date of Birth</ion-label>
-            <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" formControlName="dob">
+            <ion-datetime displayFormat="MM/DD/YYYY" min="1900-01-01" [max]="today" formControlName="dob"
+                [readonly]="true">
             </ion-datetime>
         </ion-item>
 
@@ -90,11 +91,22 @@
 
     </form>
 
-    <form [formGroup]="epilepsyDetailsForm" *ngIf="segmentModel === 'seizure-information'">
+    <form [formGroup]="epilepsyInformationForm" (ngSubmit)="updateEpilepsyInformation()"
+        *ngIf="segmentModel === 'seizure-information'">
 
-        <ion-item lines="full">
-            <ion-label position="floating">Seizure Type</ion-label>
-            <ion-input type="text" formControlName="seizureType"></ion-input>
+        <ion-item>
+            <ion-label>Seizure Type</ion-label>
+            <ion-select placeholder="Select One" formControlName="seizureType">
+                <ion-select-option value="Simple partial (focal)">Simple partial (focal)</ion-select-option>
+                <ion-select-option value="Complex partial (focal)">Complex partial (focal)</ion-select-option>
+                <ion-select-option value="Tonic-clonic">Tonic-clonic</ion-select-option>
+                <ion-select-option value="Absence">Absence</ion-select-option>
+                <ion-select-option value="Myoclonic">Myoclonic</ion-select-option>
+                <ion-select-option value="Clonic">Clonic</ion-select-option>
+                <ion-select-option value="Tonic">Tonic</ion-select-option>
+                <ion-select-option value="Atonic">Atonic</ion-select-option>
+                <ion-select-option value="Other">Other</ion-select-option>
+            </ion-select>
         </ion-item>
 
         <ion-item lines="full">
