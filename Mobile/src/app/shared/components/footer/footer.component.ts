@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { UserRequestsPage } from 'src/app/pages/user-requests/user-requests.page';
+
+
 
 @Component({
   selector: 'app-footer',
@@ -7,8 +11,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
+
   constructor() { }
 
   ngOnInit() {}
 
+
+  async openRequestModal(modalCtrl: ModalController) {
+    const modal = await modalCtrl.create({
+      component: UserRequestsPage,
+      })
+    };
 }
