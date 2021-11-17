@@ -5,6 +5,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthService } from './services/auth.service';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -21,6 +22,7 @@ import { SharedModule } from './shared/shared.module';
         HttpClientModule
     ],
     providers: [
+      AuthService,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     ],
     bootstrap: [AppComponent],
