@@ -5,7 +5,6 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { FooterComponent } from './components/footer/footer.component';
 import { CentralContainerComponent } from './components/central-container/central-container.component';
 
-
 @NgModule({
   declarations: [FooterComponent, CentralContainerComponent],
   imports: [

@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+
 
 @Component({
     selector: 'app-welcome',
     templateUrl: './welcome.page.html',
     styleUrls: ['./welcome.page.scss'],
 })
+
 export class WelcomePage implements OnInit {
 
     public userName = '';

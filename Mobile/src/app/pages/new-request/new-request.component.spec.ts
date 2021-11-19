@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { RequestNewtriggerPage } from './request-newtrigger.page';
+import { NewRequestComponent } from './new-request.component';
 
-describe('RequestNewtriggerPage', () => {
-  let component: RequestNewtriggerPage;
-  let fixture: ComponentFixture<RequestNewtriggerPage>;
+describe('NewRequestComponent', () => {
+  let component: NewRequestComponent;
+  let fixture: ComponentFixture<NewRequestComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RequestNewtriggerPage ],
+      declarations: [ NewRequestComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RequestNewtriggerPage);
+    fixture = TestBed.createComponent(NewRequestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
