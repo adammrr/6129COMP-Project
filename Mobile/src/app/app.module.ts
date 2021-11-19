@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -18,7 +19,10 @@ import { SharedModule } from './shared/shared.module';
         IonicModule.forRoot(),
         AppRoutingModule,
         SharedModule,
-        HttpClientModule
+        HttpClientModule,
+        BrowserModule, 
+        FormsModule, 
+        ReactiveFormsModule
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

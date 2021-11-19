@@ -1,8 +1,8 @@
 <ion-toolbar color="primary">
       <ion-title>Make a new Request</ion-title>
-      <ion-buttons slot="start">
-          <ion-menu-button (click)="dismiss()"></ion-menu-button>
-      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 
 <ion-content>
@@ -10,9 +10,9 @@
       <ion-grid>
           <ion-row>
               <ion-col align-self-center>
-                  <ion-button expand="block" color="primary" (click)="toggleFilm()" *ngIf="!hideFilm">Add a new Film</ion-button>
-                  <div class="newFilmForm" *ngIf="hideFilm">
-                    <form [formGroup]="newFilm">
+                  <ion-button expand="block" color="primary" (click)="toggleFilm()" [hidden]="hideFilmButton">Add a new Film</ion-button>
+                  <div class="newFilmForm">
+                    <form [formGroup]="newFilm" [hidden]="hideFilm">
                         <ion-item lines="full">
                             <ion-label position="floating">Film Name</ion-label>
                             <ion-input type="text" formControlName="filmName1"></ion-input>
@@ -30,7 +30,7 @@
                     
                         <ion-item lines="full">
                             <ion-label position="floating">Film Release Date</ion-label>
-                            <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" formControlName="releaseDate1">
+                            <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" formControlName="releaseDate1">
                             </ion-datetime>
                         </ion-item>
                     
@@ -50,11 +50,11 @@
                     </form>
                   </div>
                   
-                  <span class="divider line one-line">or</span>
+                  <span align-self-center class="divider line one-line" [hidden]="hideSpace">or</span>
 
-                  <ion-button expand="block" color="primary" (click)="toggleTrigger()" *ngIf="!hideTrigger">Add a new epileptic trigger</ion-button>
-                  <div class="newTriggerForm" *ngIf="hideTrigger">
-                    <form [formGroup]="newTrigger">
+                  <ion-button expand="block" color="primary" (click)="toggleTrigger()" [hidden]="hideTriggerButton">Add a new epileptic trigger</ion-button>
+                  <div class="newTriggerForm">
+                    <form [formGroup]="newTrigger" [hidden]="hideTrigger">
                         <ion-item lines="full">
                             <ion-label position="floating">Film Name</ion-label>
                             <ion-input type="text" formControlName="filmName2"></ion-input>
@@ -62,7 +62,7 @@
                     
                         <ion-item lines="full">
                             <ion-label position="floating">Film Release Date</ion-label>
-                            <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" formControlName="releaseDate2">
+                            <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" formControlName="releaseDate2">
                             </ion-datetime>
                         </ion-item>
                     
