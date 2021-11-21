@@ -2,7 +2,14 @@
   <h1 class="display-3">Manage Practices</h1>
   <button class="btn btn-primary mt-1 mb-3" [routerLink]="['../home']">Return to Dashboard</button>
 </div>
+
 <div class="container" *ngIf="loadingService.loadedObs | async ;else loadingIcon">
+  <div class="d-flex justify-content-end  mt-1 mb-3">
+    <div class="btn btn-outline-primary" (click)="reloadPractices()">
+      Refresh Data <img class="img-fluid" src="/assets/img/arrow-clockwise.svg" alt="Refresh">
+    </div>
+  </div>
+
   <div class="table-responsive">
     <table class="table table-bordered">
       <thead>
@@ -27,7 +34,7 @@
           <td>{{practice.telephone}}</td>
 
           <td class="text-center">
-            <button class="btn btn-sm btn-primary" routerLink="/edit-practice/{{practice.practiceId}}">Edit</button>
+            <button class="btn btn-sm btn-primary" routerLink="/manage-practices//{{practice.practiceId}}">Edit</button>
             <button class="btn btn-sm btn-danger"(click)="deletePractice(practice.practiceId, i)">Delete</button>
         </tr>
       </tbody>

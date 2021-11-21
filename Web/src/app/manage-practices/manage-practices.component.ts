@@ -22,8 +22,16 @@ export class ManagePracticesComponent implements OnInit {
     });
   }
 
+  public reloadPractices(): void {
+    this.loadingService.setLoaded(false);
 
-  deletePractice(id:any, i:any) {
+    this.restService.getPractices().subscribe( data => {
+      this.practices = data;
+      this.loadingService.setLoaded(true);
+    });
+  }
+
+  public deletePractice(id:any, i:any) {
     if(window.confirm('Do you want to go ahead?')) {
       this.restService.deletePractice(id).subscribe((res) => {
         this.practices.data.splice(i, 1);

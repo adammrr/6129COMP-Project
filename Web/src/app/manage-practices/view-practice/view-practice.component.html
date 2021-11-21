@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
+  <h1 class="display-3">Manage Practices</h1>
+  <button class="btn btn-primary mt-1 mb-3" [routerLink]="['../../']">Return to Previous Page</button>
+</div>
+
+<div *ngIf="loadingService.loadedObs | async ;else loadingIcon" class="container">
+  <div class="container p-3">
+    <form [formGroup]='detailsForm' (ngSubmit)="onSubmit(confirmModal)">
+      <p>Edit the details for {{practice.practiceName}}</p>
+      <div class="row">
+        <div class="col-sm">
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="practiceIdInput" placeholder="0" readonly formControlName="practiceId">
+            <label for="practiceIdInput">Practice ID</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="practiceNameInput" placeholder="example@example.com" formControlName="practiceName">
+            <label for="practiceNameInput">Practice Name</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="telephoneInput" placeholder="0123 456 7890" formControlName="telephone">
+            <label for="telephoneInput">Telephone</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="postcodeInput" placeholder="Post Code" formControlName="postcode">
+            <label for="postcodeInput">Postcode</label>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="address1Input" placeholder="Address Line 1" formControlName="address1">
+            <label for="address1Input">Address Line 1</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="address2Input" placeholder="Address Line 2" formControlName="address2">
+            <label for="address2Input">Address Line 2</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="address3Input" placeholder="Address Line 3" formControlName="address3">
+            <label for="address3Input">Address Line 3</label>
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="alert alert-success alert-dismissible " *ngIf="messageState | async" role="alert">
+        <div class="d-flex align-items-center" role="alert">
+            <img class="img-fluid" src="/assets/img/hand-thumbs-up.svg" alt="svg"> User details have successfully been updated
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseToast()"></button>
+      </div>
+      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit" >Update Details</button><br>
+    </form>
+  </div>
+
+
+</div>
+<ng-template #loadingIcon><app-loading></app-loading></ng-template>
+<ng-template #confirmModal>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to update {{practice.practiceName}}'s Details?</p>
+    <button type="button" class="btn btn-success m-1" (click)="onConfirmModal()" >Yes</button>
+    <button type="button" class="btn btn-danger m-1" (click)="onDeclineModal()" >No</button>
+  </div>
+</ng-template>
