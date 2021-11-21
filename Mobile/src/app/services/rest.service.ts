@@ -15,12 +15,9 @@ export class RestService {
     httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
     constructor(private httpClient: HttpClient) { }
 
-    // Get all Patients
-    public getPatients() {
-        return this.httpClient.get(`${this.REST_API}/patients`);
-    }
+    /** GET */
 
-    public getUser(id: any): Observable<any> {
+    public getUserById(id: any): Observable<any> {
         const API_URL = `${this.REST_API}/read-user/${id}`;
         return this.httpClient.get(API_URL, { headers: this.httpHeaders })
             .pipe(map((res: any) => res || { error: 'ERROR' }),
@@ -28,8 +25,33 @@ export class RestService {
             );
     }
 
+    public getEpilepsyInformation(id: any): Observable<any> {
+        const API_URL = `${this.REST_API}/epilepsy-information/${id}`;
+        return this.httpClient.get(API_URL, { headers: this.httpHeaders })
+            .pipe(map((res: any) => res || { error: 'ERROR' }),
+                catchError(this.handleError)
+            );
+    }
+
+    // Get a list of all films
+    public getFilms() {
+        return this.httpClient.get(`${this.REST_API}/films`);
+    }
+
+    /** GET Ends */
+
+    /** POST */
+
     public register(registrationDetails: { firstName: string; surname: string; gender: string; dob: string; address1: string; address2: string; address3: string; email: string; password: string }) {
         return this.httpClient.post(`${this.REST_API}/register-user`, { registrationDetails });
+    }
+
+    public insertEpilepsyInformation(id: number, epilepsyDetails: { seizureType: string; triggerDetails: string; yearsSuffering: number; frequency: string }): Observable<any> {
+        const API_URL = `${this.REST_API}/insert-epilepsy-information`;
+        return this.httpClient.post(API_URL, { headers: this.httpHeaders, epilepsyDetails, id })
+            .pipe(map((res: any) => res || { error: 'ERROR' }),
+                catchError(this.handleError)
+            );
     }
 
     // Validate User
@@ -37,6 +59,28 @@ export class RestService {
         console.log('CRUD: Attempting to validate \'' + email + '\' with password \'' + password + '\'.');
         return this.httpClient.post(`${this.REST_API}/validate-user-mobile`, { email, password });
     }
+
+    /** POST Ends */
+
+    /** PUT */
+
+    public updateUser(id: number, updateDetails: { gender: string; address1: string; address2: string; address3: string; email: string; password: string }): Observable<any> {
+        const API_URL = `${this.REST_API}/update-user/${id}`;
+        return this.httpClient.put(API_URL, { headers: this.httpHeaders, updateDetails })
+            .pipe(map((res: any) => res || { error: 'ERROR' }),
+                catchError(this.handleError)
+            );
+    }
+
+    public updateEpilepsyInformation(id: number, epilepsyDetails: { seizureType: string; frequency: string; yearsSuffering: number; triggerDetails: string }): Observable<any> {
+        const API_URL = `${this.REST_API}/update-epilepsy-information/${id}`;
+        return this.httpClient.put(API_URL, { headers: this.httpHeaders, epilepsyDetails })
+            .pipe(map((res: any) => res || { error: 'ERROR' }),
+                catchError(this.handleError)
+            );
+    }
+
+    /** PUT Ends */
 
     // Error
     public handleError(error: HttpErrorResponse): Observable<string> {

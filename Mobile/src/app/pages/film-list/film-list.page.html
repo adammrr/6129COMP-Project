@@ -8,7 +8,24 @@
 </ion-header>
 
 <ion-content>
-
+    <ion-card *ngFor="let film of filmList">
+        <img *ngIf="'film.imageURL'; else noImage" [src]="film.imageURl" />
+        <ion-card-header>
+            <ion-card-title>{{film.filmName}}</ion-card-title>
+        </ion-card-header>
+        <ion-item>
+            <ion-icon name="videocam-outline" slot="start"></ion-icon>
+            <ion-label>{{film.genre}} - {{film.runTime}}</ion-label>
+            <ion-button fill="outline" slot="end" (click)="navigateToFilmPage(film.filmId)">View</ion-button>
+        </ion-item>
+        <ion-card-content>
+            {{film.filmDescription}}
+        </ion-card-content>
+    </ion-card>
 </ion-content>
+
+<ng-template #noImage>
+    <img src="https://hollywoodsuite.ca/wp-content/uploads/poster/hws-placeholder.jpg" />
+</ng-template>
 
 <app-footer></app-footer>

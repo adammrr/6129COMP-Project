@@ -12,7 +12,6 @@ import { RestService } from './rest.service';
 export class AuthService {
 
     private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    private loggedInObs: Observable<boolean> = this.loggedIn.asObservable();
     private user!: User;
 
     constructor(
@@ -29,7 +28,7 @@ export class AuthService {
         this.restService.validateUser(email, password).subscribe(async (validationResult: any) => {
             if (validationResult.data.result) {
                 console.log('CRUD: Validated');
-                const response = await this.restService.getUser(validationResult.data.userId).toPromise();
+                const response = await this.restService.getUserById(validationResult.data.userId).toPromise();
                 this.user = new User(response.data);
                 this.loggedIn.next(true);
             } else {
@@ -49,6 +48,10 @@ export class AuthService {
 
     public getAccountType(): string {
         return this.user.accountType;
+    }
+
+    public getLoggedInUser() {
+        return this.user;
     }
 
     public getName(): string {

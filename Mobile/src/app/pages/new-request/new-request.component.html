@@ -1,0 +1,90 @@
+<ion-toolbar color="primary">
+      <ion-title>Make a new Request</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+<ion-content>
+  <app-central-container>
+      <ion-grid>
+          <ion-row>
+              <ion-col align-self-center>
+                  <ion-button expand="block" color="primary" (click)="toggleFilm()" [hidden]="hideFilmButton">Add a new Film</ion-button>
+                  <div class="newFilmForm">
+                    <form [formGroup]="newFilm" [hidden]="hideFilm">
+                        <ion-item lines="full">
+                            <ion-label position="floating">Film Name</ion-label>
+                            <ion-input type="text" formControlName="filmName1"></ion-input>
+                        </ion-item>
+                    
+                        <ion-item lines="full">
+                            <ion-label position="floating">Genre</ion-label>
+                            <ion-input type="text" formControlName="genre1"></ion-input>
+                        </ion-item>
+                    
+                        <ion-item lines="full">
+                            <ion-label position="floating">Runtime</ion-label>
+                            <ion-input type="text" formControlName="runtime"></ion-input>
+                        </ion-item>
+                    
+                        <ion-item lines="full">
+                            <ion-label position="floating">Film Release Date</ion-label>
+                            <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" formControlName="releaseDate1">
+                            </ion-datetime>
+                        </ion-item>
+                    
+                        <ion-item>
+                            <ion-label>Does this film contain epileptic triggers</ion-label>
+                            <ion-select placeholder="Does this film contain epileptic triggers" formControlName="trigger">
+                                <ion-select-option value="true">Yes</ion-select-option>
+                                <ion-select-option value="false">No</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    
+                        <ion-row>
+                            <ion-col>
+                                <ion-button type="submit" color="primary" expand="block">Submit Request</ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </form>
+                  </div>
+                  
+                  <span align-self-center class="divider line one-line" [hidden]="hideSpace">or</span>
+
+                  <ion-button expand="block" color="primary" (click)="toggleTrigger()" [hidden]="hideTriggerButton">Add a new epileptic trigger</ion-button>
+                  <div class="newTriggerForm">
+                    <form [formGroup]="newTrigger" [hidden]="hideTrigger">
+                        <ion-item lines="full">
+                            <ion-label position="floating">Film Name</ion-label>
+                            <ion-input type="text" formControlName="filmName2"></ion-input>
+                        </ion-item>
+                    
+                        <ion-item lines="full">
+                            <ion-label position="floating">Film Release Date</ion-label>
+                            <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" formControlName="releaseDate2">
+                            </ion-datetime>
+                        </ion-item>
+                    
+                        <ion-item lines="full">
+                            <ion-label position="floating">What time does the trigger occur</ion-label>
+                            <ion-input type="text" formControlName="timestamp"></ion-input>
+                        </ion-item>
+                    
+                        <ion-item lines="full">
+                            <ion-label position="floating">Details of trigger</ion-label>
+                            <ion-input type="text" formControlName="details"></ion-input>
+                        </ion-item>
+                    
+                        <ion-row>
+                            <ion-col>
+                                <ion-button type="submit" color="primary" expand="block">Submit Request</ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </form>
+                  </div>
+              </ion-col>
+          </ion-row>
+      </ion-grid>
+  </app-central-container>
+</ion-content>
