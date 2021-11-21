@@ -12,7 +12,6 @@ import { RestService } from 'src/app/services/rest.service';
   styleUrls: ['./new-practice.component.scss']
 })
 export class NewPracticeComponent implements OnInit {
-  private sub: any;
   modalRef?: BsModalRef;
 
   messageConfirmState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -76,9 +75,5 @@ export class NewPracticeComponent implements OnInit {
 
   ngOnInit(): void {
 
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 }
