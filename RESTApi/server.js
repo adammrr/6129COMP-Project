@@ -78,38 +78,20 @@ app.get('/read-user/:id', function (req, res) {
     });
 });
 
-app.get('/has-epileptic-details/:id', function (req, res) {
-    let userid = req.params.id;
-    let hasDetails;
-    dbConn.query('SELECT count(*) as total FROM epilepsydetails WHERE userId =?', userid, function (error, results) {
-        if (error) throw error;
-        try {
-            if (!userid) {
-                return res.status(400).send({ error: true, message: 'Please provide user id' })
-            }
-            if (results[0].total === 0) {
-                this.hasDetails = false;
-                return res.send({ error: false, data: hasDetails, message: 'User does not have epileptic details currently set' });
-            }
-            if (results[0].total > 0) {
-                this.hasDetails = true;
-                return res.send({ error: false, data: hasDetails, message: 'This user does have epileptic details' });
-            }
-        } catch (error) {
-            return res.send({ error: false, message: '403 Forbidden' });
-        }
-    });
-});
-
 // Retrieve user by id 
-app.get('/epileptic-details/:id', function (req, res) {
+app.get('/epilepsy-information/:id', function (req, res) {
     let user_id = req.params.id;
+    let hasResults;
     if (!user_id) {
         return res.status(400).send({ error: true, message: 'Please provide user_id' });
     }
     dbConn.query('SELECT userId, seizureType, frequency, yearsSuffering, triggerDetails FROM epilepsydetails WHERE userId=?', user_id, function (error, results) {
         if (error) throw error;
-        return res.send({ error: false, data: results[0], message: 'users list.' });
+        if (results[0] === undefined) {
+            hasResults = false;
+            return res.send({ error: false, data: hasResults, message: 'User does not have epileptic details currently set' });
+        }
+        return res.send({ error: false, data: { hasResults: hasResults, results: results[0] }, message: 'Epileptic details' });
     });
 });
 
@@ -140,8 +122,6 @@ app.post('/validate-user', function (req, res) {
             return res.send({ error: false, data: { result: false, accountType: null, userId: null }, message: '403 Forbidden' });
 
         }
-
-
     });
 });
 
@@ -166,7 +146,6 @@ app.post('/validate-user-mobile', function (req, res) {
             }
         } catch (error) {
             return res.send({ error: false, data: { result: false, accountType: null, userId: null }, message: '403 Forbidden' });
-
         }
     });
 });
@@ -190,6 +169,21 @@ app.post('/register-user', function (req, res) {
     });
 });
 
+app.post('/insert-epilepsy-information', function (req, res) {
+    console.log(req.body);
+    let userId = req.body.id;
+    let seizureType = req.body.epilepsyDetails.seizureType;
+    let triggerDetails = req.body.epilepsyDetails.triggerDetails;
+    let yearsSuffering = req.body.epilepsyDetails.yearsSuffering;
+    let frequency = req.body.epilepsyDetails.frequency;
+
+    dbConn.query(`INSERT INTO epilepsydetails (userId, seizureType, triggerDetails, yearsSuffering, frequency)
+    VALUES (${userId}, "${seizureType}", "${triggerDetails}", ${yearsSuffering}, "${frequency}")`, function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'successfully inserted user epilepsy details' })
+    });
+});
+
 /** POST Ends */
 
 /** PUT */
@@ -204,11 +198,23 @@ app.put('/update-user/:userId', function (req, res) {
     let address3 = req.body.updateDetails.address3;
     let postcode = req.body.updateDetails.postcode;
 
-    dbConn.query(`UPDATE users SET email = "${email}", password = "${password}", gender = "${gender}", address1 = "${address1}", address2 = "${address2}", address3 = "${address3}", postcode = "${postcode}" where userId = "${userId}"`, function (error, results) {
+    dbConn.query(`UPDATE users SET email = "${email}", password = "${password}", gender = "${gender}", address1 = "${address1}", address2 = "${address2}", address3 = "${address3}", postcode = "${postcode}" where userId = "${userId}" `, function (error, results) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
     });
 });
+
+app.put('/update-epilepsy-information/:userId', function (req, res) {
+    let userId = req.params.userId;
+    let seizureType = req.body.epilepsyDetails.seizureType;
+    let triggerDetails = req.body.epilepsyDetails.triggerDetails;
+    let yearsSuffering = req.body.epilepsyDetails.yearsSuffering;
+    let frequency = req.body.epilepsyDetails.frequency;
+    dbConn.query(`UPDATE epilepsydetails SET seizureType = "${seizureType}", frequency = "${frequency}", yearsSuffering = "${yearsSuffering}", triggerDetails = "${triggerDetails}" where userId = "${userId}" `, function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'Users epilepsy details has been updated successfully.' });
+    })
+})
 
 /** PUT Ends */
 

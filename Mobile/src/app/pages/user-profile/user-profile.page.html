@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title>{{user.firstName}} {{user.surname}}</ion-title>
+        <ion-title>My Profile</ion-title>
         <ion-buttons slot="start">
             <ion-menu-button menu="main-menu"></ion-menu-button>
             <ion-back-button></ion-back-button>
@@ -8,47 +8,69 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-toolbar>
-    <ion-segment (ionChange)="segmentChanged()" value="all" color="tertiary" scrollable="true" mode="ios"
-        [(ngModel)]="segmentModel">
-
-        <ion-segment-button value="user-information">
-            <ion-label>User Information</ion-label>
-        </ion-segment-button>
-
-        <ion-segment-button value="seizure-information">
-            <ion-label>seizure Information</ion-label>
-        </ion-segment-button>
-    </ion-segment>
-</ion-toolbar>
-
 
 <ion-content>
+    <ion-card color="primary">
+        <div class="img-wrapper">
+            <img src="https://thumbs.dreamstime.com/b/male-avatar-profile-picture-silhouette-34443055.jpg" />
+        </div>
+        <ion-card-content class="ion-text-center">
+            <h2>{{user.firstName}} {{user.surname}}</h2>
+            <ion-text color="medium">
+                <div style="display: flex;" class="ion-justify-content-center">
+                    <ion-icon name="location-outline" color="light">
+                    </ion-icon>
+                    <p class="paragraph">{{user.address1}}, {{user.address2}}, {{user.postcode}}</p>
+                </div>
+            </ion-text>
+        </ion-card-content>
+    </ion-card>
+
+
+    <ion-toolbar>
+        <ion-segment (ionChange)="segmentChanged()" value="all" color="tertiary" scrollable="true" mode="ios"
+            [(ngModel)]="segmentModel">
+
+            <ion-segment-button value="user-information">
+                <ion-label>User Information</ion-label>
+            </ion-segment-button>
+
+            <ion-segment-button value="seizure-information">
+                <ion-label>seizure Information</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+
+
+
 
     <form [formGroup]="userInformationForm" *ngIf="segmentModel === 'user-information'"
         (ngSubmit)="updateUserInformation()">
 
         <ion-item lines="full">
             <ion-label position="floating">First name</ion-label>
-            <ion-input type="text" formControlName="firstName"></ion-input>
+            <ion-input type="text" formControlName="firstName" [readonly]="true"></ion-input>
         </ion-item>
 
         <ion-item lines="full">
             <ion-label position="floating">Last name</ion-label>
-            <ion-input type="text" formControlName="surname"></ion-input>
+            <ion-input type="text" formControlName="surname" [readonly]="true"></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>Gender</ion-label>
             <ion-select placeholder="Select One" formControlName="gender">
-                <ion-select-option value="female">Female</ion-select-option>
-                <ion-select-option value="male">Male</ion-select-option>
+                <ion-select-option value="Female">Female</ion-select-option>
+                <ion-select-option value="Male">Male</ion-select-option>
+                <ion-select-option value="Other">Other</ion-select-option>
+                <ion-select-option value="Prefer not to say">Prefer not to say</ion-select-option>
             </ion-select>
         </ion-item>
 
         <ion-item lines="full">
             <ion-label position="floating">Date of Birth</ion-label>
-            <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" formControlName="dob">
+            <ion-datetime displayFormat="MM/DD/YYYY" min="1900-01-01" [max]="today" formControlName="dob"
+                [readonly]="true">
             </ion-datetime>
         </ion-item>
 
@@ -90,11 +112,22 @@
 
     </form>
 
-    <form [formGroup]="epilepsyDetailsForm" *ngIf="segmentModel === 'seizure-information'">
+    <form [formGroup]="epilepsyInformationForm" (ngSubmit)="updateEpilepsyInformation()"
+        *ngIf="segmentModel === 'seizure-information'">
 
-        <ion-item lines="full">
-            <ion-label position="floating">Seizure Type</ion-label>
-            <ion-input type="text" formControlName="seizureType"></ion-input>
+        <ion-item>
+            <ion-label>Seizure Type</ion-label>
+            <ion-select placeholder="Select One" formControlName="seizureType">
+                <ion-select-option value="Simple partial (focal)">Simple partial (focal)</ion-select-option>
+                <ion-select-option value="Complex partial (focal)">Complex partial (focal)</ion-select-option>
+                <ion-select-option value="Tonic-clonic">Tonic-clonic</ion-select-option>
+                <ion-select-option value="Absence">Absence</ion-select-option>
+                <ion-select-option value="Myoclonic">Myoclonic</ion-select-option>
+                <ion-select-option value="Clonic">Clonic</ion-select-option>
+                <ion-select-option value="Tonic">Tonic</ion-select-option>
+                <ion-select-option value="Atonic">Atonic</ion-select-option>
+                <ion-select-option value="Other">Other</ion-select-option>
+            </ion-select>
         </ion-item>
 
         <ion-item lines="full">

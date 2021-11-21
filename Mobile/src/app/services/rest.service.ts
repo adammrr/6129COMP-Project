@@ -25,16 +25,8 @@ export class RestService {
             );
     }
 
-    public getHasEpilepticDetails(id: any): Observable<any> {
-        const API_URL = `${this.REST_API}/has-epileptic-details/${id}`;
-        return this.httpClient.get(API_URL, { headers: this.httpHeaders })
-            .pipe(map((res: any) => res || { error: 'ERROR' }),
-                catchError(this.handleError)
-            );
-    }
-
-    public getEpilepticDetails(id: any): Observable<any> {
-        const API_URL = `${this.REST_API}/epileptic-details/${id}`;
+    public getEpilepsyInformation(id: any): Observable<any> {
+        const API_URL = `${this.REST_API}/epilepsy-information/${id}`;
         return this.httpClient.get(API_URL, { headers: this.httpHeaders })
             .pipe(map((res: any) => res || { error: 'ERROR' }),
                 catchError(this.handleError)
@@ -54,6 +46,14 @@ export class RestService {
         return this.httpClient.post(`${this.REST_API}/register-user`, { registrationDetails });
     }
 
+    public insertEpilepsyInformation(id: number, epilepsyDetails: { seizureType: string; triggerDetails: string; yearsSuffering: number; frequency: string }): Observable<any> {
+        const API_URL = `${this.REST_API}/insert-epilepsy-information`;
+        return this.httpClient.post(API_URL, { headers: this.httpHeaders, epilepsyDetails, id })
+            .pipe(map((res: any) => res || { error: 'ERROR' }),
+                catchError(this.handleError)
+            );
+    }
+
     // Validate User
     public validateUser(email: string, password: string) {
         console.log('CRUD: Attempting to validate \'' + email + '\' with password \'' + password + '\'.');
@@ -67,6 +67,14 @@ export class RestService {
     public updateUser(id: number, updateDetails: { gender: string; address1: string; address2: string; address3: string; email: string; password: string }): Observable<any> {
         const API_URL = `${this.REST_API}/update-user/${id}`;
         return this.httpClient.put(API_URL, { headers: this.httpHeaders, updateDetails })
+            .pipe(map((res: any) => res || { error: 'ERROR' }),
+                catchError(this.handleError)
+            );
+    }
+
+    public updateEpilepsyInformation(id: number, epilepsyDetails: { seizureType: string; frequency: string; yearsSuffering: number; triggerDetails: string }): Observable<any> {
+        const API_URL = `${this.REST_API}/update-epilepsy-information/${id}`;
+        return this.httpClient.put(API_URL, { headers: this.httpHeaders, epilepsyDetails })
             .pipe(map((res: any) => res || { error: 'ERROR' }),
                 catchError(this.handleError)
             );
