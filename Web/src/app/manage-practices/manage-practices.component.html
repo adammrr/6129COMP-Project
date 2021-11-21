@@ -5,7 +5,10 @@
 
 <div class="container" *ngIf="loadingService.loadedObs | async ;else loadingIcon">
   <div class="d-flex justify-content-end  mt-1 mb-3">
-    <div class="btn btn-outline-primary" (click)="reloadPractices()">
+    <div class="btn btn-outline-primary me-2 mb-2" routerLink="create-practice">
+      Add Practice <img class="img-fluid" src="/assets/img/plus-square.svg" alt="Add new practice">
+    </div>
+    <div class="btn btn-outline-primary me-2 mb-2" (click)="reloadPractices()">
       Refresh Data <img class="img-fluid" src="/assets/img/arrow-clockwise.svg" alt="Refresh">
     </div>
   </div>

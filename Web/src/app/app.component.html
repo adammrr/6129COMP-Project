@@ -1,7 +1,4 @@
 <!-- Navigation Bar displayed only if signed in -->
 <app-navigation-bar *ngIf="authService.loggedInObs | async"></app-navigation-bar>
-<router-outlet>
-  <!-- Put the modal here? -->
-
-</router-outlet>
+<router-outlet></router-outlet>
 

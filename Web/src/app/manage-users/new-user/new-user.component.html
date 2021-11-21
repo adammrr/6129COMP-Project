@@ -1,0 +1,101 @@
+<div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
+  <h1 class="display-3">Create New {{type | titlecase}}</h1>
+  <button class="btn btn-primary mt-1 mb-3" [routerLink]="['/manage-users']">Return to Previous Page</button>
+</div>
+
+<div class="container" *ngIf="loadingService.loadedObs | async ;else loadingIcon">
+  <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
+    <button class="btn btn-block m-1" [class.btn-outline-primary]="type=='practitioner'" [class.btn-primary]="type=='patient'" routerLink="../patient">Create Patient</button><br>
+    <button class="btn btn-block m-1" [class.btn-outline-primary]="type=='patient'" [class.btn-primary]="type=='practitioner'" routerLink="../practitioner">Create Practitioner</button><br>
+  </div>
+  <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
+    <h5>You are now creating a <b>{{type}}</b>.</h5>
+  </div>
+
+  <form [formGroup]='detailsForm' (ngSubmit)="onSubmit(confirmModal)">
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="firstNameInput" placeholder="Joe" formControlName="firstName" required>
+          <label for="firstNameInput">First Name</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="surnameInput" placeholder="Bloggs" formControlName="surname" required>
+          <label for="surnameInput">Surname</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="email" class="form-control" id="emailInput" placeholder="example@example.com" formControlName="email" required>
+          <label for="emailInput">Email</label>
+        </div>
+
+      </div>
+      <div class="col-sm">
+        <div class="form-floating my-1">
+          <select type="text" class="form-control" id="genderInput" placeholder="0" formControlName="gender" required>
+            <option value="">Select your option</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+
+          </select>
+          <label for="genderInput">Gender</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="date" class="form-control" id="dobInput" placeholder="2000-01-01" formControlName="dob" required>
+          <label for="dobInput">Date of Birth</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="postcodeInput" placeholder="Post Code" formControlName="postcode" required>
+          <label for="postcodeInput">Postcode</label>
+        </div>
+      </div>
+
+      <div class="col-sm">
+
+
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="address1Input" placeholder="Address Line 1" formControlName="address1" required>
+          <label for="address1Input">Address Line 1</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="address2Input" placeholder="Address Line 2" formControlName="address2" required>
+          <label for="address2Input">Address Line 2</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="address3Input" placeholder="Address Line 3" formControlName="address3" required>
+          <label for="address3Input">Address Line 3</label>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="alert alert-success alert-dismissible " *ngIf="messageConfirmState | async" role="alert">
+      <div class="d-flex align-items-center" role="alert">
+          <img class="img-fluid" src="/assets/img/hand-thumbs-up.svg" alt="svg"> {{type|titlecase}} has been created
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseConfirmToast()"></button>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible " *ngIf="messageErrorState | async" role="alert">
+      <div class="d-flex align-items-center" role="alert">
+          <img class="img-fluid" src="/assets/img/hand-thumbs-down.svg" alt="svg"><span>User has <b> not </b> been created. <em *ngIf="errorMessage=='ER_DUP_ENTRY'">A user already exists with the entered email.</em></span>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseErrorToast()"></button>
+    </div>
+
+    <button class="btn btn-primary btn-block mb-1" [disabled]="!detailsForm.valid" type="submit" >Create {{type}}</button>
+    <p *ngIf="!detailsForm.valid">Please ensure the form above is fully filled in.</p>
+  </form>
+</div>
+<ng-template #loadingIcon><app-loading></app-loading></ng-template>
+<ng-template #confirmModal>
+  <div class="modal-body text-center">
+    <p>Are you sure you want create this {{type}}?</p>
+    <button type="button" class="btn btn-success m-1" (click)="onConfirmModal()" >Yes</button>
+    <button type="button" class="btn btn-danger m-1" (click)="onDeclineModal()" >No</button>
+  </div>
+</ng-template>

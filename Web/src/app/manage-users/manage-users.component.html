@@ -2,10 +2,29 @@
   <h1 class="display-3">Manage Users</h1>
   <button class="btn btn-primary mt-1 mb-3" [routerLink]="['../home']">Return to Dashboard</button>
 </div>
-<div *ngIf="loadingService.loadedObs | async ;else loadingIcon">
-  <div class="container">
+
+<div *ngIf="loadingService.loadedObs | async ;else loadingIcon" class="container">
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="{'active': activeTab == 'patients'}" (click)="changeTab('patients')">Patients Accounts</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="{'active': activeTab == 'practitioners'}" (click)="changeTab('practitioners')">Practitioners Accounts</a>
+    </li>
+  </ul>
+
+  <div *ngIf="activeTab == 'patients'">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      <h2 class="h2">Patients List</h2>
+      <h2 class="h2 me-2">Patients List</h2>
+      <div>
+        <div class="btn btn-outline-primary me-2 mb-2" routerLink="create-user/patient">
+          Add Patient <img class="img-fluid" src="/assets/img/person-plus.svg" alt="Add patient">
+        </div>
+        <div class="btn btn-outline-primary mb-2" (click)="reloadPatients()">
+          Refresh Data <img class="img-fluid" src="/assets/img/arrow-clockwise.svg" alt="Refresh">
+        </div>
+      </div>
     </div>
     <div class="table-responsive">
       <table class="table table-bordered">
@@ -28,39 +47,49 @@
             <td>{{user.gender}}</td>
             <td>{{user.dob.substring(0,10)}}</td>
             <td class="text-center">
-              <button class="btn btn-sm btn-primary" routerLink="/edit-user/{{user.userId}}">Edit</button>
-              <button class="btn btn-sm btn-danger" (click)="deletePatient(user.userId, i)">Delete</button>
+              <button class="btn btn-sm btn-primary mx-1" routerLink="{{user.userId}}">Edit</button>
+              <button class="btn btn-sm btn-danger mx-1" (click)="deletePatient(user.userId, i)">Delete</button>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-  <div class="container">
+
+  <div *ngIf="activeTab == 'practitioners'">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      <h2 class="h2">Practitioners List</h2>
+      <h2 class="h2 me-2">Practitioners List</h2>
+      <div>
+        <div class="btn btn-outline-primary me-2 mb-2" routerLink="create-user/practitioner">
+          Add Practitioner <img class="img-fluid" src="/assets/img/person-plus.svg" alt="Add practitioner">
+        </div>
+        <div class="btn btn-outline-primary mb-2" (click)="reloadPractitioners()">
+          Refresh Data <img class="img-fluid" src="/assets/img/arrow-clockwise.svg" alt="Refresh">
+        </div>
+      </div>
     </div>
     <div class="table-responsive">
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th scope="col">userId</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Surname</th>
             <th scope="col">Email</th>
-            <th scope="col">firstName</th>
             <th class="text-center" scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let user of practitioners.data; let i = index">
-            <th scope="row">{{user.userId}}</th>
-            <td>{{user.email}}</td>
             <td>{{user.firstName}}</td>
+            <td>{{user.surname}}</td>
+            <td>{{user.email}}</td>
             <td class="text-center">
-              <button class="btn btn-sm btn-primary" routerLink="/edit-user/{{user.userId}}">Edit</button>
-              <button class="btn btn-sm btn-danger" (click)="deletePractitioner(user.userId, i)">Delete</button>
+              <button class="btn btn-sm btn-primary mx-1" routerLink="{{user.userId}}">Edit</button>
+              <button class="btn btn-sm btn-danger mx-1" (click)="deletePractitioner(user.userId, i)">Delete</button>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+
 </div>
 <ng-template #loadingIcon><app-loading></app-loading></ng-template>

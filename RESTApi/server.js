@@ -61,9 +61,9 @@ app.get('/practices', function (req, res) {
     console.log("SERVER: Getting Practices");
     dbConn.query('SELECT * FROM practices', function (error, results, fields) {
         if (error) throw error;
-        setTimeout(function() { //EXAMPLE DELAY TO SHOW THE LOADING SCREEN (2 SECOND DELAY)
+        //setTimeout(function() { //EXAMPLE DELAY TO SHOW THE LOADING SCREEN (2 SECOND DELAY)
             return res.send({ error: false, data: results, message: 'practices list.' });
-          }, 500);
+        //  }, 500);
     });
 });
 
@@ -171,7 +171,147 @@ app.post('/validate-user-mobile', function (req, res) {
         }
     });
 });
+//Update practice details
+app.post('/update-practice', function (req, res) {
+  console.log("UPDATING PRACTICE");
 
+  let practiceId = req.body.data.practiceId
+  let practiceName = req.body.data.practiceName;
+  let address1 = req.body.data.address1;
+  let address2 = req.body.data.address2;
+  let address3 = req.body.data.address3;
+  let postcode = req.body.data.postcode;
+  let telephone = req.body.data.telephone;
+
+  dbConn.query(`UPDATE practices SET practiceName="${practiceName}", address1="${address1}", address2="${address2}", address3="${address3}" , postcode="${postcode}", telephone="${telephone}" WHERE practiceId="${practiceId}"`, function (error, results) {
+      if (error) {
+          console.log(error);
+          return res.send({ error: true, message: 'update unsuccessful' });
+      }
+      return res.send({ error: false, data: results, message: 'update successful' });
+  });
+});
+// Retrieve practice by id 
+app.get('/read-practice/:id', function (req, res) {
+
+  let practiceId = req.params.id;
+  if (!practiceId) {
+      return res.status(400).send({ error: true, message: 'Please provide practiceId' });
+  }
+  dbConn.query('SELECT * FROM practices where practiceId=?', practiceId, function (error, results, fields) {
+      if (error) throw error;
+      return res.send({ error: false, data: results[0], message: 'users list.' });
+  });
+
+});
+//Update user details
+app.post('/update-user', function (req, res) {
+    console.log("UPDATING");
+
+    let userId = req.body.data.userId
+    let email = req.body.data.email;
+    let firstName = req.body.data.firstName;
+    let surname = req.body.data.surname;
+    let gender = req.body.data.gender;
+    let dob = req.body.data.dob;
+    let address1 = req.body.data.address1;
+    let address2 = req.body.data.address2;
+    let address3 = req.body.data.address3;
+    let postcode = req.body.data.postcode;
+
+    dbConn.query(`UPDATE users SET email="${email}", firstName="${firstName}", surname="${surname}", gender="${gender}", dob="${dob}", address1="${address1}", address2="${address2}", address3="${address3}" , postcode="${postcode}" WHERE userId="${userId}"`, function (error, results) {
+        if (error) {
+            return res.send({ error: true, message: 'update unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'update successful' });
+    });
+});
+//Create user
+app.post('/create-user', function (req, res) {
+    console.log("Creating user");
+
+    let email = req.body.data.email;
+    let firstName = req.body.data.firstName;
+    let surname = req.body.data.surname;
+    let gender = req.body.data.gender;
+    let dob = req.body.data.dob;
+    let address1 = req.body.data.address1;
+    let address2 = req.body.data.address2;
+    let address3 = req.body.data.address3;
+    let postcode = req.body.data.postcode;
+    let accountType = req.body.data.accountType;
+
+    dbConn.query(`INSERT INTO users (email, password, firstTimeLogin, firstName, surname, gender, dob, address1, address2, address3, postcode, accountType) VALUES ("${email}", "pass", true, "${firstName}", "${surname}", "${gender}", "${dob}", "${address1}", "${address2}", "${address3}", "${postcode}", "${accountType}")`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'user creation unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'user creation successful' });
+    });
+});
+//Create practice
+app.post('/create-practice', function (req, res) {
+    console.log("Creating practice");
+
+    let practiceName = req.body.data.practiceName;
+    let address1 = req.body.data.address1;
+    let address2 = req.body.data.address2;
+    let address3 = req.body.data.address3;
+    let postcode = req.body.data.postcode;
+    let telephone = req.body.data.telephone;
+
+    dbConn.query(`INSERT INTO practices (practiceName, address1, address2, address3, postcode, telephone) VALUES ("${practiceName}", "${address1}", "${address2}", "${address3}", "${postcode}", "${telephone}")`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'practice creation unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'practice creation successful' });
+    });
+});
+//Create practice user link
+app.post('/add-practice-link', function (req, res) {
+    console.log("adding user practice link");
+
+    let userId = req.body.data.userId;
+    let practiceId = req.body.data.practiceId;
+
+    dbConn.query(`INSERT INTO practiceuserlinks (userId, practiceId) VALUES ("${userId}", "${practiceId}")`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'practice user link creation unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'practice user link  creation successful' });
+    });
+});
+//Get user practice links
+app.post('/user-practices', function (req, res) {
+    console.log("Getting user practice links");
+
+    let userId = req.body.userId;
+
+    dbConn.query(`SELECT practices.practiceId, practices.practiceName, practices.address1, practices.address2, practices.postcode, practices.telephone FROM practiceuserlinks INNER JOIN practices ON practiceuserlinks.practiceId = practices.practiceId WHERE userId='${userId}';`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'user practice link get unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'user practice link get successful' });
+    });
+});
+//Delete user practice link
+app.post('/delete-user-practice-link', function (req, res) {
+    console.log("Deleting user practice link");
+
+    let userId = req.body.userId;
+    let practiceId = req.body.practiceId;
+
+    dbConn.query(`DELETE FROM practiceuserlinks WHERE userId='${userId}' AND practiceId='${practiceId}'`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'user practice link deleted unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'user practice link deleted successful' });
+    });
+});
 app.post('/register-user', function (req, res) {
     let email = req.body.registrationDetails.email;
     let password = req.body.registrationDetails.password;
@@ -191,6 +331,7 @@ app.post('/register-user', function (req, res) {
     });
 });
 
+
 // Retrieve user by id 
 app.get('/read-user/:id', function (req, res) {
 
@@ -204,6 +345,9 @@ app.get('/read-user/:id', function (req, res) {
     });
 
 });
+
+
+
 
 //  Delete a user by userId
 app.delete('/delete-user/:userId', function (req, res) {
