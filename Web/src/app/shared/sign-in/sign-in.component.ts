@@ -15,7 +15,8 @@ export class SignInComponent implements OnInit {
 
   signInForm = this.formBuilder.group({
     email: '',
-    password: ''
+    password: '',
+    rememberMe: false
   })
 
   ngOnInit(): void {
@@ -26,7 +27,7 @@ export class SignInComponent implements OnInit {
     //console.log("Email: " + this.signInForm.get("email")?.value);
     //console.log("Password: " + this.signInForm.get("password")?.value);
 
-    this.authService.signIn(this.signInForm.get("email")?.value, this.signInForm.get("password")?.value);
+    this.authService.signIn(this.signInForm.get("email")?.value, this.signInForm.get("password")?.value, this.signInForm.get("rememberMe")?.value);
   }
 
   signIn() {

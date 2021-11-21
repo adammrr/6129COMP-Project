@@ -3,7 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { FilmPageComponent } from './film-page/film-page.component';
 import { ManageAccountPageComponent } from './manage-account-page/manage-account-page.component';
+import { ManagePracticesComponent } from './manage-practices/manage-practices.component';
+import { NewPracticeComponent } from './manage-practices/new-practice/new-practice.component';
+import { ViewPracticeComponent } from './manage-practices/view-practice/view-practice.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { NewUserComponent } from './manage-users/new-user/new-user.component';
+import { ViewUserComponent } from './manage-users/view-user/view-user.component';
 import { AuthGuard } from './services/auth.guard';
 import { RoutingErrorComponent } from './shared/routing-error/routing-error.component';
 import { SignInComponent } from './shared/sign-in/sign-in.component';
@@ -18,10 +23,25 @@ const routes: Routes = [
   { path: 'films', component: FilmPageComponent, canActivate: [AuthGuard] },
 
   { path: 'manage-users', component: ManageUsersComponent, canActivate: [AuthGuard] },
+  { path: 'manage-users/create-user/:type', component: NewUserComponent, canActivate: [AuthGuard] },
+  { path: 'manage-users/:id', canActivate: [AuthGuard],
+    children: [
+      { path: '', redirectTo: 'overview', pathMatch: 'full'},
+      { path: 'overview', component: ViewUserComponent}
+    ]
+  },
 
+  { path: 'manage-practices', component: ManagePracticesComponent, canActivate: [AuthGuard] },
+  { path: 'manage-practices/create-practice', component: NewPracticeComponent, canActivate: [AuthGuard] },
+  { path: 'manage-practices/:id', canActivate: [AuthGuard],
+  children: [
+    { path: '', redirectTo: 'overview', pathMatch: 'full'},
+    { path: 'overview', component: ViewPracticeComponent}
+  ]
+},
   { path: 'account', component: ManageAccountPageComponent, canActivate: [AuthGuard] },
   { path: 'sign-out', component: SignOutComponent },
-  { path: '**', component: RoutingErrorComponent }
+  { path: '**', component: RoutingErrorComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

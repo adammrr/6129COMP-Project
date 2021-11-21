@@ -13,9 +13,16 @@ import { FilmPageComponent } from './film-page/film-page.component';
 import { ManageAccountPageComponent } from './manage-account-page/manage-account-page.component';
 import { AuthService } from './services/auth.service';
 import { NavCardComponent } from './dashboard-page/shared/nav-card/nav-card.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule, BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ManagePracticesComponent } from './manage-practices/manage-practices.component';
+import { LoadingComponent } from './shared/loading/loading.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ViewUserComponent } from './manage-users/view-user/view-user.component';
+import { ViewPracticeComponent } from './manage-practices/view-practice/view-practice.component';
+import { NewUserComponent } from './manage-users/new-user/new-user.component';
+import { NewPracticeComponent } from './manage-practices/new-practice/new-practice.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +36,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ManageAccountPageComponent,
     NavCardComponent,
     ManageUsersComponent,
+    ManagePracticesComponent,
+    LoadingComponent,
+    ViewUserComponent,
+    ViewPracticeComponent,
+    NewUserComponent,
+    NewPracticeComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +49,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     NoopAnimationsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ModalModule.forRoot()
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

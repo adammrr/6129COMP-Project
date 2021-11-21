@@ -13,16 +13,13 @@ export class DashboardPageComponent implements OnInit {
   accountType: string = "";
   name: string = "";
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private titleService: Title,
-    private route: ActivatedRoute
-    ) {
-      this.titleService.setTitle("Dashboard");
-      this.accountType = authService.getAccountType();
-      this.name = authService.getName();
-    }
+    private route: ActivatedRoute) {  }
 
   ngOnInit(): void {
+      this.titleService.setTitle("Dashboard");
+      this.accountType = this.authService.getAccountType();
+      this.name = this.authService.getName();
   }
-
 }

@@ -10,13 +10,9 @@ export class NavigationBarComponent implements OnInit {
 
   collapsed = true;
 
-  constructor(private authService: AuthService) { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
-  signOut() {
-    console.log("Signing out");
-    this.authService.signOut();
-  }
 }

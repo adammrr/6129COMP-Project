@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
+  <h1 class="display-3">Create New Practice</h1>
+  <button class="btn btn-primary mt-1 mb-3" [routerLink]="['/manage-practices']">Return to Previous Page</button>
+</div>
+
+<div class="container" *ngIf="loadingService.loadedObs | async ;else loadingIcon">
+  <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
+    <h5>You are now creating a <b>practice</b>.</h5>
+  </div>
+
+  <form [formGroup]='detailsForm' (ngSubmit)="onSubmit(confirmModal)">
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="practiceNameInput" placeholder="Joe" formControlName="practiceName" required>
+          <label for="practiceNameInput">Practice Name</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="telephoneInput" placeholder="Bloggs" formControlName="telephone" required>
+          <label for="telephoneInput">Telephone</label>
+        </div>
+      </div>
+
+      <div class="col-sm">
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="address1Input" placeholder="Address Line 1" formControlName="address1" required>
+          <label for="address1Input">Address Line 1</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="address2Input" placeholder="Address Line 2" formControlName="address2" required>
+          <label for="address2Input">Address Line 2</label>
+        </div>
+      </div>
+
+      <div class="col-sm">
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="address3Input" placeholder="Address Line 3" formControlName="address3" required>
+          <label for="address3Input">Address Line 3</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="postcodeInput" placeholder="Post Code" formControlName="postcode" required>
+          <label for="postcodeInput">Postcode</label>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="alert alert-success alert-dismissible " *ngIf="messageConfirmState | async" role="alert">
+      <div class="d-flex align-items-center" role="alert">
+          <img class="img-fluid" src="/assets/img/hand-thumbs-up.svg" alt="svg"> Practice has been created
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseConfirmToast()"></button>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible " *ngIf="messageErrorState | async" role="alert">
+      <div class="d-flex align-items-center" role="alert">
+          <img class="img-fluid" src="/assets/img/hand-thumbs-down.svg" alt="svg"><span>User has <b> not </b> been created. <em *ngIf="errorMessage=='ER_DUP_ENTRY'">A practice already exists with that name.</em></span>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseErrorToast()"></button>
+    </div>
+
+    <button class="btn btn-primary btn-block mb-1" [disabled]="!detailsForm.valid" type="submit" >Create Practice</button>
+    <p *ngIf="!detailsForm.valid">Please ensure the form above is fully filled in.</p>
+  </form>
+</div>
+<ng-template #loadingIcon><app-loading></app-loading></ng-template>
+<ng-template #confirmModal>
+  <div class="modal-body text-center">
+    <p>Are you sure you want create this Practice?</p>
+    <button type="button" class="btn btn-success m-1" (click)="onConfirmModal()" >Yes</button>
+    <button type="button" class="btn btn-danger m-1" (click)="onDeclineModal()" >No</button>
+  </div>
+</ng-template>

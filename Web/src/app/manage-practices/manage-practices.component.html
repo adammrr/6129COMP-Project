@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
+  <h1 class="display-3">Manage Practices</h1>
+  <button class="btn btn-primary mt-1 mb-3" [routerLink]="['../home']">Return to Dashboard</button>
+</div>
+
+<div class="container" *ngIf="loadingService.loadedObs | async ;else loadingIcon">
+  <div class="d-flex justify-content-end  mt-1 mb-3">
+    <div class="btn btn-outline-primary me-2 mb-2" routerLink="create-practice">
+      Add Practice <img class="img-fluid" src="/assets/img/plus-square.svg" alt="Add new practice">
+    </div>
+    <div class="btn btn-outline-primary me-2 mb-2" (click)="reloadPractices()">
+      Refresh Data <img class="img-fluid" src="/assets/img/arrow-clockwise.svg" alt="Refresh">
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Practice Name</th>
+          <th scope="col">Address Line 1</th>
+          <th scope="col">Address Line 2</th>
+          <th scope="col">Address Line 3</th>
+          <th scope="col">Postcode</th>
+          <th scope="col">Telephone</th>
+
+          <th class="text-center" scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let practice of practices.data; let i = index">
+          <td>{{practice.practiceName}}</td>
+          <td>{{practice.address1}}</td>
+          <td>{{practice.address2}}</td>
+          <td>{{practice.address3}}</td>
+          <td>{{practice.postcode}}</td>
+          <td>{{practice.telephone}}</td>
+
+          <td class="text-center">
+            <button class="btn btn-sm btn-primary" routerLink="/manage-practices//{{practice.practiceId}}">Edit</button>
+            <button class="btn btn-sm btn-danger"(click)="deletePractice(practice.practiceId, i)">Delete</button>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<ng-template #loadingIcon><app-loading></app-loading></ng-template>

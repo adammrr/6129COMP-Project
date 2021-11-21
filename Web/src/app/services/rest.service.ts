@@ -14,22 +14,59 @@ export class RestService {
   constructor(private httpClient: HttpClient) { }
 
   // Get all Patients
-  GetPatients() {
+  getPatients() {
     return this.httpClient.get(`${this.REST_API}/patients`);
   }
 
   // Get all Patients
-  GetPractitioners() {
+  getPractitioners() {
     return this.httpClient.get(`${this.REST_API}/practitioners`);
   }
 
-  // Validate User
-  validateUser(email: string, password: string) {
-    console.log("CRUD: Attempting to validate '" + email + "' with password '" + password + "'.");
-    return this.httpClient.post(`${this.REST_API}/validate-user`, {email: email, password: password});
+  getPractices(): Observable<any> {
+    return this.httpClient.get(`${this.REST_API}/practices`);
   }
 
-  // Get single object
+  // Get single practice
+  getPractice(id:any): Observable<any> {
+    let API_URL = `${this.REST_API}/read-practice/${id}`;
+    return this.httpClient.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+          return res || {error: 'ERROR'}
+        }),
+        catchError(this.handleError)
+      )
+  }
+
+  // Update Practice Details
+  updatePractice(data:any): Observable<any> {
+    console.log("REST UPDATE");
+    console.log(data);
+    return this.httpClient.post(`${this.REST_API}/update-practice`, {data: data});
+  }
+  // add PracticeLink
+  addPracticeLink(data:any): Observable<any> {
+    console.log(data);
+    return this.httpClient.post(`${this.REST_API}/add-practice-link`, {data: data});
+  }
+  // Delete
+  deletePractice(id:any): Observable<any> {
+    let API_URL = `${this.REST_API}/delete-practice/${id}`;
+    return this.httpClient.delete(API_URL, { headers: this.httpHeaders}).pipe(
+        catchError(this.handleError)
+      )
+  }
+  // Validate User
+  validateUser(email: string, password: string, rememberMe: boolean) {
+    return this.httpClient.post(`${this.REST_API}/validate-user`, {email: email, password: password, rememberMe: rememberMe});
+  }
+
+  //Validate Cookie
+  validateCookie(cookie: string) : Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/validate-cookie`, {cookie: cookie});
+  }
+
+  // Get single user
   getUser(id:any): Observable<any> {
     let API_URL = `${this.REST_API}/read-user/${id}`;
     return this.httpClient.get(API_URL, { headers: this.httpHeaders })
@@ -39,36 +76,36 @@ export class RestService {
         catchError(this.handleError)
       )
   }
-
-
-  //////////////Examples below////////////////////////
-
-  // Add
-  AddUser(data: User): Observable<any> {
-    let API_URL = `${this.REST_API}/add-user`;
-    return this.httpClient.post(API_URL, data)
-      .pipe(
-        catchError(this.handleError)
-      )
+  // Get user practice links
+  getUserPracticeLinks(id:any): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/user-practices`, {userId: id});
   }
-
-
-
-
-  // Update
-  updateUser(id:any, data:any): Observable<any> {
-    let API_URL = `${this.REST_API}/update-user/${id}`;
-    return this.httpClient.put(API_URL, data, { headers: this.httpHeaders })
-      .pipe(
-        catchError(this.handleError)
-      )
+  // Delete User Account
+  deleteUserPracticeLink(userId:number, practiceId:number): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/delete-user-practice-link`, {userId: userId, practiceId: practiceId});
   }
-  // Delete
+  // Delete User Account
   deleteUser(id:any): Observable<any> {
     let API_URL = `${this.REST_API}/delete-user/${id}`;
     return this.httpClient.delete(API_URL, { headers: this.httpHeaders}).pipe(
         catchError(this.handleError)
       )
+  }
+  // Update
+  updateUser(data:any): Observable<any> {
+    console.log("REST UPDATE");
+    console.log(data);
+    return this.httpClient.post(`${this.REST_API}/update-user`, {data: data});
+
+
+  }
+  // Create new user
+  createUser(data: any): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/create-user`, {data: data});
+  }
+  // Create new practice
+  createPractice(data: any): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/create-practice`, {data: data});
   }
   // Error
   handleError(error: HttpErrorResponse) {
