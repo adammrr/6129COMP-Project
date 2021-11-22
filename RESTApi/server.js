@@ -70,22 +70,43 @@ app.get('/practices', function (req, res) {
 // Retrieve all films 
 app.get('/films', function (req, res) {
     console.log("SERVER: Getting Films");
-    dbConn.query('SELECT * FROM films', function (error, results, fields) {
+    dbConn.query('SELECT * FROM films', function (error, results) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'practitioners list.' });
     });
 });
 
+// Retrieve all requests
+app.get('/requests', function (req, res ) {
+    console.log("SERVER: Getting Requests");
+    dbConn.query('SELECT * FROM requests', function (error, results ) {
+        if (error) throw error;
+        return res.send({error: false, data: results, message: 'requests list'});
+    })
+})
+
+// Retrieve all user requests
+app.get('/requests/:id', function (req, res ) {
+    let userId = req.params.id;
+    console.log("SERVER: Getting Requests for user" + userId);
+    if (!userId) {
+        return res.status(400).send({ error: true, message: 'Please provide userId' });
+    }
+    dbConn.query('SELECT * FROM requests where madeBy=?', userId, function (error, results) {
+        if (error) throw error;
+        return res.send({error: false, data: results, message: 'requests list for user'});
+    })
+})
+
 // Retrieve user by id 
 app.get('/read-user/:id', function (req, res) {
-
     let user_id = req.params.id;
 
     if (!user_id) {
         return res.status(400).send({ error: true, message: 'Please provide user_id' });
     }
 
-    dbConn.query('SELECT * FROM users where userId=?', user_id, function (error, results, fields) {
+    dbConn.query('SELECT * FROM users where userId=?', user_id, function (error, results) {
         if (error) throw error;
         return res.send({ error: false, data: results[0], message: 'users list.' });
     });
