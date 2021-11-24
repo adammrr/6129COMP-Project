@@ -49,7 +49,7 @@
         <ion-item lines="full" >
             <ion-label position="floating">Film Name</ion-label>
             <ion-select formControlName="film">
-                <ion-select-option *ngFor="let film of filmList" [value]="film.filmName">{{film.filmName}}</ion-select-option>
+                <ion-select-option *ngFor="let film of filmList" [value]="film.filmId">{{film.filmName}}</ion-select-option>
             </ion-select>
         </ion-item>
 

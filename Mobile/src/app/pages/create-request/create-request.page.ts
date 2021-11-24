@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
@@ -26,7 +27,8 @@ export class CreateRequestPage implements OnInit {
     private formBuilder: FormBuilder,
     private restService: RestService,
     private authService: AuthService,
-    private alert: AlertService
+    private alert: AlertService,
+    private navCtrl :NavController
   ) {
     this.newFilm = this.formBuilder.group({
       filmName: '',
@@ -75,6 +77,7 @@ export class CreateRequestPage implements OnInit {
     this.alert.presentToast('New film request submitted');
     console.log(this.user.userId);
     console.log("Button pressed");
+    this.navCtrl.back();
   }
 
   public submitTrigger(): void {
@@ -91,5 +94,6 @@ export class CreateRequestPage implements OnInit {
     this.alert.presentToast('New film request submitted');
     console.log(this.user.userId);
     console.log("Button pressed");
+    this.navCtrl.back();
   }
 }
