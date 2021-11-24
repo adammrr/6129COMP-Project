@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/film-list/film-list.module').then(m => m.FilmListPageModule)
     },
     {
+        path: 'create-request',
+        loadChildren: () => import('./pages/create-request/create-request.module').then(m => m.CreateRequestPageModule)
+    },
+    {
         path: 'welcome',
         loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomePageModule)
     },

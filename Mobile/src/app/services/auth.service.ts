@@ -52,7 +52,11 @@ export class AuthService {
 
   public getLoggedInUser() {
     return this.user;
-  }
+  } 
+
+  public getLoggedInUserId() {
+    return this.user.userId;
+}
 
   public getName(): string {
     return this.user.firstName + ' ' + this.user.surname;

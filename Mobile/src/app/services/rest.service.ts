@@ -54,6 +54,23 @@ export class RestService {
 
     /** POST */
 
+    public newFilmRequest(id: number,filmDetails: {filmName: string, filmDesc: string, genre: string, runtime:string}){
+        console.log(id);
+        console.log(filmDetails);
+        const API_URL = `${this.REST_API}`;
+        return this.httpClient.post(`${this.REST_API}/create-film-request`, {headers: this.httpHeaders, id, filmDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
+        catchError(this.handleError));
+    }
+
+    public newTriggerRequest(id: number,triggerDetails: {film: string, timestamp: string, details: string}){
+        console.log(id);
+        console.log(triggerDetails);
+        const API_URL = `${this.REST_API}`;
+        return this.httpClient.post(`${this.REST_API}/create-trigger-request`, {headers: this.httpHeaders, id, triggerDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
+        catchError(this.handleError));
+    }
+
+
     public register(registrationDetails: { firstName: string; surname: string; gender: string; dob: string; address1: string; address2: string; address3: string; email: string; password: string }) {
         return this.httpClient.post(`${this.REST_API}/register-user`, { registrationDetails });
     }

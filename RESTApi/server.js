@@ -133,6 +133,34 @@ app.get('/epilepsy-information/:id', function (req, res) {
 
 /** POST */
 
+app.post('/create-film-request', function (req, res){
+    console.log(req.body);
+    let userId = req.body.id;
+    let filmName = req.body.filmDetails.filmName;
+    let filmDesc = req.body.filmDetails.filmDesc;
+    let genre = req.body.filmDetails.genre;
+    let runtime = req.body.filmDetails.runtime;
+
+    dbConn.query(`INSERT INTO requests (madeBy, details, status) VALUES (${userId},"NEWFILM^${filmName}^${filmDesc}^${genre}^${runtime}","PENDING")`, function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'New film request successful' })
+    });
+});
+
+app.post('/create-trigger-request', function (req, res){
+    console.log(req.body);
+    let userId = req.body.id;
+    let film = req.body.triggerDetails.film;
+    let timestamp = req.body.triggerDetails.timestamp;
+    let details = req.body.triggerDetails.details;
+    
+
+    dbConn.query(`INSERT INTO requests (madeBy, details, status) VALUES (${userId},"NEWTRIG^${film}^${timestamp}^${details}","PENDING")`, function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'New trigger request successful' })
+    });
+});
+
 // Validate User credentials
 app.post('/validate-user', function (req, res) {
     let email = req.body.email;
