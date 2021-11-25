@@ -1,0 +1,61 @@
+<div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
+  <h1 class="display-3">My Practices</h1>
+  <button class="btn btn-primary mt-1 mb-3" [routerLink]="['../home']">Return to Dashboard</button>
+</div>
+<div class="container" *ngIf="loadingService.loadedObs | async; else loadingIcon">
+  <div class="d-flex justify-content-end  mt-1 mb-3">
+    <div class="btn btn-outline-primary me-2 mb-2" (click)="reloadPractices()">
+      Refresh List <img class="img-fluid" src="/assets/img/arrow-clockwise.svg" alt="Refresh">
+    </div>
+  </div>
+  <div class="table-responsive" *ngIf="practices.data.length > 0;else noPractices">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th class="text-center" scope="col">Practice Name</th>
+          <th class="text-center" scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let practice of practices.data; let i = index">
+          <td class="text-center">{{practice.practiceName}}</td>
+
+          <td class="text-center">
+            <button class="btn btn-sm btn-primary mx-1" (click)="openPracticeModal(practiceDetailModal,i)">View Practice Details</button>
+            <button class="btn btn-sm btn-primary mx-1" [routerLink]="['/view-my-patients/', practice.practiceId]">View Patients</button>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<ng-template #loadingIcon><app-loading></app-loading></ng-template>
+
+<ng-template #practiceDetailModal>
+  <div class="modal-body text-center">
+    <h1>Practice Information</h1>
+    <div class="my-4">
+      <h4>Practice Name:</h4>
+      <h5>{{selectedPractice.practiceName}}</h5>
+    </div>
+    <div class="my-4">
+      <h4>Address:</h4>
+      <h5>{{selectedPractice.address1}}<br>{{selectedPractice.address2}}<br>{{selectedPractice.address3}}</h5>
+    </div>
+    <div class="my-4">
+      <h4>Postcode:</h4>
+      <h5>{{selectedPractice.postcode}}</h5>
+    </div>
+    <div class="my-4">
+      <h4>Telephone:</h4>
+      <h5><a href="tel:{{selectedPractice.telephone}}">{{selectedPractice.telephone}}</a></h5>
+    </div>
+    <button type="button" class="btn btn-success m-1" (click)="onCloseModal()" >Close</button>
+  </div>
+  </ng-template>
+  
+  <ng-template #noPractices>
+    <h4>You are not assigned to any practices currently, please contact your system administrator if you think this is an error.</h4>
+  </ng-template>
+  

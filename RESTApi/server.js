@@ -67,6 +67,34 @@ app.get('/practices', function (req, res) {
     });
 });
 
+// Retrieve all patients from practice
+app.post('/get-practice-patients', function (req, res) {
+    console.log("SERVER: Getting Patients from Practice");
+    let practiceId = req.body.practiceId;
+    dbConn.query(`SELECT users.* FROM users INNER JOIN practiceuserlinks ON users.userId = practiceuserlinks.userId INNER JOIN practices ON practices.practiceId = practiceuserlinks.practiceId WHERE practices.practiceId = ${practiceId} AND users.accountType = 'patient';`, function (error, results, fields) {
+        if (error) throw error;
+        let patientResults = results;
+
+        dbConn.query(`SELECT practiceName FROM practices WHERE practiceId = ${practiceId}`, function (error, results, fields) {
+            if (error) throw error;
+            console.log(results);
+            return res.send({ error: false, data: {practiceName: results[0].practiceName, patientsResults: patientResults}, message: 'practice patient list.' });
+
+        });
+
+
+    });
+
+
+});
+// Retrieve all requests 
+app.get('/get-requests', function (req, res) {
+    console.log("SERVER: Getting Requests");
+    dbConn.query('SELECT * FROM requests', function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'requests list.' });
+    });
+});
 // Retrieve all films 
 app.get('/films', function (req, res) {
     console.log("SERVER: Getting Films");
