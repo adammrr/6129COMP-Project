@@ -2,7 +2,7 @@
     <ion-toolbar color="primary">
         <ion-title>My Requests</ion-title>
         <ion-buttons slot="start">
-            <ion-menu-button menu="main-menu"></ion-menu-button>
+            <!-- <ion-menu-button menu="main-menu"></ion-menu-button> -->
             <ion-back-button></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
@@ -20,9 +20,8 @@
                     <img src="../../../assets/images/pending.jpg" />
                 </ion-avatar>
                 <ion-label>
-                    <h2>Request Type</h2>
-                    <h3>Request Description</h3>
-                    <p>Some More Request Description</p>
+                    <h2>Request ID: {{pendingRequest.requestId}}</h2>
+                    <h3>Request Type: {{pendingRequest.details.split('^')[0]}}</h3>
                 </ion-label>
             </ion-item>
         </div>
@@ -38,9 +37,8 @@
                     <img src="../../../assets/images/checkmark.png" />
                 </ion-avatar>
                 <ion-label>
-                    <h2>Request Type</h2>
-                    <h3>Request Description</h3>
-                    <p>Some More Request Description</p>
+                    <h2>Request ID: {{approvedRequest.requestId}}</h2>
+                    <h3>Request Type: {{approvedRequest.details.split('^')[0]}}</h3>
                 </ion-label>
             </ion-item>
         </div>
@@ -56,9 +54,8 @@
                     <img src="../../../assets/images/rejected.jpg" />
                 </ion-avatar>
                 <ion-label>
-                    <h2>Request Type</h2>
-                    <h3>Request Description</h3>
-                    <p>Some More Request Description</p>
+                    <h2>Request ID: {{rejectedRequest.requestId}}</h2>
+                    <h3>Request Type: {{rejectedRequest.details.split('^')[0]}}</h3>
                 </ion-label>
             </ion-item>
         </div>

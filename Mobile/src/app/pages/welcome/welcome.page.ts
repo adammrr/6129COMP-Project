@@ -1,5 +1,6 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { RestService } from 'src/app/services/rest.service';
 
 
 @Component({
@@ -10,14 +11,30 @@ import { AuthService } from 'src/app/services/auth.service';
 
 export class WelcomePage implements OnInit {
 
-    public userName = '';
+    public user;
+
+    public pendingRequests = [];
+
+    public pending;
 
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private restService: RestService
     ) { }
 
     public ngOnInit(): void {
-        this.userName = this.authService.getName();
+        this.user = this.authService.getLoggedInUser();
+        this.restService.getRequestsById(this.user.userId).subscribe(async (result: any) => {
+            if (result) {
+                for (const request of result.data) {
+                    if (request.status === 'Pending') {
+                        this.pendingRequests.push(request);
+                    }
+                }
+            }
+        });
+        this.pending = this.pendingRequests.length;
+        console.log(this.pending)
     }
-
 }
+

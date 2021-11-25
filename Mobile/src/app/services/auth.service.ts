@@ -62,4 +62,8 @@ export class AuthService {
     return this.user.firstName + ' ' + this.user.surname;
   }
 
+  public getForename(): string{
+    return this.user.firstName;
+  }
+
 }
