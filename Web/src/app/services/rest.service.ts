@@ -38,6 +38,16 @@ export class RestService {
       )
   }
 
+  // Get patients from a practice
+  getPracticePatients(id:any): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/get-practice-patients`, {practiceId: id});
+  }
+
+  // Get single practice
+  getRequests(): Observable<any> {
+    return this.httpClient.get(`${this.REST_API}/get-requests`);
+  }
+
   // Update Practice Details
   updatePractice(data:any): Observable<any> {
     console.log("REST UPDATE");
