@@ -76,6 +76,14 @@ app.get('/films', function (req, res) {
     });
 });
 
+app.get('/triggers', function (req, res) {
+    console.log("SERVER: Getting Triggers");
+    dbConn.query('SELECT * FROM triggers', function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'practitioners list.' });
+    });
+});
+
 // Retrieve all requests
 app.get('/requests', function (req, res ) {
     console.log("SERVER: Getting Requests");
@@ -141,7 +149,7 @@ app.post('/create-film-request', function (req, res){
     let genre = req.body.filmDetails.genre;
     let runtime = req.body.filmDetails.runtime;
 
-    dbConn.query(`INSERT INTO requests (madeBy, details, status) VALUES (${userId},"NEWFILM^${filmName}^${filmDesc}^${genre}^${runtime}","PENDING")`, function (error, results) {
+    dbConn.query(`INSERT INTO requests (madeBy, details, status) VALUES (${userId},'{"requestType": "New Film", "data":{"filmName":"${filmName}", "filmDesc":"${filmDesc}", "genre":"${genre}", "runtime":"${runtime}"}}',"PENDING")`, function (error, results) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'New film request successful' })
     });
@@ -155,7 +163,7 @@ app.post('/create-trigger-request', function (req, res){
     let details = req.body.triggerDetails.details;
     
 
-    dbConn.query(`INSERT INTO requests (madeBy, details, status) VALUES (${userId},"NEWTRIG^${film}^${timestamp}^${details}","PENDING")`, function (error, results) {
+    dbConn.query(`INSERT INTO requests (madeBy, details, status) VALUES (${userId},'{"requestType": "New Trigger", "data":{"filmName":"${film}","timestamp":"${timestamp}"} ,"details":"${details}"}',"PENDING")`, function (error, results) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'New trigger request successful' })
     });

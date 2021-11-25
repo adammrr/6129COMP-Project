@@ -38,6 +38,10 @@ export class RestService {
         return this.httpClient.get(`${this.REST_API}/films`);
     }
 
+    public getTriggers() {
+        return this.httpClient.get(`${this.REST_API}/triggers`);
+    }
+
     public getRequests() {
       return this.httpClient.get(`${this.REST_API}/requests`);
     }

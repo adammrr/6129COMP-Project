@@ -2,14 +2,42 @@
     <ion-toolbar color="primary">
         <ion-title>Log Seizure Episode</ion-title>
         <ion-buttons slot="start">
-            <!-- <ion-menu-button menu="main-menu"></ion-menu-button> -->
             <ion-back-button></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <p>Seizure Page</p>
+        <form [formGroup]="newSiezure">
+            <ion-item lines="full" >
+                <ion-label position="floating">What were you watching?</ion-label>
+                <ion-select>
+                    <ion-select-option *ngFor="let film of filmList" [value]="film.filmId">{{film.filmName}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+
+            <!-- <ion-button expand="block" color="primary" (click)="findTriggers()" [hidden]="!hide">Search Triggers</ion-button>
+    
+            <div [hidden]="hide"> -->
+            <!-- <ion-item lines="full" >
+                <ion-label position="floating">What trigger?</ion-label>
+                <ion-select formControlName="triggers">
+                    <ion-select-option *ngFor="let trig of triggers" [value]="trig.triggerId">{{trig.timestamp}} - {{trig.description}}</ion-select-option>
+                </ion-select>
+            </ion-item> -->
+    
+            <!-- <ion-item lines="full">
+                <ion-label position="floating">Would you like to add any additional details?</ion-label>
+                <ion-input placeholder="Optional" type="text" formControlName="details"></ion-input>
+            </ion-item>
+    
+            <ion-row>
+                <ion-col>
+                    <ion-button type="submit" color="primary" expand="block" (click)="submitFilm()">Log Siezure</ion-button>
+                </ion-col>
+            </ion-row> -->
+        <!-- </div> -->
+        </form>
 </ion-content>
 
 <app-footer></app-footer>
