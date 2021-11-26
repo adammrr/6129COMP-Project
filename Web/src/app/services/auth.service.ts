@@ -63,6 +63,9 @@ getCookie(name: string):string {
     this.setCookie("cookie", "", 0);
   }
 
+  getUserId(): number {
+    return this.user.userId;
+  }
   isLoggedIn(): Observable<boolean>  {
     if(this.loggedIn.value == false){
       this.checkCookie();

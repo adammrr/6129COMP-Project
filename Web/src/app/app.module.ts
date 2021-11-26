@@ -19,10 +19,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManagePracticesComponent } from './manage-practices/manage-practices.component';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ViewUserComponent } from './manage-users/view-user/view-user.component';
 import { ViewPracticeComponent } from './manage-practices/view-practice/view-practice.component';
 import { NewUserComponent } from './manage-users/new-user/new-user.component';
 import { NewPracticeComponent } from './manage-practices/new-practice/new-practice.component';
+import { ViewPatientsComponent } from './view-patients/view-patients.component';
+import { ViewPracticesComponent } from './view-practices/view-practices.component';
+import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +46,9 @@ import { NewPracticeComponent } from './manage-practices/new-practice/new-practi
     ViewPracticeComponent,
     NewUserComponent,
     NewPracticeComponent,
+    ViewPatientsComponent,
+    ViewPracticesComponent,
+    ManageRequestsComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +58,8 @@ import { NewPracticeComponent } from './manage-practices/new-practice/new-practi
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    TooltipModule.forRoot()
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

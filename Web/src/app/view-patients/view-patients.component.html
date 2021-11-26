@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
+  <h1 class="display-3">My Patients</h1>
+  <button class="btn btn-primary mt-1 mb-3" [routerLink]="['/view-my-practices']">Select another Practice</button>
+</div>
+<div class="container" *ngIf="loadingService.loadedObs | async; else loadingIcon">
+  <div *ngIf="practiceId;else noSelectedPractice">
+    <div class="d-flex justify-content-end  mt-1 mb-3">
+      <div class="btn btn-outline-primary me-2 mb-2" (click)="reloadPractices()">
+        Refresh List <img class="img-fluid" src="/assets/img/arrow-clockwise.svg" alt="Refresh">
+      </div>
+    </div>
+    <div *ngIf="patients.length > 0;else noPatients">
+      <h3 class="mb-4 text-center">You are viewing patients from <b>{{practiceName}}</b></h3>
+      <div class="table-responsive" >
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th class="text-center" scope="col">First Name</th>
+              <th class="text-center" scope="col">Surname</th>
+              <th class="text-center" scope="col">Gender</th>
+              <th class="text-center" scope="col">Date of Birth</th>
+              <th class="text-center" scope="col">Actions</th>
+  
+  
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let patient of patients; let i = index">
+              <td class="text-center">{{patient.firstName}}</td>
+              <td class="text-center">{{patient.surname}}</td>
+              <td class="text-center">{{patient.gender}}</td>
+              <td class="text-center">{{patient.dob.substring(0,10)}}</td>
+  
+              <td class="text-center">
+                <button class="btn btn-sm btn-primary mx-1" (click)="openPatientModal(patientDetailModal,i)" >View Patient Details</button>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingIcon><app-loading></app-loading></ng-template>
+
+<ng-template #noSelectedPractice>
+  <div class="container text-center">
+    <h4>Please select a practice to view your patients from.</h4>
+    <button class="btn btn-primary" [routerLink]="['/view-my-practices']">Choose a practice.</button>  
+  </div>
+</ng-template>
+
+<ng-template #noPatients>
+  <div class="container text-center">
+    <h3 class="mb-4 text-center">There are no patients assigned to <b>{{practiceName}}</b></h3>
+  </div>
+</ng-template>
+
+<ng-template #patientDetailModal>
+  <div class="modal-body text-center">
+    <h1>Patient Information</h1>
+    <div class="my-3">
+      <h4>Name:</h4>
+      <h5>{{selectedPatient.firstName}} {{selectedPatient.surname}}</h5>
+    </div>
+    <div class="my-3">
+      <h4>Gender:</h4>
+      <h5>{{selectedPatient.gender}}</h5>
+    </div>
+    <div class="my-3">
+      <h4>Date of Birth:</h4>
+      <h5>{{selectedPatient.dob.substring(0,10)}}</h5>
+    </div>
+    <div class="my-3">
+      <h4>Address:</h4>
+      <h5>{{selectedPatient.address1}}<br>{{selectedPatient.address2}}<br>{{selectedPatient.address3}}</h5>
+    </div>
+    <div class="my-3">
+      <h4>Postcode:</h4>
+      <h5>{{selectedPatient.postcode}}</h5>
+    </div>
+    <button type="button" class="btn btn-success m-1" (click)="onCloseModal()" >Close</button>
+  </div>
+</ng-template>
