@@ -41,19 +41,19 @@ export class ViewPatientsComponent implements OnInit {
     }else{
       this.loadingService.setLoaded(true);
     }
-    
+
   }
 
   openPatientModal(template: TemplateRef<any>, i: number) {
     this.selectedPatient = this.patients[i];
     this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
   }
-  
+
   onCloseModal() {
     this.modalRef?.hide();
   }
 
-  public reloadPractices(): void {
+  public reloadPatients(): void {
     this.loadingService.setLoaded(false);
     this.restService.getPracticePatients(this.practiceId).subscribe( data => {
       console.log(data);
