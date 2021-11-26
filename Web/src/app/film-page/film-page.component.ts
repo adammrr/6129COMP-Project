@@ -8,11 +8,14 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./film-page.component.scss']
 })
 export class FilmPageComponent implements OnInit {
+  films:any = [];
+  
 
   constructor() { }
 
   ngOnInit(): void {
 
   }
-
 }
+
+
