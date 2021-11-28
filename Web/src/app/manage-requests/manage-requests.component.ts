@@ -11,7 +11,9 @@ import { RestService } from '../services/rest.service';
   styleUrls: ['./manage-requests.component.scss']
 })
 export class ManageRequestsComponent implements OnInit {
-  requests: any = [];
+  pendingRequests: any = [];
+  approvedRequests: any = [];
+  rejectedRequests: any = [];
 
 
   constructor(private modalService: BsModalService, public loadingService: LoadingService, private router: Router, private restService: RestService, private authService: AuthService) { }
@@ -22,21 +24,54 @@ export class ManageRequestsComponent implements OnInit {
     if(this.authService.getAccountType() != 'administrator'){
       this.router.navigate(['/home']);
     }
-    this.restService.getRequests().subscribe( data => {
-      this.requests = data.data;
-      console.log(this.requests);
-      
-      for (let i = 0; i < this.requests.length; i++) {
-        let obj = JSON.parse(this.requests[i].details);
-        this.requests[i].details = obj;
-        
+    this.restService.getRequests("Pending").subscribe( data => {
+      this.pendingRequests = data.data;
+      for (let i = 0; i < this.pendingRequests.length; i++) {
+        let obj = JSON.parse(this.pendingRequests[i].details);
+        this.pendingRequests[i].details = obj;
       }
-
-      console.log(this.requests);
-
+    });
+    this.restService.getRequests("Approved").subscribe( data => {
+      this.approvedRequests = data.data;
+      for (let i = 0; i < this.approvedRequests.length; i++) {
+        let obj = JSON.parse(this.approvedRequests[i].details);
+        this.approvedRequests[i].details = obj;
+      }
+    });
+    this.restService.getRequests("Rejected").subscribe( data => {
+      this.rejectedRequests = data.data;
+      for (let i = 0; i < this.rejectedRequests.length; i++) {
+        let obj = JSON.parse(this.rejectedRequests[i].details);
+        this.rejectedRequests[i].details = obj;
+      }
       this.loadingService.setLoaded(true);
     });
+  }
 
+  public reloadRequests(): void {
+    this.loadingService.setLoaded(false);
+    this.restService.getRequests("Pending").subscribe( data => {
+      this.pendingRequests = data.data;
+      for (let i = 0; i < this.pendingRequests.length; i++) {
+        let obj = JSON.parse(this.pendingRequests[i].details);
+        this.pendingRequests[i].details = obj;
+      }
+    });
+    this.restService.getRequests("Approved").subscribe( data => {
+      this.approvedRequests = data.data;
+      for (let i = 0; i < this.approvedRequests.length; i++) {
+        let obj = JSON.parse(this.approvedRequests[i].details);
+        this.approvedRequests[i].details = obj;
+      }
+    });
+    this.restService.getRequests("Rejected").subscribe( data => {
+      this.rejectedRequests = data.data;
+      for (let i = 0; i < this.rejectedRequests.length; i++) {
+        let obj = JSON.parse(this.rejectedRequests[i].details);
+        this.rejectedRequests[i].details = obj;
+      }
+      this.loadingService.setLoaded(true);
+    });
   }
 
 }

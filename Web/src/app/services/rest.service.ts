@@ -23,6 +23,10 @@ export class RestService {
     return this.httpClient.get(`${this.REST_API}/practitioners`);
   }
 
+  getFilms() {
+    return this.httpClient.get(`${this.REST_API}/films`);
+  }
+
   getPractices(): Observable<any> {
     return this.httpClient.get(`${this.REST_API}/practices`);
   }
@@ -44,8 +48,8 @@ export class RestService {
   }
 
   // Get single practice
-  getRequests(): Observable<any> {
-    return this.httpClient.get(`${this.REST_API}/get-requests`);
+  getRequests(status:string): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/get-requests`, {status: status});
   }
 
   // Update Practice Details

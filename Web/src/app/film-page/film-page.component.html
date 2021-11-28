@@ -1,5 +1,40 @@
-<div class="container">
-  <h1 class="display-1">Film Data Page</h1><br>
-  <h2>This is an adaptive page, showing different views for the Practitioner and Administrator.</h2>
-  <p>If the user is logged in as a Practitioner, this page will only allow viewing of the films and their timestamps of interest. However, if the user is logged in as an Administrator it will allow viewing as well as modification of the data and managing the requests of the mobile app users for adding or updating data.</p>
+<div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
+  <h1 class="display-3">View Film List</h1>
+  <button class="btn btn-primary mt-1 mb-3" [routerLink]="['../home']">Return to Dashboard</button>
 </div>
+
+<div class="container" *ngIf="loadingService.loadedObs | async ;else loadingIcon">
+
+  <div class= "Search">
+    <input type="text" placeholder="Search movies"/>
+  </div>
+  <!-- Control buttons -->
+  <div id="myBtnContainer">
+    <button class="btn" onclick="filterSelection('all films sorting')"> A-Z</button>
+    <button class="btn" onclick="filterSelection('genre')"> Genre</button>
+    <button class="btn" onclick="filterSelection('film name')"> Film Name</button>
+    <button class="btn" onclick="filterSelection('epilepsy triggers')"> Number of Triggers</button>
+    <button class="btn" onclick="filterSelection('time')"> Runtime</button>
+  </div>
+  <!------Film cards  -->
+  <div *ngFor="let films of films.data; let i = index">
+    <div class="card" class="row row-cols-1 row-cols-md-3">
+      <div class="col mb-4">
+        <div class="card-body">
+          <h5 class="card-title">{{films.filmId}}</h5>
+          <img class="card-img-top" [src]="films.imageURL">
+          <p class= "card-title">{{films.filmName}} </p>
+          <p class= "card-label">Genre: {{films.genre}}</p>
+          <p class= "card-label"> Runtime: {{films.runTime}}</p>
+          <p class="card-text">{{films.filmDescription}}</p>
+          <button class="btn btn-sm btn-primary" routerLink="/view-film/{{films.filmDescription}}">View film</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  <ng-template #loadingIcon><app-loading></app-loading></ng-template>

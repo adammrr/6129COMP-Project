@@ -1,1 +1,103 @@
-<p>manage-requests works!</p>
+<div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
+  <h1 class="display-3">Manage Requests</h1>
+  <button class="btn btn-primary mt-1 mb-3" [routerLink]="['../home']">Return to Dashboard</button>
+</div>
+
+<div class="container" *ngIf="loadingService.loadedObs | async ;else loadingIcon">
+  <div class="d-flex justify-content-end  mt-1 mb-3">
+    <div class="btn btn-outline-primary me-2 mb-2" (click)="reloadRequests()">
+      Refresh Data <img class="img-fluid" src="/assets/img/arrow-clockwise.svg" alt="Refresh">
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <h3>Pending Requests</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Request Id</th>
+          <th scope="col">madeBy</th>
+          <th scope="col">Reviewed By</th>
+          <th scope="col">details</th>
+          <th scope="col">status</th>
+
+          <th class="text-center" scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of pendingRequests; let i = index">
+          <td>{{request.requestId}}</td>
+          <td>{{request.madeBy_email}}</td>
+          <td>{{request.reviewedBy_email}}</td>
+          <td>{{request.details.requestType}}</td>
+          <td>{{request.status}}</td>
+
+          <td class="text-center">
+            <button class="btn btn-sm btn-primary mx-1">Edit</button>
+            <button class="btn btn-sm btn-danger mx-1">Delete</button>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-responsive">
+    <h3>Approved Requests</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Request Id</th>
+          <th scope="col">madeBy</th>
+          <th scope="col">Reviewed By</th>
+          <th scope="col">details</th>
+          <th scope="col">status</th>
+
+          <th class="text-center" scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of approvedRequests; let i = index">
+          <td>{{request.requestId}}</td>
+          <td>{{request.madeBy_email}}</td>
+          <td>{{request.reviewedBy_email}}</td>
+          <td>{{request.details.requestType}}</td>
+          <td>{{request.status}}</td>
+
+          <td class="text-center">
+            <button class="btn btn-sm btn-primary mx-1">Edit</button>
+            <button class="btn btn-sm btn-danger mx-1">Delete</button>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-responsive">
+    <h3>Rejected Requests</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Request Id</th>
+          <th scope="col">madeBy</th>
+          <th scope="col">Reviewed By</th>
+          <th scope="col">details</th>
+          <th scope="col">status</th>
+
+          <th class="text-center" scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of rejectedRequests; let i = index">
+          <td>{{request.requestId}}</td>
+          <td>{{request.madeBy_email}}</td>
+          <td>{{request.reviewedBy_email}}</td>
+          <td>{{request.details.requestType}}</td>
+          <td>{{request.status}}</td>
+
+          <td class="text-center">
+            <button class="btn btn-sm btn-primary mx-1">Edit</button>
+            <button class="btn btn-sm btn-danger mx-1">Delete</button>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #loadingIcon><app-loading></app-loading></ng-template>

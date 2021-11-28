@@ -88,19 +88,26 @@ app.post('/get-practice-patients', function (req, res) {
 
 });
 // Retrieve all requests 
-app.get('/get-requests', function (req, res) {
+app.post('/get-requests', function (req, res) {
     console.log("SERVER: Getting Requests");
-    dbConn.query('SELECT * FROM requests', function (error, results) {
-        if (error) throw error;
-        return res.send({ error: false, data: results, message: 'requests list.' });
-    });
+    let status = req.body.status;
+    if(status == "Pending" || status == "Approved" || status == "Rejected"){
+        dbConn.query(`SELECT requests.*, madeBy.email AS "madeBy_email", reviewedBy.email as "reviewedBy_email" FROM requests INNER JOIN users madeBy on requests.madeBy = madeBy.userId LEFT JOIN users reviewedBy on requests.reviewedBy = reviewedBy.userId WHERE requests.status="${status}"`, function (error, results) {
+            if (error) throw error;
+            return res.send({ error: false, data: results, message: 'requests list.' });
+        });
+    }else{
+        return res.send({ error: true, data: results, message: 'requests list error invalid status.' });
+
+    }
+    
 });
 // Retrieve all films 
 app.get('/films', function (req, res) {
     console.log("SERVER: Getting Films");
     dbConn.query('SELECT * FROM films', function (error, results) {
         if (error) throw error;
-        return res.send({ error: false, data: results, message: 'practitioners list.' });
+        return res.send({ error: false, data: results, message: 'films list.' });
     });
 });
 
