@@ -1,9 +1,10 @@
-import { AnimationStyleMetadata } from '@angular/animations';
+import { Location } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -18,14 +19,16 @@ export class ViewUserComponent implements OnInit {
   practices:any;
   practiceLinks:any;
   selectedPractice:any;
-
+  returnString: string = "";
   messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   messageStateObs: Observable<boolean> = this.messageState.asObservable();
+
+  signedInAccountType: string = "";
 
   private sub: any;
   modalRef?: BsModalRef;
 
-  constructor(private modalService: BsModalService, private route: ActivatedRoute, private restService: RestService, public loadingService: LoadingService, private formBuilder: FormBuilder) { }
+  constructor(private location: Location, private modalService: BsModalService, private route: ActivatedRoute, public authService: AuthService, private restService: RestService, public loadingService: LoadingService, private formBuilder: FormBuilder) { }
 
   detailsForm = this.formBuilder.group({
     userId: '',
@@ -40,6 +43,13 @@ export class ViewUserComponent implements OnInit {
     postcode: ''
   });
 
+  epilepsyDetailsForm = this.formBuilder.group({
+    seizureType: '',
+    frequency: '',
+    yearsSuffering: '',
+    triggerDetails: '',
+  });
+
   assignForm = this.formBuilder.group({
     practiceInput: ''
   });
@@ -48,6 +58,10 @@ export class ViewUserComponent implements OnInit {
     console.log("CLICK");
     this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
 
+  }
+
+  previousPage() {
+    this.location.back();
   }
 
   onAssignConfirm() {
@@ -115,17 +129,41 @@ export class ViewUserComponent implements OnInit {
     });
   }
 
+  onConfirmEpilepsyModal() {
+    let updateDetails = {
+      userId: this.detailsForm.controls['userId'].value,
+      email: this.detailsForm.controls['email'].value,
+      firstName: this.detailsForm.controls['firstName'].value,
+      surname: this.detailsForm.controls['surname'].value,
+      gender: this.detailsForm.controls['gender'].value,
+      dob: this.detailsForm.controls['dob'].value,
+      address1: this.detailsForm.controls['address1'].value,
+      address2: this.detailsForm.controls['address2'].value,
+      address3: this.detailsForm.controls['address3'].value,
+      postcode: this.detailsForm.controls['postcode'].value,
+    };
+    this.restService.updateUser(updateDetails).subscribe(async (updateResult: any) => {
+      console.log(updateResult);
+      this.modalRef?.hide();
+      this.messageState.next(true);
+    });
+  }
+
   onCloseToast() {
     this.messageState.next(false);
   }
 
   ngOnInit(): void {
     this.loadingService.setLoaded(false);
-
+    this.signedInAccountType = this.authService.getAccountType();
     console.log("START");
     this.sub = this.route.params.subscribe(params => {
+      console.log(params);
       this.userId = +params['id'];
+      this.returnString = params['returnLink'];
+      console.log("THIS IS THE RETURN STRING", this.returnString);
     });
+    
     console.log("END");
     console.log("GET USER");
 

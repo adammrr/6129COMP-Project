@@ -1,7 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { LoadingService } from '../services/loading.service';
 import { RestService } from '../services/rest.service';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ActivatedRoute,  } from '@angular/router';
 
 @Component({
   selector: 'app-manage-users',
@@ -14,13 +15,13 @@ export class ManageUsersComponent implements OnInit {
   practitioners:any = [];
   activeTab: string = 'patients';
   modalRef?: BsModalRef;
-
-  constructor(private restService: RestService, public loadingService: LoadingService) { }
+  constructor(private restService: RestService, public loadingService: LoadingService, public route: ActivatedRoute) { }
 
   ngOnInit(): void {
     console.log("LOADING ON");
     this.loadingService.setLoaded(false);
-
+    
+  
     this.restService.getPatients().subscribe(data => {
       console.log(data)
       this.patients = data;

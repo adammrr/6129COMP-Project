@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
   <h1 class="display-3">Manage Users</h1>
-  <button class="btn btn-primary mt-1 mb-3" [routerLink]="['../../']">Return to Previous Page</button>
+  <button class="btn btn-primary mt-1 mb-3" (click)="previousPage()">Return to Previous Page</button>
 </div>
 
 <div *ngIf="loadingService.loadedObs | async ;else loadingIcon" class="container">
   <div class="container p-3">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-      <h2 class="h2 me-2">Edit Details</h2>
+      <h2 class="h2 me-2">Details</h2>
     </div>
     <form [formGroup]='detailsForm' (ngSubmit)="onSubmit(confirmModal)">
       <div class="row">
@@ -16,50 +16,55 @@
             <label for="userIdInput">User ID</label>
           </div>
           <div class="form-floating my-1">
-            <input type="text" class="form-control" id="firstNameInput" placeholder="First Name" formControlName="firstName" required>
+            <input type="text" class="form-control" id="firstNameInput" placeholder="First Name" formControlName="firstName" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
             <label for="firstNameInput">First Name</label>
           </div>
           <div class="form-floating my-1">
-            <input type="text" class="form-control" id="surnameInput" placeholder="Surname" formControlName="surname" required>
+            <input type="text" class="form-control" id="surnameInput" placeholder="Surname" formControlName="surname" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
             <label for="surnameInput">Surname</label>
           </div>
 
-          <div class="form-floating my-1">
-            <select type="text" class="form-control" id="genderInput" placeholder="0" formControlName="gender" required>
+          <div class="form-floating my-1" *ngIf="signedInAccountType != 'practitioner'; else selectDisabled">
+            <select type="text" class="form-control" id="genderInput" placeholder="0" formControlName="gender" required >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
               <option value="Prefer not to say">Prefer not to say</option>
-
             </select>
             <label for="genderInput">Gender</label>
           </div>
+          <ng-template #selectDisabled>
+            <div class="form-floating my-1">
+              <input type="text" class="form-control" id="genderInput" placeholder="gender" formControlName="gender" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+              <label for="genderInput">Gender</label>
+            </div>
+          </ng-template>
           <div class="form-floating my-1">
-            <input type="date" class="form-control" id="dobInput" placeholder="1970-01-01" formControlName="dob" required>
+            <input type="date" class="form-control" id="dobInput" placeholder="1970-01-01" formControlName="dob" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
             <label for="dobInput">Date of Birth</label>
           </div>
         </div>
         <div class="col-sm">
           <div class="form-floating my-1">
-            <input type="email" class="form-control" id="emailInput" placeholder="example@example.com" formControlName="email" required>
+            <input type="email" class="form-control" id="emailInput" placeholder="example@example.com" formControlName="email" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
             <label for="emailInput">Email</label>
           </div>
 
 
           <div class="form-floating my-1">
-            <input type="text" class="form-control" id="address1Input" placeholder="Address Line 1" formControlName="address1" required>
+            <input type="text" class="form-control" id="address1Input" placeholder="Address Line 1" formControlName="address1" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
             <label for="address1Input">Address Line 1</label>
           </div>
           <div class="form-floating my-1">
-            <input type="text" class="form-control" id="address2Input" placeholder="Address Line 2" formControlName="address2">
+            <input type="text" class="form-control" id="address2Input" placeholder="Address Line 2" formControlName="address2" [readonly]="signedInAccountType == 'practitioner' ? true : null">
             <label for="address2Input">Address Line 2</label>
           </div>
           <div class="form-floating my-1">
-            <input type="text" class="form-control" id="address3Input" placeholder="Address Line 3" formControlName="address3">
+            <input type="text" class="form-control" id="address3Input" placeholder="Address Line 3" formControlName="address3" [readonly]="signedInAccountType == 'practitioner' ? true : null">
             <label for="address3Input">Address Line 3</label>
           </div>
           <div class="form-floating my-1">
-            <input type="text" class="form-control" id="postcodeInput" placeholder="Post Code" formControlName="postcode" required>
+            <input type="text" class="form-control" id="postcodeInput" placeholder="Post Code" formControlName="postcode" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
             <label for="postcodeInput">Postcode</label>
           </div>
         </div>
@@ -74,7 +79,65 @@
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseToast()"></button>
       </div>
-      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit" [disabled]="!detailsForm.valid" tooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Update Details</button>
+      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit" *ngIf="signedInAccountType != 'practitioner'" [disabled]="!detailsForm.valid" tooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Update Details</button>
+      <p *ngIf="!detailsForm.valid">Please ensure the form above is fully filled in.</p>
+    </form>
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 my-3 border-bottom">
+      <h2 class="h2 me-2">Patient Epilepsy Details</h2>
+    </div>
+    <form [formGroup]='epilepsyDetailsForm' (ngSubmit)="onSubmit(confirmEpilepsyModal)">
+      <div class="row">
+        <div class="col-md-4 col-sm-12">
+          <div class="form-floating my-1" *ngIf="signedInAccountType != 'practitioner'; else selectDisabled">
+            <select type="text" class="form-control" id="seizureTypeInput" placeholder="0" formControlName="seizureType" required >
+              <option value="Simple partial (focal)">Simple partial (focal)</option>
+              <option value="Complex partial (focal)">Complex partial (focal)</option>
+              <option value="Tonic-clonic">Tonic-clonic</option>
+              <option value="Absence">Absence</option>
+              <option value="Myoclonic">Myoclonic</option>
+              <option value="Clonic">Clonic</option>
+              <option value="Tonic">Tonic</option>
+              <option value="Atonic">Atonic</option>
+              <option value="Other">Other</option>
+            </select>
+            <label for="seizureTypeInput">Seizure Type</label>
+          </div>
+          <ng-template #selectDisabled>
+            <div class="form-floating my-1">
+              <input type="text" class="form-control" id="seizureTypeInput" placeholder="0" formControlName="seizureType" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+              <label for="seizureTypeInput">Seizure Type</label>
+            </div>
+          </ng-template>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="freqInput" placeholder="freq" formControlName="frequency" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+            <label for="freqInput">Frequency</label>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="yearsInput" placeholder="12" formControlName="yearsSuffering" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+            <label for="yearsInput">Years Suffering</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-floating my-1">
+            <input type="textarea" class="form-control" id="triggerDetailsInput" placeholder="details" formControlName="triggerDetails" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+            <label for="triggerDetailsInput">Years Suffering</label>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-success alert-dismissible " *ngIf="messageState | async" role="alert">
+        <div class="d-flex align-items-center" role="alert">
+            <img class="img-fluid" src="/assets/img/hand-thumbs-up.svg" alt="svg"> Epilepsy Details have successfully been updated
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseToast()"></button>
+      </div>
+      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit" *ngIf="signedInAccountType != 'practitioner'" [disabled]="!epilepsyDetailsForm.valid" tooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Update Epilepsy Details</button>
       <p *ngIf="!detailsForm.valid">Please ensure the form above is fully filled in.</p>
     </form>
 
@@ -103,14 +166,14 @@
               <td>{{practice.telephone}}</td>
               <td class="text-center">
                 <button class="btn btn-sm btn-primary mx-1" (click)="openPracticeModal(practiceDetailModal,i)">View Practice Information</button>
-                <button class="btn btn-sm btn-danger mx-1" (click)="deletePatientLink(user.userId, practice.practiceId, i)">Remove from Practice</button>
+                <button class="btn btn-sm btn-danger mx-1" (click)="deletePatientLink(user.userId, practice.practiceId, i)" *ngIf="signedInAccountType != 'practitioner'">Remove from Practice</button>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
     <div>
-      <button class="btn btn-primary" (click)="assignPractice(assignPracticeModal)">Assign new Practice</button>
+      <button class="btn btn-primary" (click)="assignPractice(assignPracticeModal)" *ngIf="signedInAccountType != 'practitioner'">Assign new Practice</button>
     </div>
   </div>
 </div>
@@ -121,6 +184,14 @@
   <div class="modal-body text-center">
     <p>Are you sure you want to update {{user.firstName}} {{user.surname}}'s Details?</p>
     <button type="button" class="btn btn-success m-1" (click)="onConfirmModal()" >Yes</button>
+    <button type="button" class="btn btn-danger m-1" (click)="onCloseModal()" >No</button>
+  </div>
+</ng-template>
+
+<ng-template #confirmEpilepsyModal>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to update {{user.firstName}} {{user.surname}}'s Epilepsy Details?</p>
+    <button type="button" class="btn btn-success m-1" (click)="onConfirmEpilepsyModal()" >Yes</button>
     <button type="button" class="btn btn-danger m-1" (click)="onCloseModal()" >No</button>
   </div>
 </ng-template>

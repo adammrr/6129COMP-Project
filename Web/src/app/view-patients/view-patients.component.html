@@ -25,14 +25,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let patient of patients; let i = index">
+            <tr *ngFor="let patient of patients; let i = index" [routerLink]="['/manage-users', patient.userId,]" [queryParams]="{returnLink:'view-my-patients'}">
               <td class="text-center">{{patient.firstName}}</td>
               <td class="text-center">{{patient.surname}}</td>
               <td class="text-center">{{patient.gender}}</td>
               <td class="text-center">{{patient.dob.substring(0,10)}}</td>
 
               <td class="text-center">
-                <button class="btn btn-sm btn-primary mx-1" (click)="openPatientModal(patientDetailModal,i)" >View Patient Details</button>
+                <button class="btn btn-sm btn-primary mx-1">View Patient Details</button>
             </tr>
           </tbody>
         </table>
