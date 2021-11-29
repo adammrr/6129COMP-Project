@@ -198,9 +198,22 @@ app.post('/create-trigger-request', function (req, res){
     let details = req.body.triggerDetails.details;
     
 
-    dbConn.query(`INSERT INTO requests (madeBy, details, status) VALUES (${userId},'{"requestType": "New Trigger", "data":{"filmName":"${film}","timestamp":"${timestamp}"} ,"details":"${details}"}',"PENDING")`, function (error, results) {
+    dbConn.query(`INSERT INTO requests (madeBy, details, status) VALUES (${userId},'{"requestType": "New Trigger", "data":{"filmName":"${film}","timestamp":"${timestamp}" ,"details":"${details}"}}',"PENDING")`, function (error, results) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'New trigger request successful' })
+    });
+});
+
+app.post('/log-seizure', function (req, res){
+    console.log(req.body);
+    let userId = req.body.id;
+    let trigger = req.body.seizureDetails.trigger;
+    let severity = req.body.seizureDetails.severity;
+    let details = req.body.seizureDetails.details;
+    
+    dbConn.query(`INSERT INTO events (userId, triggerId, severity, details) VALUES (${userId},${trigger},${severity},"${details}")`, function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'Seizure successfully logged' })
     });
 });
 

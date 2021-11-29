@@ -2,7 +2,6 @@
     <ion-toolbar color="primary">
         <ion-title>My Requests</ion-title>
         <ion-buttons slot="start">
-            <!-- <ion-menu-button menu="main-menu"></ion-menu-button> -->
             <ion-back-button></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
@@ -20,8 +19,18 @@
                     <img src="../../../assets/images/pending.jpg" />
                 </ion-avatar>
                 <ion-label>
-                    <h2>Request ID: {{pendingRequest.requestId}}</h2>
-                    <h3>Request Type: {{pendingRequest.details.split('^')[0]}}</h3>
+                    <h2>Request Type: {{pendingRequest.requestType}}</h2>
+                    <h3>Details:</h3>
+                    <p>Film Name: {{pendingRequest.data.filmName}}</p>
+                    <div *ngIf = "pendingRequest.requestType === 'New Film';">
+                        <p>{{pendingRequest.data.filmDesc}}</p>
+                        <p>Genre: {{pendingRequest.data.genre}}</p>
+                        <p>Runtime: {{pendingRequest.data.runtime}}</p>
+                    </div>
+                    <div *ngIf = "pendingRequest.requestType === 'New Trigger';">
+                        <p>{{pendingRequest.data.details}}</p>
+                        <p>At: {{pendingRequest.data.timestamp}}</p>
+                    </div>
                 </ion-label>
             </ion-item>
         </div>
@@ -37,8 +46,18 @@
                     <img src="../../../assets/images/checkmark.png" />
                 </ion-avatar>
                 <ion-label>
-                    <h2>Request ID: {{approvedRequest.requestId}}</h2>
-                    <h3>Request Type: {{approvedRequest.details.split('^')[0]}}</h3>
+                    <h2>Request Type: {{approvedRequest.requestType}}</h2>
+                    <h3>Details:</h3>
+                    <p>Film Name: {{approvedRequest.data.filmName}}</p>
+                    <div *ngIf = "approvedRequest.requestType === 'New Film';">
+                        <p>{{approvedRequest.data.filmDesc}}</p>
+                        <p>Genre: {{approvedRequest.data.genre}}</p>
+                        <p>Runtime: {{approvedRequest.data.runtime}}</p>
+                    </div>
+                    <div *ngIf = "approvedRequest.requestType === 'New Trigger';">
+                        <p>{{approvedRequest.data.details}}</p>
+                        <p>At: {{approvedRequest.data.timestamp}}</p>
+                    </div>
                 </ion-label>
             </ion-item>
         </div>
@@ -54,8 +73,18 @@
                     <img src="../../../assets/images/rejected.jpg" />
                 </ion-avatar>
                 <ion-label>
-                    <h2>Request ID: {{rejectedRequest.requestId}}</h2>
-                    <h3>Request Type: {{rejectedRequest.details.split('^')[0]}}</h3>
+                    <h2>Request Type: {{rejectedRequest.requestType}}</h2>
+                    <h3>Details:</h3>
+                    <p>Film Name: {{rejectedRequest.data.filmName}}</p>
+                    <div *ngIf = "rejectedRequest.requestType === 'New Film';">
+                        <p>{{rejectedRequest.data.filmDesc}}</p>
+                        <p>Genre: {{rejectedRequest.data.genre}}</p>
+                        <p>Runtime: {{rejectedRequest.data.runtime}}</p>
+                    </div>
+                    <div *ngIf = "rejectedRequest.requestType === 'New Trigger';">
+                        <p>{{rejectedRequest.data.details}}</p>
+                        <p>At: {{rejectedRequest.data.timestamp}}</p>
+                    </div>
                 </ion-label>
             </ion-item>
         </div>
@@ -66,7 +95,6 @@
             <p class="no-results">You currently have no requests for this status</p>
         </div>
     </ng-template>
-
 </ion-content>
 
 <app-footer></app-footer>

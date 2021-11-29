@@ -27,7 +27,7 @@ export class WelcomePage implements OnInit {
         this.restService.getRequestsById(this.user.userId).subscribe(async (result: any) => {
             if (result) {
                 for (const request of result.data) {
-                    if (request.status === 'Pending') {
+                    if (request.status === 'pending') {
                         this.pendingRequests.push(request);
                     }
                 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -9,45 +10,70 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class LogSeizurePage implements OnInit {
 
-    newSiezure?: FormGroup;
-    siezureDeatails;
+    newSeizure?: FormGroup;
+    seizureDetails;
 
-    filmList =[];
-    triggerList =[];
+    filmList = [];
+    triggerList = [];
 
-    triggers =[];
+    triggers = [];
 
     public film;
-    public hide = true;
+    public user: any;
 
     constructor(
         private restService: RestService,
         private formBuilder: FormBuilder,
+        private authService: AuthService
     ) {
-        this.newSiezure = this.formBuilder.group({
-        film: '',
-        triggers: '',
-        details: ''
-      }); }
+        this.newSeizure = this.formBuilder.group({
+            trigger: '',
+            severity: '',
+            details: ''
+        });
+    }
 
     public ngOnInit(): void {
+        this.user = this.authService.getLoggedInUserId();
+        console.log("USER ID: ",this.user);
         this.restService.getFilms().subscribe(async (filmResult: any) => {
             this.filmList = filmResult.data;
-          });
-          this.restService.getTriggers().subscribe(async (filmResult: any) => {
-            this.filmList = filmResult.data;
-          });
+        });
+        this.restService.getTriggers().subscribe(async (filmResult: any) => {
+            this.triggerList = filmResult.data;
+        });
+        
     }
 
-    public findTriggers(): void{
-        this.hide = !this.hide;
-        for (let tIndex = 0; tIndex < this.triggerList.length; tIndex++) {
-            for (let fIndex = 0; fIndex < this.filmList.length; fIndex++) {
-                if (this.triggerList[tIndex].filmId === this.filmList[fIndex].filmId){
-                    this.triggers.push(this.triggerList[tIndex])
-                }
+    public findTriggers(): void {
+
+        this.triggers = [];
+
+        console.log("Movie trigger count: ", this.triggers.length)
+
+        let f = this.film;
+
+        for (let trigger of this.triggerList) {
+            console.log("Trigger film ID: ",trigger.filmId)
+            console.log("Film ID: ",f)
+            if (trigger.filmId === f) {
+                this.triggers.push(trigger)
             }
         }
+
+        console.log("Movie trigger count: ", this.triggers.length)
     }
 
+    public submitSeizure(): void {
+        const formValues = this.newSeizure.value;
+        this.seizureDetails = {
+            trigger: formValues.trigger,
+            severity: formValues.severity,
+            details: formValues.details
+        };
+        console.log(this.user);
+
+        this.restService.newSeizure(this.user, this.seizureDetails).subscribe(async (result: any) => {
+        });
+    }
 }

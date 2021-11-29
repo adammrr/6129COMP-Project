@@ -74,6 +74,13 @@ export class RestService {
         catchError(this.handleError));
     }
 
+    public newSeizure(id: number,seizureDetails:{trigger: number,severity:number,details: string}){
+        console.log(id);
+        console.log(seizureDetails);
+        const API_URL = `${this.REST_API}`;
+        return this.httpClient.post(`${this.REST_API}/log-seizure`, {headers: this.httpHeaders, id, seizureDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
+        catchError(this.handleError));
+    }
 
     public register(registrationDetails: { firstName: string; surname: string; gender: string; dob: string; address1: string; address2: string; address3: string; email: string; password: string }) {
         return this.httpClient.post(`${this.REST_API}/register-user`, { registrationDetails });

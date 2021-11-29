@@ -25,14 +25,22 @@ export class UserRequestsPage implements OnInit {
         this.restService.getRequestsById(this.user.userId).subscribe(async (result: any) => {
             if (result) {
                 for (const request of result.data) {
+                    
+                    let jRequest = JSON.parse(request.details);
+                    request.details = jRequest;
+
+
                     if (request.status === 'Pending') {
-                        this.pendingRequests.push(request);
+                        this.pendingRequests.push(jRequest);
+                        console.log(jRequest);
                     }
                     if (request.status === 'Approved') {
-                        this.approvedRequests.push(request);
+                        this.approvedRequests.push(jRequest);
+                        console.log(jRequest);
                     }
                     if (request.status === 'Rejected') {
-                        this.rejectedRequests.push(request);
+                        this.rejectedRequests.push(jRequest);
+                        console.log(jRequest);
                     }
                 }
             }

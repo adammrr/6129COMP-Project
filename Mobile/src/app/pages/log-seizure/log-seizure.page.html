@@ -8,36 +8,54 @@
 </ion-header>
 
 <ion-content>
-        <form [formGroup]="newSiezure">
-            <ion-item lines="full" >
-                <ion-label position="floating">What were you watching?</ion-label>
-                <ion-select>
-                    <ion-select-option *ngFor="let film of filmList" [value]="film.filmId">{{film.filmName}}</ion-select-option>
-                </ion-select>
-            </ion-item>
 
-            <!-- <ion-button expand="block" color="primary" (click)="findTriggers()" [hidden]="!hide">Search Triggers</ion-button>
-    
-            <div [hidden]="hide"> -->
-            <!-- <ion-item lines="full" >
-                <ion-label position="floating">What trigger?</ion-label>
-                <ion-select formControlName="triggers">
-                    <ion-select-option *ngFor="let trig of triggers" [value]="trig.triggerId">{{trig.timestamp}} - {{trig.description}}</ion-select-option>
-                </ion-select>
-            </ion-item> -->
-    
-            <!-- <ion-item lines="full">
-                <ion-label position="floating">Would you like to add any additional details?</ion-label>
-                <ion-input placeholder="Optional" type="text" formControlName="details"></ion-input>
-            </ion-item>
-    
-            <ion-row>
-                <ion-col>
-                    <ion-button type="submit" color="primary" expand="block" (click)="submitFilm()">Log Siezure</ion-button>
-                </ion-col>
-            </ion-row> -->
-        <!-- </div> -->
-        </form>
+    <ion-item lines="full">
+        <ion-label position="floating">What were you watching?</ion-label>
+        <ion-select [(ngModel)]="film" (ionChange)="findTriggers()">
+            <ion-select-option *ngFor="let film of filmList" [value]="film.filmId">{{film.filmName}}
+            </ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <form [formGroup]="newSeizure">
+        <ion-item lines="full">
+            <ion-label position="floating">What trigger?</ion-label>
+            <ion-select formControlName="trigger">
+                <ion-select-option *ngFor="let trig of triggers" [value]="trig.triggerId">{{trig.timestamp}} -
+                    {{trig.description}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item lines="full">
+            <ion-label position="floating">How would you rate the severity of the seizure?</ion-label>
+            <ion-select formControlName="severity">
+                <ion-select-option [value]=1>1 - No Severity</ion-select-option>
+                <ion-select-option [value]=2>2 - Mild Severity</ion-select-option>
+                <ion-select-option [value]=3>3 - Moderate Severity</ion-select-option>
+                <ion-select-option [value]=4>4 - High Severity</ion-select-option>
+                <ion-select-option [value]=5>5 - Extreme Severity</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+
+        <ion-item lines="full">
+            <ion-label position="floating">Would you like to add any additional details?</ion-label>
+            <ion-input placeholder="Optional" type="text" formControlName="details"></ion-input>
+        </ion-item>
+
+        <ion-row>
+            <ion-col>
+                <ion-button type="submit" color="primary" expand="block" (click)="submitSeizure()">Log Siezure
+                </ion-button>
+            </ion-col>
+        </ion-row>
+
+        <h6>If the dropdown box is empty, it means there have been no eppileptic triggers recorded for the film you
+                have selected. You can help us by submitting a new trigger in the requests section if you have found a
+                epileptic trigger. Thank you</h6>
+
+    </form>
+
 </ion-content>
 
 <app-footer></app-footer>
