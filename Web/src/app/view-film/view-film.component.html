@@ -1,0 +1,72 @@
+<div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
+  <h1 class="display-3">View Film</h1>
+  <button class="btn btn-primary mt-1 mb-3" routerLink="/films">Return to Films Page</button>
+</div>
+
+<div *ngIf="loadingService.loadedObs | async ;else loadingIcon" class="container">
+  <img class="card-img-top" style="width: 25%;" [src]="film.imageURL">
+
+  <form [formGroup]='filmDetailsForm'>
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="userIdInput" placeholder="0" [value]="film.filmId" readonly formControlName="userId">
+          <label for="userIdInput">Film Id</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="genreInput" placeholder="Genre" formControlName="genre" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+          <label for="genreInput">Genre</label>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="filmNameInput" placeholder="Film Name" formControlName="filmName" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+          <label for="filmNameInput">Film Name</label>
+        </div>
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="runTimeInput" placeholder="RunTime" formControlName="runTime" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+          <label for="runTimeInput">RunTime</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-floating my-1">
+          <input type="text" class="form-control" id="imgURLInput" placeholder="url" formControlName="imageURL" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+          <label for="imgURLInput">Image URL</label>
+        </div>
+        <div class="form-floating my-1">
+          <textarea class="form-control" placeholder="Leave a comment here" id="descInput" style="height: 100px" formControlName="filmDescription" required [readonly]="signedInAccountType == 'practitioner' ? true : null"></textarea>
+          <label for="descInput">Film Description</label>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-success alert-dismissible " *ngIf="messageState | async" role="alert">
+      <div class="d-flex align-items-center" role="alert">
+          <img class="img-fluid" src="/assets/img/hand-thumbs-up.svg" alt="svg"> Film details have successfully been updated
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseToast()"></button>
+    </div>
+    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" (click)="onSubmit(confirmModal)" *ngIf="signedInAccountType != 'practitioner'" [disabled]="!filmDetailsForm.valid">Update Film</button>
+    <button class="btn btn-danger btn-block fa-lg gradient-custom-2 mb-1" (click)="onSubmit(confirmDeleteModal)" *ngIf="signedInAccountType != 'practitioner'" [disabled]="!filmDetailsForm.valid">Delete FIlm</button>
+    <p *ngIf="!filmDetailsForm.valid">Please ensure the form above is fully filled in.</p>
+  </form>
+
+</div>
+
+<ng-template #loadingIcon><app-loading></app-loading></ng-template>
+<ng-template #confirmModal>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to update Film {{film.filmId}}?</p>
+    <button type="button" class="btn btn-success m-1" (click)="onConfirmModal()" >Yes</button>
+    <button type="button" class="btn btn-danger m-1" (click)="onCloseModal()" >No</button>
+  </div>
+</ng-template>
+<ng-template #confirmDeleteModal>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to Delete Film {{film.filmId}}?</p>
+    <button type="button" class="btn btn-success m-1" (click)="onConfirmDeleteModal()" >Yes</button>
+    <button type="button" class="btn btn-danger m-1" (click)="onCloseModal()" >No</button>
+  </div>
+</ng-template>

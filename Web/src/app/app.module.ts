@@ -27,6 +27,7 @@ import { NewPracticeComponent } from './manage-practices/new-practice/new-practi
 import { ViewPatientsComponent } from './view-patients/view-patients.component';
 import { ViewPracticesComponent } from './view-practices/view-practices.component';
 import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
+import { ViewFilmComponent } from './view-film/view-film.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ManageRequestsComponent } from './manage-requests/manage-requests.compo
     ViewPatientsComponent,
     ViewPracticesComponent,
     ManageRequestsComponent,
+    ViewFilmComponent,
   ],
   imports: [
     BrowserModule,

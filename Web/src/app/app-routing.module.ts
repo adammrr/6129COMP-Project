@@ -14,6 +14,7 @@ import { AuthGuard } from './services/auth.guard';
 import { RoutingErrorComponent } from './shared/routing-error/routing-error.component';
 import { SignInComponent } from './shared/sign-in/sign-in.component';
 import { SignOutComponent } from './shared/sign-out/sign-out.component';
+import { ViewFilmComponent } from './view-film/view-film.component';
 import { ViewPatientsComponent } from './view-patients/view-patients.component';
 import { ViewPracticesComponent } from './view-practices/view-practices.component';
 
@@ -24,6 +25,7 @@ const routes: Routes = [
 
   { path: 'home', component: DashboardPageComponent, canActivate: [AuthGuard] },
   { path: 'films', component: FilmPageComponent, canActivate: [AuthGuard] },
+  { path: 'view-film/:id', component: ViewFilmComponent, canActivate: [AuthGuard] },
 
   { path: 'manage-users', component: ManageUsersComponent, canActivate: [AuthGuard] },
   { path: 'manage-users/create-user/:type', component: NewUserComponent, canActivate: [AuthGuard] },
@@ -41,7 +43,7 @@ const routes: Routes = [
     ]
   },
   { path: 'view-my-practices', component: ViewPracticesComponent, canActivate: [AuthGuard] },
-  
+
   { path: 'manage-requests', component: ManageRequestsComponent, canActivate: [AuthGuard] },
 
   { path: 'manage-practices', component: ManagePracticesComponent, canActivate: [AuthGuard] },

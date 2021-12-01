@@ -83,13 +83,13 @@
       <p *ngIf="!detailsForm.valid">Please ensure the form above is fully filled in.</p>
     </form>
 
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 my-3 border-bottom">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 my-3 border-bottom" *ngIf="signedInAccountType == 'practitioner'">
       <h2 class="h2 me-2">Patient Epilepsy Details</h2>
     </div>
-    <form [formGroup]='epilepsyDetailsForm' (ngSubmit)="onSubmit(confirmEpilepsyModal)">
+    <form [formGroup]='epilepsyDetailsForm' (ngSubmit)="onSubmit(confirmEpilepsyModal)" *ngIf="signedInAccountType == 'practitioner'">
       <div class="row">
         <div class="col-md-4 col-sm-12">
-          <div class="form-floating my-1" *ngIf="signedInAccountType != 'practitioner'; else selectDisabled">
+          <div class="form-floating my-1">
             <select type="text" class="form-control" id="seizureTypeInput" placeholder="0" formControlName="seizureType" required >
               <option value="Simple partial (focal)">Simple partial (focal)</option>
               <option value="Complex partial (focal)">Complex partial (focal)</option>
@@ -103,22 +103,16 @@
             </select>
             <label for="seizureTypeInput">Seizure Type</label>
           </div>
-          <ng-template #selectDisabled>
-            <div class="form-floating my-1">
-              <input type="text" class="form-control" id="seizureTypeInput" placeholder="0" formControlName="seizureType" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
-              <label for="seizureTypeInput">Seizure Type</label>
-            </div>
-          </ng-template>
         </div>
         <div class="col-md-4 col-sm-12">
           <div class="form-floating my-1">
-            <input type="text" class="form-control" id="freqInput" placeholder="freq" formControlName="frequency" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+            <input type="text" class="form-control" id="freqInput" placeholder="freq" formControlName="frequency" required >
             <label for="freqInput">Frequency</label>
           </div>
         </div>
         <div class="col-md-4 col-sm-12">
           <div class="form-floating my-1">
-            <input type="text" class="form-control" id="yearsInput" placeholder="12" formControlName="yearsSuffering" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
+            <input type="text" class="form-control" id="yearsInput" placeholder="12" formControlName="yearsSuffering" required >
             <label for="yearsInput">Years Suffering</label>
           </div>
         </div>
@@ -126,20 +120,53 @@
       <div class="row">
         <div class="col-md-12">
           <div class="form-floating my-1">
-            <input type="textarea" class="form-control" id="triggerDetailsInput" placeholder="details" formControlName="triggerDetails" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
-            <label for="triggerDetailsInput">Years Suffering</label>
+            <input type="textarea" class="form-control" id="triggerDetailsInput" placeholder="details" formControlName="triggerDetails" required>
+            <label for="triggerDetailsInput">Trigger Details</label>
           </div>
         </div>
       </div>
-      <div class="alert alert-success alert-dismissible " *ngIf="messageState | async" role="alert">
+      <div class="alert alert-success alert-dismissible " *ngIf="messageEpilepsyState | async" role="alert">
         <div class="d-flex align-items-center" role="alert">
             <img class="img-fluid" src="/assets/img/hand-thumbs-up.svg" alt="svg"> Epilepsy Details have successfully been updated
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseToast()"></button>
       </div>
-      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit" *ngIf="signedInAccountType != 'practitioner'" [disabled]="!epilepsyDetailsForm.valid" tooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Update Epilepsy Details</button>
+      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit" [disabled]="!epilepsyDetailsForm.valid">Update Epilepsy Details</button>
       <p *ngIf="!detailsForm.valid">Please ensure the form above is fully filled in.</p>
     </form>
+
+    <div *ngIf="signedInAccountType == 'practitioner'">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 pt-3 my-3 border-bottom" >
+        <h2 class="h2 me-2">Patient Seizures Log</h2>
+      </div>
+      <div *ngIf="events.length > 0; else noEvents" class="my-3">
+        <p>Below shows a list of what films caused a patient to have a seizure, and what time it occured at.</p>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          <div class="col" *ngFor="let event of events">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"><b>{{event.filmName}}</b> at <b>{{event.timestamp}}</b></h5>
+                <h6 class="card-subtitle mb-2 text-muted">Severity: {{event.severity}}</h6>
+                <p class="card-text">Details: {{event.details}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noEvents>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"><b>No seizures have been logged.</b></h5>
+                <p class="card-text">The patient must log a seizure through the mobile app for it to show here.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 my-3 border-bottom">
       <h2 class="h2 me-2">Assigned Practices</h2>

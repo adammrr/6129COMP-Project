@@ -51,7 +51,9 @@ export class RestService {
   getRequests(status:string): Observable<any> {
     return this.httpClient.post(`${this.REST_API}/get-requests`, {status: status});
   }
-
+  getFilmById(id:any): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/get-film-by-id`, {id: id});
+  }
   // Update Practice Details
   updatePractice(data:any): Observable<any> {
     console.log("REST UPDATE");
@@ -94,6 +96,14 @@ export class RestService {
   getUserPracticeLinks(id:any): Observable<any> {
     return this.httpClient.post(`${this.REST_API}/user-practices`, {userId: id});
   }
+  // Get user events
+  getUserEvents(id:any): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/user-events`, {userId: id});
+  }
+  // Get user epilepsy details
+  getUserEpilepsyDetails(id:any): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/user-epilepsy`, {userId: id});
+  }
   // Delete User Account
   deleteUserPracticeLink(userId:number, practiceId:number): Observable<any> {
     return this.httpClient.post(`${this.REST_API}/delete-user-practice-link`, {userId: userId, practiceId: practiceId});
@@ -105,13 +115,24 @@ export class RestService {
         catchError(this.handleError)
       )
   }
-  // Update
+  // delete film
+  deleteFilm(data:any): Observable<any> {
+    console.log(data);
+    return this.httpClient.post(`${this.REST_API}/delete-film`, {filmId: data});
+  }
+  // Update user
   updateUser(data:any): Observable<any> {
-    console.log("REST UPDATE");
     console.log(data);
     return this.httpClient.post(`${this.REST_API}/update-user`, {data: data});
-
-
+  }
+  // Update film
+  updateFilm(data:any): Observable<any> {
+    console.log(data);
+    return this.httpClient.post(`${this.REST_API}/update-film`, {data: data});
+  }
+  updateUserSeizure(data:any): Observable<any> {
+    console.log(data);
+    return this.httpClient.post(`${this.REST_API}/update-user-epilepsy-details`, {data: data});
   }
   // Create new user
   createUser(data: any): Observable<any> {

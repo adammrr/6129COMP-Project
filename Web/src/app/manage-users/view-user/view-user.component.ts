@@ -22,7 +22,10 @@ export class ViewUserComponent implements OnInit {
   returnString: string = "";
   messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   messageStateObs: Observable<boolean> = this.messageState.asObservable();
+  messageEpilepsyState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  messageEpilepsyStateObs: Observable<boolean> = this.messageState.asObservable();
 
+  events: any;
   signedInAccountType: string = "";
 
   private sub: any;
@@ -132,20 +135,15 @@ export class ViewUserComponent implements OnInit {
   onConfirmEpilepsyModal() {
     let updateDetails = {
       userId: this.detailsForm.controls['userId'].value,
-      email: this.detailsForm.controls['email'].value,
-      firstName: this.detailsForm.controls['firstName'].value,
-      surname: this.detailsForm.controls['surname'].value,
-      gender: this.detailsForm.controls['gender'].value,
-      dob: this.detailsForm.controls['dob'].value,
-      address1: this.detailsForm.controls['address1'].value,
-      address2: this.detailsForm.controls['address2'].value,
-      address3: this.detailsForm.controls['address3'].value,
-      postcode: this.detailsForm.controls['postcode'].value,
+      seizureType: this.epilepsyDetailsForm.controls['seizureType'].value,
+      frequency: this.epilepsyDetailsForm.controls['frequency'].value,
+      yearsSuffering: this.epilepsyDetailsForm.controls['yearsSuffering'].value,
+      triggerDetails: this.epilepsyDetailsForm.controls['triggerDetails'].value,
     };
-    this.restService.updateUser(updateDetails).subscribe(async (updateResult: any) => {
+    this.restService.updateUserSeizure(updateDetails).subscribe(async (updateResult: any) => {
       console.log(updateResult);
       this.modalRef?.hide();
-      this.messageState.next(true);
+      this.messageEpilepsyState.next(true);
     });
   }
 
@@ -163,9 +161,6 @@ export class ViewUserComponent implements OnInit {
       this.returnString = params['returnLink'];
       console.log("THIS IS THE RETURN STRING", this.returnString);
     });
-    
-    console.log("END");
-    console.log("GET USER");
 
     this.restService.getUser(this.userId).subscribe( data => {
       this.user = data.data;
@@ -183,11 +178,23 @@ export class ViewUserComponent implements OnInit {
         this.practices = data.data;
       });
       this.restService.getUserPracticeLinks(this.userId).subscribe( data => {
-        console.log("LINK DATA");
         console.log(data);
         this.practiceLinks = data;
+      });
+      this.restService.getUserEvents(this.userId).subscribe( data => {
+        this.events = data.data;
         this.loadingService.setLoaded(true);
 
+
+      });
+      this.restService.getUserEpilepsyDetails(this.userId).subscribe( data => {
+        if(data.data[0] != undefined){
+          this.epilepsyDetailsForm.controls['seizureType'].setValue(data.data[0].seizureType);
+          this.epilepsyDetailsForm.controls['frequency'].setValue(data.data[0].frequency);
+          this.epilepsyDetailsForm.controls['yearsSuffering'].setValue(data.data[0].yearsSuffering);
+          this.epilepsyDetailsForm.controls['triggerDetails'].setValue(data.data[0].triggerDetails);
+        }
+        this.loadingService.setLoaded(true);
       });
 
     });

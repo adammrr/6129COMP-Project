@@ -102,6 +102,16 @@ app.post('/get-requests', function (req, res) {
     }
     
 });
+// get film by id 
+app.post('/get-film-by-id', function (req, res) {
+    console.log("SERVER: Getting Film by id");
+    let id = req.body.id;
+    dbConn.query(`SELECT * FROM films WHERE filmId="${id}"`, function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'film data.' });
+    });
+    
+});
 // Retrieve all films 
 app.get('/films', function (req, res) {
     console.log("SERVER: Getting Films");
@@ -351,6 +361,25 @@ app.get('/read-practice/:id', function (req, res) {
   });
 
 });
+//Update film details
+app.post('/update-film', function (req, res) {
+    console.log("UPDATING FILM");
+
+    let filmId = req.body.data.filmId
+    let filmName = req.body.data.filmName;
+    let genre = req.body.data.genre;
+    let runTime = req.body.data.runTime;
+    let imageURL = req.body.data.imageURL;
+    let filmDescription = req.body.data.filmDescription;
+    
+    dbConn.query(`UPDATE films SET filmName="${filmName}", genre="${genre}", runTime="${runTime}", imageURL="${imageURL}", filmDescription="${filmDescription}" WHERE filmId="${filmId}"`, function (error, results) {
+        if (error) {
+            console.log(error);
+            return res.send({ error: true, message: 'update film unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'update film successful' });
+    });
+});
 //Update user details
 app.post('/update-user', function (req, res) {
     console.log("UPDATING");
@@ -367,6 +396,22 @@ app.post('/update-user', function (req, res) {
     let postcode = req.body.data.postcode;
 
     dbConn.query(`UPDATE users SET email="${email}", firstName="${firstName}", surname="${surname}", gender="${gender}", dob="${dob}", address1="${address1}", address2="${address2}", address3="${address3}" , postcode="${postcode}" WHERE userId="${userId}"`, function (error, results) {
+        if (error) {
+            return res.send({ error: true, message: 'update unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'update successful' });
+    });
+});
+//Update user epilepsy details
+app.post('/update-user-epilepsy-details', function (req, res) {
+    console.log("UPDATING");
+    let userId = req.body.data.userId
+    let seizureType = req.body.data.seizureType
+    let frequency = req.body.data.frequency;
+    let yearsSuffering = req.body.data.yearsSuffering;
+    let triggerDetails = req.body.data.triggerDetails;
+    
+    dbConn.query(`UPDATE epilepsydetails SET seizureType="${seizureType}", frequency="${frequency}", yearsSuffering="${yearsSuffering}", triggerDetails="${triggerDetails}" WHERE userId="${userId}"`, function (error, results) {
         if (error) {
             return res.send({ error: true, message: 'update unsuccessful' });
         }
@@ -442,6 +487,48 @@ app.post('/user-practices', function (req, res) {
             return res.send({ error: true, data: error, message: 'user practice link get unsuccessful' });
         }
         return res.send({ error: false, data: results, message: 'user practice link get successful' });
+    });
+});
+//Get user epilepsy details
+app.post('/user-epilepsy', function (req, res) {
+    console.log("Getting user epilipsy details");
+
+    let userId = req.body.userId;
+
+    dbConn.query(`SELECT * from epilepsydetails WHERE userId='${userId}';`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'user epilipsy details get unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'user epilipsy details get successful' });
+    });
+});
+//Get user events
+app.post('/user-events', function (req, res) {
+    console.log("Getting user events");
+
+    let userId = req.body.userId;
+
+    dbConn.query(`SELECT severity, details, timestamp, filmName FROM events INNER JOIN triggers ON events.triggerId = triggers.triggerId INNER JOIN films on triggers.filmId = films.filmId WHERE events.userId='${userId}';`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'user events get unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'user events get successful' });
+    });
+});
+//Delete film
+app.post('/delete-film', function (req, res) {
+    console.log("Deleting film");
+
+    let filmId = req.body.filmId;
+
+    dbConn.query(`DELETE FROM films WHERE filmId='${filmId}'`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'film deleted unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'film deleted successful' });
     });
 });
 //Delete user practice link
