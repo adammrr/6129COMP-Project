@@ -1,88 +1,98 @@
 <div class="d-flex justify-content-center flex-column flex-wrap flex-md-nowrap align-items-center border-bottom my-4">
-    <h1 class="display-3">Manage My Account</h1>
-    <div class="container p-3">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-    <button class="btn btn-primary" [routerLink]="['../home']">Return to Dashboard</button>
-  </div>
-  <div class= "align-items-center" img src="assets/img/user.png"></div>
-  <div *ngIf="loadingService.loadedObs | async">
-    <div class="container p-3">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <button class="btn btn-primary">Edit Details </button>
-      </div>
-   
-  
-<form [formGroup]='detailsForm'>
-        <div class="row">
-          <div class="col-sm">
-            <div class="form-floating my-1">
-              <input type="text" class="form-control" id="userIdInput" placeholder="0" [value]="user.userId" readonly formControlName="userId">
-              <label for="userIdInput">User ID:  </label>
-            </div>
-            <div class="form-floating my-1">
-              <input type="text" class="form-control" id="firstNameInput" placeholder="First Name" formControlName="firstName" required>
-              <label for="firstNameInput">First Name: </label>
-            </div>
-            <div class="form-floating my-1">
-              <input type="text" class="form-control" id="surnameInput" placeholder="Surname" formControlName="surname" required>
-              <label for="surnameInput">Surname: </label>
-            </div>
-            <div class="form-floating my-1">
-              <input type="text" class="form-control" id="genderInput" placeholder="Gender" formControlName="Gender" required>
-              <label for="genderInput">Gender: </label>
-              </div>
-              <div class="form-floating my-1">
-                <input type="text" class="form-control" id="dobInput" placeholder="Date Of Birth" formControlName="Date Of Birth" required> 
-                <label for="dobInput">Date of Birth: </label>
-              </div>
-            </div>
-            <div class="col-sm">
-              <div class="form-floating my-1">
-                <input type="email" class="form-control" id="emailInput" placeholder="example@example.com" formControlName="email" required>
-                <label for="emailInput">Email: </label>
-              </div>
-    
-    
-              <div class="form-floating my-1">
-                <input type="text" class="form-control" id="address1Input" placeholder="Address Line 1" formControlName="address1" required>
-                <label for="address1Input">Address Line 1: </label>
-              </div>
-              <div class="form-floating my-1">
-                <input type="text" class="form-control" id="address2Input" placeholder="Address Line 2" formControlName="address2">
-                <label for="address2Input">Address Line 2: </label>
-              </div>
-              <div class="form-floating my-1">
-                <input type="text" class="form-control" id="address3Input" placeholder="Address Line 3" formControlName="address3">
-                <label for="address3Input">Address Line 3: </label>
-              </div>
-              <div class="form-floating my-1">
-                <input type="text" class="form-control" id="postcodeInput" placeholder="Post Code" formControlName="postcode" required>
-                <label for="postcodeInput">Postcode: </label>
-              </div>
+  <h1 class="display-3">Manage My Account</h1>
+  <button class="btn btn-primary mt-1 mb-3" routerLink="../">Return to Dashboard</button>
+</div>
 
-  </div>
-  <p><button>Reset Password</button></p>
-  <div *ngFor="let user of user.data; let i = index">
-    <label> {{user.ID}}</label>
-    <label> {{user.FirstName}}</label>
-    <label> {{user.Surname}}</label>
-    <label> {{user.Gender}}</label>
-    <label> {{user.dob.substring(0,10)}}</label>
-    <label> {{user.address1Input}}</label>
-    <label> {{user.address2Input}}</label>
-    <label> {{user.address3Input}}</label>
-    <label> {{user.postcodeInput}}</label>
-    <label> {{user.email}}</label>
-    <button class="btn btn-sm btn-primary mx-1" routerLink="{{user.userId}}">Edit</button>
+<div *ngIf="loadingService.loadedObs | async ;else loadingIcon" class="container">
+  <div class="container p-3">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+      <h2 class="h2 me-2">My Details</h2>
     </div>
+    <form [formGroup]='detailsForm' (ngSubmit)="onSubmit(confirmModal)">
+      <div class="row">
+        <div class="col-sm">
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="userIdInput" placeholder="0" [value]="user.userId" readonly formControlName="userId">
+            <label for="userIdInput">User ID</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="firstNameInput" placeholder="First Name" formControlName="firstName" required>
+            <label for="firstNameInput">First Name</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="surnameInput" placeholder="Surname" formControlName="surname" required>
+            <label for="surnameInput">Surname</label>
+          </div>
 
- 
+          <div class="form-floating my-1">
+            <select type="text" class="form-control" id="genderInput" placeholder="0" formControlName="gender" required >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+            <label for="genderInput">Gender</label>
+          </div>
+
+          <div class="form-floating my-1">
+            <input type="date" class="form-control" id="dobInput" placeholder="1970-01-01" formControlName="dob" required>
+            <label for="dobInput">Date of Birth</label>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="form-floating my-1">
+            <input type="email" class="form-control" id="emailInput" placeholder="example@example.com" formControlName="email" required>
+            <label for="emailInput">Email</label>
+          </div>
+
+
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="address1Input" placeholder="Address Line 1" formControlName="address1" required>
+            <label for="address1Input">Address Line 1</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="address2Input" placeholder="Address Line 2" formControlName="address2">
+            <label for="address2Input">Address Line 2</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="address3Input" placeholder="Address Line 3" formControlName="address3">
+            <label for="address3Input">Address Line 3</label>
+          </div>
+          <div class="form-floating my-1">
+            <input type="text" class="form-control" id="postcodeInput" placeholder="Post Code" formControlName="postcode" required>
+            <label for="postcodeInput">Postcode</label>
+          </div>
+        </div>
+
+      </div>
 
 
 
+      <div class="alert alert-success alert-dismissible " *ngIf="messageState | async" role="alert">
+        <div class="d-flex align-items-center" role="alert">
+            <img class="img-fluid" src="/assets/img/hand-thumbs-up.svg" alt="svg"> User details have successfully been updated
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseToast()"></button>
+      </div>
+      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit" [disabled]="!detailsForm.valid">Update Details</button>
+      <p *ngIf="!detailsForm.valid">Please ensure the form above is fully filled in.</p>
+    </form>
 
 
+  </div>
+</div>
+
+<ng-template #loadingIcon><app-loading></app-loading></ng-template>
+
+<ng-template #confirmModal>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to update {{user.firstName}} {{user.surname}}'s Details?</p>
+    <button type="button" class="btn btn-success m-1" (click)="onConfirmModal()" >Yes</button>
+    <button type="button" class="btn btn-danger m-1" (click)="onCloseModal()" >No</button>
+  </div>
+</ng-template>
 
 
-
-           
+<ng-template #noPractices>
+  <h4>This user is not assigned to any practices.</h4>
+</ng-template>
