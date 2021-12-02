@@ -402,6 +402,41 @@ app.post('/update-user', function (req, res) {
         return res.send({ error: false, data: results, message: 'update successful' });
     });
 });
+//Update user request
+app.post('/update-request', function (req, res) {
+    console.log("UPDATING REQUEST");
+
+    let reviewedBy = req.body.data.reviewedBy
+    let status = req.body.data.status;
+    let requestId = req.body.data.requestId;
+    let request = req.body.request;
+    let creationError = false;
+    if(status == "Approved"){
+        if(request.details.requestType == "New Film"){
+            console.log("NEW FILM GET CREATED HERE");
+            dbConn.query(`INSERT INTO films (filmName, filmDescription, genre, runTime, imageURL) VALUES ("${request.details.data.filmName}", "${request.details.data.filmDesc}", "${request.details.data.genre}", "${request.details.data.runtime}", "")`, function (error, results) {
+                if (error) {
+                    console.error(error);
+                    creationError = true;
+                }
+            });
+        }else if(request.details.requestType == "New Trigger"){
+            console.log("NEW TRIGGER GET CREATED HERE");
+            dbConn.query(`INSERT INTO triggers (filmId, timestamp, description) VALUES ("${request.details.data.filmName}", "${request.details.data.timestamp}", "${request.details.data.details}")`, function (error, results) {
+                if (error) {
+                    console.error(error);
+                    creationError = true;
+                }
+            });
+        }
+    }
+    dbConn.query(`UPDATE requests SET reviewedBy="${reviewedBy}", status="${status}" WHERE requestId="${requestId}"`, function (error, results) {
+        if (error || creationError) {
+            return res.send({ error: true, message: 'update unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'update successful' });
+    });
+});
 //Update user epilepsy details
 app.post('/update-user-epilepsy-details', function (req, res) {
     console.log("UPDATING");
@@ -439,6 +474,39 @@ app.post('/create-user', function (req, res) {
             return res.send({ error: true, data: error, message: 'user creation unsuccessful' });
         }
         return res.send({ error: false, data: results, message: 'user creation successful' });
+    });
+});
+//Create film
+app.post('/create-film', function (req, res) {
+    console.log("Creating film");
+
+    let filmName = req.body.data.filmName;
+    let filmDescription = req.body.data.filmDescription;
+    let genre = req.body.data.genre;
+    let runTime = req.body.data.runTime;
+    let imageURL = req.body.data.imageURL;
+
+    dbConn.query(`INSERT INTO films (filmName, filmDescription, genre, runTime, imageURL) VALUES ("${filmName}", "${filmDescription}", "${genre}", "${runTime}", "${imageURL}")`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'film creation unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'film creation successful' });
+    });
+});
+//Create film
+app.post('/film-triggers', function (req, res) {
+    console.log("Getting film triggers");
+
+    let filmId = req.body.filmId;
+   
+
+    dbConn.query(`SELECT * FROM triggers WHERE filmId="${filmId}"`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'film triggers get unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'film triggers get successful' });
     });
 });
 //Create practice
@@ -529,6 +597,20 @@ app.post('/delete-film', function (req, res) {
             return res.send({ error: true, data: error, message: 'film deleted unsuccessful' });
         }
         return res.send({ error: false, data: results, message: 'film deleted successful' });
+    });
+});
+//Delete trigger
+app.post('/delete-trigger', function (req, res) {
+    console.log("Deleting trigger");
+
+    let triggerId = req.body.triggerId;
+
+    dbConn.query(`DELETE FROM triggers WHERE triggerId='${triggerId}'`, function (error, results) {
+        if (error) {
+            console.error(error);
+            return res.send({ error: true, data: error, message: 'trigger deleted unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'trigger deleted successful' });
     });
 });
 //Delete user practice link

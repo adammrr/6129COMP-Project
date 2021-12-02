@@ -28,6 +28,7 @@ import { ViewPatientsComponent } from './view-patients/view-patients.component';
 import { ViewPracticesComponent } from './view-practices/view-practices.component';
 import { ManageRequestsComponent } from './manage-requests/manage-requests.component';
 import { ViewFilmComponent } from './view-film/view-film.component';
+import { NewFilmComponent } from './film-page/new-film/new-film.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ViewFilmComponent } from './view-film/view-film.component';
     ViewPracticesComponent,
     ManageRequestsComponent,
     ViewFilmComponent,
+    NewFilmComponent,
   ],
   imports: [
     BrowserModule,

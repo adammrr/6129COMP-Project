@@ -18,10 +18,13 @@ export class ViewFilmComponent implements OnInit {
   filmId: number = 0;
   film: any;
   signedInAccountType: string = "";
-
+  triggers: any;
+  selectedTriggerId = 0;
   modalRef?: BsModalRef;
   messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   messageStateObs: Observable<boolean> = this.messageState.asObservable();
+  messageTriggerState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  messageTriggerStateObs: Observable<boolean> = this.messageTriggerState.asObservable();
 
   constructor(private route: ActivatedRoute, private router: Router,private modalService: BsModalService, public authService: AuthService, private restService: RestService, public loadingService: LoadingService, private formBuilder: FormBuilder) { }
 
@@ -41,6 +44,9 @@ export class ViewFilmComponent implements OnInit {
   onCloseToast() {
     this.messageState.next(false);
   }
+  onCloseTriggerToast() {
+    this.messageTriggerState.next(false);
+  }
 
   onConfirmModal() {
     let updateDetails = {
@@ -59,7 +65,6 @@ export class ViewFilmComponent implements OnInit {
   }
 
   onConfirmDeleteModal() {
-
     this.restService.deleteFilm(this.filmId).subscribe(async (updateResult: any) => {
       console.log(updateResult);
       this.modalRef?.hide();
@@ -67,6 +72,13 @@ export class ViewFilmComponent implements OnInit {
     });
   }
 
+  onConfirmTriggerDeleteModal() {
+    this.restService.deleteTrigger(this.selectedTriggerId).subscribe(async (updateResult: any) => {
+      console.log(updateResult);
+      this.modalRef?.hide();
+      this.messageTriggerState.next(true);
+    });
+  }
   onCloseModal() {
     this.modalRef?.hide();
   }
@@ -79,6 +91,7 @@ export class ViewFilmComponent implements OnInit {
       this.filmId = +params['id'];
     });
 
+
     this.restService.getFilmById(this.filmId).subscribe( data => {
       this.film = data.data[0];
       console.log(this.filmId);
@@ -89,8 +102,13 @@ export class ViewFilmComponent implements OnInit {
       this.filmDetailsForm.controls['runTime'].setValue(this.film.runTime);
       this.filmDetailsForm.controls['imageURL'].setValue(this.film.imageURL);
       this.filmDetailsForm.controls['filmDescription'].setValue(this.film.filmDescription);
+      this.restService.getFilmTriggers(this.filmId).subscribe( data => {
+        console.log(data);
+        this.triggers = data.data;
+        console.log("Triggers:", this.triggers);
 
-      this.loadingService.setLoaded(true);
+        this.loadingService.setLoaded(true);
+      });
     });
   }
 

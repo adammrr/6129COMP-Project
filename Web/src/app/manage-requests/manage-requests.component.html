@@ -16,10 +16,9 @@
       <thead>
         <tr>
           <th scope="col">Request Id</th>
-          <th scope="col">madeBy</th>
-          <th scope="col">Reviewed By</th>
-          <th scope="col">details</th>
-          <th scope="col">status</th>
+          <th scope="col">Requested By</th>
+          <th scope="col">Request Type</th>
+          <th scope="col">Status</th>
 
           <th class="text-center" scope="col">Action</th>
         </tr>
@@ -28,16 +27,20 @@
         <tr *ngFor="let request of pendingRequests; let i = index">
           <td>{{request.requestId}}</td>
           <td>{{request.madeBy_email}}</td>
-          <td>{{request.reviewedBy_email}}</td>
           <td>{{request.details.requestType}}</td>
           <td>{{request.status}}</td>
 
           <td class="text-center">
-            <button class="btn btn-sm btn-primary mx-1">Edit</button>
-            <button class="btn btn-sm btn-danger mx-1">Delete</button>
+            <button class="btn btn-sm btn-primary mx-1" (click)="onSubmit(requestModal, request)">Manage Request</button>
         </tr>
       </tbody>
     </table>
+    <div class="alert alert-success alert-dismissible " *ngIf="messageState | async" role="alert">
+      <div class="d-flex align-items-center" role="alert">
+          <img class="img-fluid" src="/assets/img/hand-thumbs-up.svg" alt="svg">Request has been actioned successfully.
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseToast()"></button>
+    </div>
   </div>
 
   <div class="table-responsive">
@@ -46,25 +49,23 @@
       <thead>
         <tr>
           <th scope="col">Request Id</th>
-          <th scope="col">madeBy</th>
+          <th scope="col">Requested By</th>
           <th scope="col">Reviewed By</th>
-          <th scope="col">details</th>
-          <th scope="col">status</th>
+          <th scope="col">Request Type</th>
 
           <th class="text-center" scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let request of approvedRequests; let i = index">
+        <tr *ngFor="let request of approvedRequests">
           <td>{{request.requestId}}</td>
           <td>{{request.madeBy_email}}</td>
           <td>{{request.reviewedBy_email}}</td>
           <td>{{request.details.requestType}}</td>
-          <td>{{request.status}}</td>
 
           <td class="text-center">
-            <button class="btn btn-sm btn-primary mx-1">Edit</button>
-            <button class="btn btn-sm btn-danger mx-1">Delete</button>
+            <button class="btn btn-sm btn-primary mx-1" (click)="onSubmit(requestActionedModal, request)">View Request Details</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -76,28 +77,77 @@
       <thead>
         <tr>
           <th scope="col">Request Id</th>
-          <th scope="col">madeBy</th>
+          <th scope="col">Requested By</th>
           <th scope="col">Reviewed By</th>
-          <th scope="col">details</th>
-          <th scope="col">status</th>
+          <th scope="col">Request Type</th>
 
           <th class="text-center" scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let request of rejectedRequests; let i = index">
+        <tr *ngFor="let request of rejectedRequests">
           <td>{{request.requestId}}</td>
           <td>{{request.madeBy_email}}</td>
           <td>{{request.reviewedBy_email}}</td>
           <td>{{request.details.requestType}}</td>
-          <td>{{request.status}}</td>
 
           <td class="text-center">
-            <button class="btn btn-sm btn-primary mx-1">Edit</button>
-            <button class="btn btn-sm btn-danger mx-1">Delete</button>
+            <button class="btn btn-sm btn-primary mx-1" (click)="onSubmit(requestActionedModal, request)">View Request Details</button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 <ng-template #loadingIcon><app-loading></app-loading></ng-template>
+<ng-template #requestModal>
+  <div class="modal-body text-center">
+    <h3>Viewing details for request {{selectedRequest.requestId}}.</h3>
+    <p>Request Made By: <b>{{selectedRequest.madeBy_email}}</b></p>
+    <p>Request Status: <b>{{selectedRequest.status}}</b></p>
+    <p>Request Type: <b>{{selectedRequest.details.requestType}}</b></p>
+    <hr>
+    <div *ngIf="selectedRequest.details.requestType == 'New Film'; else triggerTemplate">
+      <p>Film Name: <b>{{selectedRequest.details.data.filmName}}</b></p>
+      <p>Film Desc: <b>{{selectedRequest.details.data.filmDesc}}</b></p>
+      <p>Genre: <b>{{selectedRequest.details.data.genre}}</b></p>
+      <p>Run Time: <b>{{selectedRequest.details.data.runtime}}</b></p>
+      <p><em>Image URL Can be added by editing the film once the request is approved.</em></p>
+
+    </div>
+    <ng-template #triggerTemplate>
+      <p>Film ID: <b>{{selectedRequest.details.data.filmName}}</b></p>
+      <p>Trigger Timestamp: <b>{{selectedRequest.details.data.timestamp}}</b></p>
+      <p>Details: <b>{{selectedRequest.details.data.details}}</b></p>
+    </ng-template>
+    <hr>
+    <button type="button" class="btn btn-success m-1" (click)="onConfirmModal('Approved')" >Approve</button>
+    <button type="button" class="btn btn-danger m-1" (click)="onConfirmModal('Rejected')" >Reject</button>
+    <button type="button" class="btn btn-secondary m-1" (click)="onDeclineModal()">Cancel</button>
+  </div>
+</ng-template>
+<ng-template #requestActionedModal>
+  <div class="modal-body text-center">
+    <h3>Viewing details for request {{selectedRequest.requestId}}.</h3>
+    <p>Request Made By: <b>{{selectedRequest.madeBy_email}}</b></p>
+    <p>Request Made By: <b>{{selectedRequest.madeBy_email}}</b></p>
+    <p>Request Status: <b>{{selectedRequest.status}}</b></p>
+    <p>Request Type: <b>{{selectedRequest.details.requestType}}</b></p>
+    <hr>
+    <div *ngIf="selectedRequest.details.requestType == 'New Film'; else triggerTemplate">
+      <p>Film Name: <b>{{selectedRequest.details.data.filmName}}</b></p>
+      <p>Film Desc: <b>{{selectedRequest.details.data.filmDesc}}</b></p>
+      <p>Genre: <b>{{selectedRequest.details.data.genre}}</b></p>
+      <p>Run Time: <b>{{selectedRequest.details.data.runtime}}</b></p>
+      <p><em>Image URL Can be added by editing the film once the request is approved.</em></p>
+
+    </div>
+    <ng-template #triggerTemplate>
+      <p>Film ID: <b>{{selectedRequest.details.data.filmName}}</b></p>
+      <p>Trigger Timestamp: <b>{{selectedRequest.details.data.timestamp}}</b></p>
+      <p>Details: <b>{{selectedRequest.details.data.details}}</b></p>
+    </ng-template>
+    <hr>
+    <button type="button" class="btn btn-secondary m-1" (click)="onDeclineModal()">Cancel</button>
+  </div>
+</ng-template>

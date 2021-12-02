@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { LoadingService } from '../services/loading.service';
 import { RestService } from '../services/rest.service';
@@ -14,7 +15,12 @@ export class ManageRequestsComponent implements OnInit {
   pendingRequests: any = [];
   approvedRequests: any = [];
   rejectedRequests: any = [];
+  selectedRequest: any;
 
+  messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  messageStateObs: Observable<boolean> = this.messageState.asObservable();
+
+  modalRef?: BsModalRef;
 
   constructor(private modalService: BsModalService, public loadingService: LoadingService, private router: Router, private restService: RestService, private authService: AuthService) { }
 
@@ -74,4 +80,32 @@ export class ManageRequestsComponent implements OnInit {
     });
   }
 
+  onSubmit(template: TemplateRef<any>, selectedRequest: number): void {
+    this.selectedRequest = selectedRequest;
+    console.log("Selected Request:", this.selectedRequest);
+    this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
+  }
+
+  onConfirmModal(status: string){
+    let updateDetails = {
+      reviewedBy: this.authService.getUserId(),
+      status: status,
+      requestId: this.selectedRequest.requestId,
+
+    };
+    this.restService.updateRequest(updateDetails, this.selectedRequest).subscribe(async (updateResult: any) => {
+      console.log(updateResult);
+      this.modalRef?.hide();
+      this.reloadRequests();
+      this.messageState.next(true);
+    });
+  }
+
+  onCloseToast(){
+    this.messageState.next(false);
+  }
+
+  onDeclineModal(){
+    this.modalRef?.hide();
+  }
 }

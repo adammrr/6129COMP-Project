@@ -24,6 +24,20 @@ export class FilmPageComponent implements OnInit {
       this.loadingService.setLoaded(true);
     });
   }
+
+  reloadFilms(): void {
+    this.loadingService.setLoaded(false);
+
+    this.restService.getFilms().subscribe( data => {
+      this.films = data;
+      console.log(data);
+      this.loadingService.setLoaded(true);
+    });
+  }
+
+  newFilm(): void {
+
+  }
 }
 
 

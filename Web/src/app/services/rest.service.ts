@@ -100,6 +100,10 @@ export class RestService {
   getUserEvents(id:any): Observable<any> {
     return this.httpClient.post(`${this.REST_API}/user-events`, {userId: id});
   }
+  // Get film triggers
+  getFilmTriggers(id:any): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/film-triggers`, {filmId: id});
+  }
   // Get user epilepsy details
   getUserEpilepsyDetails(id:any): Observable<any> {
     return this.httpClient.post(`${this.REST_API}/user-epilepsy`, {userId: id});
@@ -120,6 +124,16 @@ export class RestService {
     console.log(data);
     return this.httpClient.post(`${this.REST_API}/delete-film`, {filmId: data});
   }
+  // delete trigger
+  deleteTrigger(data:any): Observable<any> {
+    console.log(data);
+    return this.httpClient.post(`${this.REST_API}/delete-trigger`, {triggerId: data});
+  }
+  // Update request
+  updateRequest(data:any, request:any): Observable<any> {
+    console.log(data);
+    return this.httpClient.post(`${this.REST_API}/update-request`, {data: data, request: request});
+  }
   // Update user
   updateUser(data:any): Observable<any> {
     console.log(data);
@@ -137,6 +151,10 @@ export class RestService {
   // Create new user
   createUser(data: any): Observable<any> {
     return this.httpClient.post(`${this.REST_API}/create-user`, {data: data});
+  }
+  // Create new film
+  createFilm(data: any): Observable<any> {
+    return this.httpClient.post(`${this.REST_API}/create-film`, {data: data});
   }
   // Create new practice
   createPractice(data: any): Observable<any> {

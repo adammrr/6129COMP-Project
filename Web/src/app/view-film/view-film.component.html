@@ -10,8 +10,8 @@
     <div class="row">
       <div class="col-sm">
         <div class="form-floating my-1">
-          <input type="text" class="form-control" id="userIdInput" placeholder="0" [value]="film.filmId" readonly formControlName="userId">
-          <label for="userIdInput">Film Id</label>
+          <input type="text" class="form-control" id="filmIdInput" placeholder="0" [value]="film.filmId" readonly formControlName="filmId">
+          <label for="filmIdInput">Film Id</label>
         </div>
         <div class="form-floating my-1">
           <input type="text" class="form-control" id="genreInput" placeholder="Genre" formControlName="genre" required [readonly]="signedInAccountType == 'practitioner' ? true : null">
@@ -49,10 +49,42 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseToast()"></button>
     </div>
     <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" (click)="onSubmit(confirmModal)" *ngIf="signedInAccountType != 'practitioner'" [disabled]="!filmDetailsForm.valid">Update Film</button>
-    <button class="btn btn-danger btn-block fa-lg gradient-custom-2 mb-1" (click)="onSubmit(confirmDeleteModal)" *ngIf="signedInAccountType != 'practitioner'" [disabled]="!filmDetailsForm.valid">Delete FIlm</button>
+    <button class="btn btn-danger btn-block fa-lg gradient-custom-2 mb-1" (click)="onSubmit(confirmDeleteModal)" *ngIf="signedInAccountType != 'practitioner'">Delete Film</button>
     <p *ngIf="!filmDetailsForm.valid">Please ensure the form above is fully filled in.</p>
   </form>
 
+  <div *ngIf="triggers.length > 0;else noTriggers">
+    <h3 class="mb-4 text-center mt-3">You are viewing triggers attached to <b>{{film.filmName}}</b></h3>
+    <div class="alert alert-success alert-dismissible " *ngIf="messageTriggerState | async" role="alert">
+      <div class="d-flex align-items-center" role="alert">
+          <img class="img-fluid" src="/assets/img/hand-thumbs-up.svg" alt="svg"> Trigger has successfully been deleted
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseTriggerToast()"></button>
+    </div>
+    <div class="table-responsive" >
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center" scope="col">Timestamp</th>
+            <th class="text-center" scope="col">Trigger Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let trigger of triggers">
+            <td class="text-center">{{trigger.timestamp}}</td>
+            <td class="text-center">{{trigger.description}}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  <ng-template #noTriggers>
+    <div class="container text-center mt-3">
+      <h3 class="mb-4 text-center">There are no triggers currently assigned to <b>{{film.filmName}}</b></h3>
+    </div>
+  </ng-template>
 </div>
 
 <ng-template #loadingIcon><app-loading></app-loading></ng-template>

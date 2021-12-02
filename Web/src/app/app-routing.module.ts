@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { FilmPageComponent } from './film-page/film-page.component';
+import { NewFilmComponent } from './film-page/new-film/new-film.component';
 import { ManageAccountPageComponent } from './manage-account-page/manage-account-page.component';
 import { ManagePracticesComponent } from './manage-practices/manage-practices.component';
 import { NewPracticeComponent } from './manage-practices/new-practice/new-practice.component';
@@ -25,6 +26,7 @@ const routes: Routes = [
 
   { path: 'home', component: DashboardPageComponent, canActivate: [AuthGuard] },
   { path: 'films', component: FilmPageComponent, canActivate: [AuthGuard] },
+  { path: 'films/new-film', component: NewFilmComponent, canActivate: [AuthGuard] },
   { path: 'view-film/:id', component: ViewFilmComponent, canActivate: [AuthGuard] },
 
   { path: 'manage-users', component: ManageUsersComponent, canActivate: [AuthGuard] },
