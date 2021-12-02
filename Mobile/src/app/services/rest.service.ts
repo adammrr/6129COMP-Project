@@ -43,43 +43,51 @@ export class RestService {
     }
 
     public getRequests() {
-      return this.httpClient.get(`${this.REST_API}/requests`);
+        return this.httpClient.get(`${this.REST_API}/requests`);
     }
 
     public getRequestsById(id: any): Observable<any> {
-      const API_URL = `${this.REST_API}/requests/${id}`;
-      return this.httpClient.get(API_URL, { headers: this.httpHeaders })
-          .pipe(map((res: any) => res || { error: 'ERROR' }),
-              catchError(this.handleError)
-          );
+        const API_URL = `${this.REST_API}/requests/${id}`;
+        return this.httpClient.get(API_URL, { headers: this.httpHeaders })
+            .pipe(map((res: any) => res || { error: 'ERROR' }),
+                catchError(this.handleError)
+            );
+    }
+
+    public getSeizureHistory(id: any): Observable<any> {
+        const API_URL = `${this.REST_API}/history/${id}`;
+        return this.httpClient.get(API_URL, { headers: this.httpHeaders })
+            .pipe(map((res: any) => res || { error: 'ERROR' }),
+                catchError(this.handleError)
+            );
     }
 
     /** GET Ends */
 
     /** POST */
 
-    public newFilmRequest(id: number,filmDetails: {filmName: string, filmDesc: string, genre: string, runtime:string}){
+    public newFilmRequest(id: number, filmDetails: { filmName: string, filmDesc: string, genre: string, runtime: string }) {
         console.log(id);
         console.log(filmDetails);
         const API_URL = `${this.REST_API}`;
-        return this.httpClient.post(`${this.REST_API}/create-film-request`, {headers: this.httpHeaders, id, filmDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
-        catchError(this.handleError));
+        return this.httpClient.post(`${this.REST_API}/create-film-request`, { headers: this.httpHeaders, id, filmDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
+            catchError(this.handleError));
     }
 
-    public newTriggerRequest(id: number,triggerDetails: {film: string, timestamp: string, details: string}){
+    public newTriggerRequest(id: number, triggerDetails: { film: string, timestamp: string, details: string }) {
         console.log(id);
         console.log(triggerDetails);
         const API_URL = `${this.REST_API}`;
-        return this.httpClient.post(`${this.REST_API}/create-trigger-request`, {headers: this.httpHeaders, id, triggerDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
-        catchError(this.handleError));
+        return this.httpClient.post(`${this.REST_API}/create-trigger-request`, { headers: this.httpHeaders, id, triggerDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
+            catchError(this.handleError));
     }
 
-    public newSeizure(id: number,seizureDetails:{trigger: number,severity:number,details: string}){
+    public newSeizure(id: number, seizureDetails: { trigger: number, severity: number, details: string }) {
         console.log(id);
         console.log(seizureDetails);
         const API_URL = `${this.REST_API}`;
-        return this.httpClient.post(`${this.REST_API}/log-seizure`, {headers: this.httpHeaders, id, seizureDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
-        catchError(this.handleError));
+        return this.httpClient.post(`${this.REST_API}/log-seizure`, { headers: this.httpHeaders, id, seizureDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
+            catchError(this.handleError));
     }
 
     public register(registrationDetails: { firstName: string; surname: string; gender: string; dob: string; address1: string; address2: string; address3: string; email: string; password: string }) {

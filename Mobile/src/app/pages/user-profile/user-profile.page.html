@@ -38,6 +38,10 @@
             <ion-segment-button value="seizure-information">
                 <ion-label>seizure Information</ion-label>
             </ion-segment-button>
+
+            <ion-segment-button value="seizure-history">
+                <ion-label>seizure Information</ion-label>
+            </ion-segment-button>
         </ion-segment>
     </ion-toolbar>
 
@@ -151,6 +155,19 @@
             </ion-col>
         </ion-row>
     </form>
-</ion-content>
 
+    <div *ngIf="segmentModel === 'seizure-history'">
+        <ion-card *ngFor="let h of history">
+            <ion-card-header>
+                <ion-card-title>{{h.filmName}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <p>Trigger: {{h.timestamp}} - {{h.description}} </p>
+                <p>Severity: {{h.severity}} </p>
+                <p>Extra Details:</p>
+                <p>{{h.details}}</p>
+            </ion-card-content>
+        </ion-card>        
+    </div>
+</ion-content>
 <app-footer></app-footer>

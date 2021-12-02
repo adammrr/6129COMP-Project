@@ -11,11 +11,11 @@ import { RestService } from 'src/app/services/rest.service';
 
 export class WelcomePage implements OnInit {
 
-    public user;
+    public user: any;
 
-    public pendingRequests = [];
+    public pendingRequests:any = [];
 
-    public pending;
+    public seizures:any = [];
 
     constructor(
         private authService: AuthService,
@@ -23,18 +23,29 @@ export class WelcomePage implements OnInit {
     ) { }
 
     public ngOnInit(): void {
+
+        this.seizures = [];
+        this.pendingRequests = [];
+
         this.user = this.authService.getLoggedInUser();
+
         this.restService.getRequestsById(this.user.userId).subscribe(async (result: any) => {
             if (result) {
                 for (const request of result.data) {
-                    if (request.status === 'pending') {
+                    if (request.status === 'Pending') {
                         this.pendingRequests.push(request);
                     }
                 }
             }
-        });
-        this.pending = this.pendingRequests.length;
-        console.log(this.pending)
+        })
+
+        this.restService.getSeizureHistory(this.user.userId).subscribe(async (result: any) => {
+            this.seizures = result.data;
+            console.log(result);
+        })
+        
+        console.log("USER: ", this.user.userId);
+        console.log("PENDING: ", this.pendingRequests);
+        console.log("SEIZURES: ", this.seizures);
     }
 }
-

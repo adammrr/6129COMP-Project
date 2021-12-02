@@ -70,13 +70,9 @@ export class CreateRequestPage implements OnInit {
       genre: formValues.genre,
       runtime: formValues.runtime
     };
-    console.log(this.user.userId);
     this.restService.newFilmRequest(this.user.userId, this.filmDetails).subscribe(async (result: any) => {
     });
-    console.log(this.filmDetails);
     this.alert.presentToast('New film request submitted');
-    console.log(this.user.userId);
-    console.log("Button pressed");
     this.navCtrl.back();
   }
 
@@ -87,13 +83,9 @@ export class CreateRequestPage implements OnInit {
       timestamp: formValues.timestamp,
       details: formValues.details
     };
-    console.log(this.user.userId);
     this.restService.newTriggerRequest(this.user.userId, this.triggerDetails).subscribe(async (result: any) => {
     });
-    console.log(this.triggerDetails);
     this.alert.presentToast('New film request submitted');
-    console.log(this.user.userId);
-    console.log("Button pressed");
     this.navCtrl.back();
   }
 }

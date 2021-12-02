@@ -23,6 +23,8 @@ export class UserProfilePage implements OnInit {
     public segmentModel = 'user-information';
     public userInformationFormChanged = 0;
 
+    public history:any = [];
+
     constructor(
         private authService: AuthService,
         private restService: RestService,
@@ -52,6 +54,21 @@ export class UserProfilePage implements OnInit {
 
     public ngOnInit(): void {
         this.user = this.authService.getLoggedInUser();
+
+        console.log(this.user.userId);
+
+        this.restService.getSeizureHistory(this.user.userId).subscribe(async (result: any) => {
+            //console.log(result)
+            console.log(result.data)
+            this.history= result.data;
+            // for( let r in result.data){
+            //     this.history.push(r);
+            //     console.log(r);
+            // }
+        })
+
+        console.log("HISTORY RESULTS: ",this.history);
+
         this.userInformationForm.patchValue({
             firstName: this.user.firstName,
             surname: this.user.surname,

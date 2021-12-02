@@ -9,75 +9,74 @@
 
 <ion-content>
 
-<app-central-container>
-    <ion-button expand="block" color="primary" (click)="toggleFilm()" [hidden]="hideFilmButton">Add a new Film</ion-button>
-    <div [hidden]="hideFilm" class="newFilmForm">
-    <form [formGroup]="newFilm">
-        <ion-item lines="full">
-            <ion-label position="floating">Film Name</ion-label>
-            <ion-input type="text" formControlName="filmName"></ion-input>
-        </ion-item>
+    <app-central-container>
+        <ion-button expand="block" color="primary" (click)="toggleFilm()" [hidden]="hideFilmButton">Add a new Film
+        </ion-button>
+        <div [hidden]="hideFilm" class="newFilmForm">
+            <form [formGroup]="newFilm">
+                <ion-item lines="full">
+                    <ion-label position="floating">Film Name</ion-label>
+                    <ion-input type="text" formControlName="filmName"></ion-input>
+                </ion-item>
 
-        <ion-item lines="full">
-            <ion-label position="floating">Film Description</ion-label>
-            <ion-input type="text" formControlName="filmDesc"></ion-input>
-        </ion-item>
+                <ion-item lines="full">
+                    <ion-label position="floating">Film Description</ion-label>
+                    <ion-input type="text" formControlName="filmDesc"></ion-input>
+                </ion-item>
 
-        <ion-item lines="full">
-            <ion-label position="floating">Genre</ion-label>
-            <ion-input type="text" formControlName="genre"></ion-input>
-        </ion-item>
+                <ion-item lines="full">
+                    <ion-label position="floating">Genre</ion-label>
+                    <ion-input type="text" formControlName="genre"></ion-input>
+                </ion-item>
 
-        <ion-item lines="full">
-            <ion-label position="floating">Runtime</ion-label>
-            <ion-input placeholder="hh:mm" type="text" formControlName="runtime"></ion-input>
-        </ion-item>
+                <ion-item lines="full">
+                    <ion-label position="floating">Runtime</ion-label>
+                    <ion-input placeholder="hh:mm" type="text" formControlName="runtime"></ion-input>
+                </ion-item>
 
-        <ion-row>
-            <ion-col>
-                <ion-button type="submit" color="primary" expand="block" (click)="submitFilm()">Submit Request</ion-button>
-            </ion-col>
-        </ion-row>
-    </form>
-    </div>
-                    
-    <span align-self-center class="divider line one-line" [hidden]="hideSpace">or</span>
+                <ion-row>
+                    <ion-col>
+                        <ion-button type="submit" color="primary" expand="block" (click)="submitFilm()">Submit Request
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </form>
+        </div>
 
-    <ion-button expand="block" color="primary" (click)="toggleTrigger()" [hidden]="hideTriggerButton">Add a new epileptic trigger</ion-button>
-    <div [hidden]="hideTrigger" class="newTriggerForm">
-    <form [formGroup]="newTrigger" >
-        <ion-item lines="full" >
-            <ion-label position="floating">Film Name</ion-label>
-            <ion-select formControlName="film">
-                <ion-select-option *ngFor="let film of filmList" [value]="film.filmId">{{film.filmName}}</ion-select-option>
-            </ion-select>
-        </ion-item>
+        <span align-self-center class="divider line one-line" [hidden]="hideSpace">or</span>
 
-        <ion-item lines="full">
-            <ion-label position="floating">What time does the trigger happen?</ion-label>
-            <ion-input type="text" placeholder="hh:mm:ss" formControlName="timestamp"></ion-input>
-        </ion-item>
+        <ion-button expand="block" color="primary" (click)="toggleTrigger()" [hidden]="hideTriggerButton">Add a new
+            epileptic trigger</ion-button>
+        <div [hidden]="hideTrigger" class="newTriggerForm">
+            <form [formGroup]="newTrigger">
+                <ion-item lines="full">
+                    <ion-label position="floating">Film Name</ion-label>
+                    <ion-select formControlName="film">
+                        <ion-select-option *ngFor="let film of filmList" [value]="film.filmId">{{film.filmName}}
+                        </ion-select-option>
+                    </ion-select>
+                </ion-item>
 
-        <ion-item lines="full">
-            <ion-label position="floating">Details of trigger</ion-label>
-            <ion-input type="text" formControlName="details"></ion-input>
-        </ion-item>
+                <ion-item lines="full">
+                    <ion-label position="floating">What time does the trigger happen?</ion-label>
+                    <ion-input type="text" placeholder="hh:mm:ss" formControlName="timestamp"></ion-input>
+                </ion-item>
 
-        <ion-row>
-            <ion-col>
-                <ion-button type="submit" color="primary" expand="block" (click)="submitTrigger()">Submit Request</ion-button>
-            </ion-col>
-        </ion-row>
-    </form>
-    </div>
+                <ion-item lines="full">
+                    <ion-label position="floating">Details of trigger</ion-label>
+                    <ion-input type="text" formControlName="details"></ion-input>
+                </ion-item>
 
-
-</app-central-container>
-
-
-
+                <ion-row>
+                    <ion-col>
+                        <ion-button type="submit" color="primary" expand="block" (click)="submitTrigger()">Submit
+                            Request</ion-button>
+                    </ion-col>
+                </ion-row>
+            </form>
+        </div>
 
 
+    </app-central-container>
 </ion-content>
-
 <app-footer></app-footer>
