@@ -165,6 +165,7 @@ app.get('/read-user/:id', function (req, res) {
     });
 });
 
+// Retrieve user seizure history
 app.get('/history/:id', function (req, res) {
     let user_id = req.params.id;
 
@@ -199,7 +200,7 @@ app.get('/epilepsy-information/:id', function (req, res) {
 /** GET Ends */
 
 /** POST */
-
+// POST film request to db
 app.post('/create-film-request', function (req, res) {
     console.log(req.body);
     let userId = req.body.id;
@@ -214,6 +215,7 @@ app.post('/create-film-request', function (req, res) {
     });
 });
 
+// POST tirgger to request db
 app.post('/create-trigger-request', function (req, res) {
     console.log(req.body);
     let userId = req.body.id;
@@ -228,6 +230,7 @@ app.post('/create-trigger-request', function (req, res) {
     });
 });
 
+// POST seizure to db
 app.post('/log-seizure', function (req, res) {
     console.log(req.body);
     let userId = req.body.id;
