@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { AnimationStyleMetadata } from '@angular/animations';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -6,6 +6,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
 import { RestService } from 'src/app/services/rest.service';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class ManageAccountPageComponent implements OnInit {
   public messageStateObs: Observable<boolean> = this.messageState.asObservable();
   private modalRef?: BsModalRef;
 
-  constructor(private modalService: BsModalService, private route: ActivatedRoute, private restService: RestService, public loadingService: LoadingService, private formBuilder: FormBuilder) { }
+  constructor(private modalService: BsModalService, private route: ActivatedRoute, private authService: AuthService, private restService: RestService, public loadingService: LoadingService, private formBuilder: FormBuilder) { }
   //Form Builder Group for the Logged in User details
   public detailsForm = this.formBuilder.group({
     userId: '',
@@ -36,14 +37,63 @@ export class ManageAccountPageComponent implements OnInit {
     postcode: ''
   });
 
-  //Initialises the page and loads the user details
+
+  //Initialise page with data for user details, user epilepsy details and practices assigned to
   public ngOnInit(): void {
     this.loadingService.setLoaded(false);
-    this.restService.getUser(0).subscribe( data => {
-      this.user = data;
-      console.log(data);
+    this.userId = this.authService.getUserId();
+    console.log("User ID:", this.userId);
+
+    this.restService.getUser(this.userId).subscribe( data => {
+      this.user = data.data;
+      this.detailsForm.controls['userId'].setValue(this.user.userId);
+      this.detailsForm.controls['email'].setValue(this.user.email);
+      this.detailsForm.controls['firstName'].setValue(this.user.firstName);
+      this.detailsForm.controls['surname'].setValue(this.user.surname);
+      this.detailsForm.controls['gender'].setValue(this.user.gender);
+      this.detailsForm.controls['dob'].setValue(this.user.dob.substring(0,10));
+      this.detailsForm.controls['address1'].setValue(this.user.address1);
+      this.detailsForm.controls['address2'].setValue(this.user.address2);
+      this.detailsForm.controls['address3'].setValue(this.user.address3);
+      this.detailsForm.controls['postcode'].setValue(this.user.postcode);
       this.loadingService.setLoaded(true);
     });
   }
+
+  //Open generic modal
+  public onSubmit(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+
+  //Close popup toast
+  public onCloseToast() {
+    this.messageState.next(false);
+  }
+
+  //Update user details on confirm from modal
+  public onConfirmModal() {
+    let updateDetails = {
+      userId: this.detailsForm.controls['userId'].value,
+      email: this.detailsForm.controls['email'].value,
+      firstName: this.detailsForm.controls['firstName'].value,
+      surname: this.detailsForm.controls['surname'].value,
+      gender: this.detailsForm.controls['gender'].value,
+      dob: this.detailsForm.controls['dob'].value,
+      address1: this.detailsForm.controls['address1'].value,
+      address2: this.detailsForm.controls['address2'].value,
+      address3: this.detailsForm.controls['address3'].value,
+      postcode: this.detailsForm.controls['postcode'].value,
+    };
+    this.restService.updateUser(updateDetails).subscribe(async (updateResult: any) => {
+      this.modalRef?.hide();
+      this.messageState.next(true);
+    });
+  }
+
+  //Close modal
+  public onCloseModal() {
+    this.modalRef?.hide();
+  }
+
 }
 
