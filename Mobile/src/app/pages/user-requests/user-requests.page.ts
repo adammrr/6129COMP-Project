@@ -21,6 +21,9 @@ export class UserRequestsPage implements OnInit {
     ) { }
 
     public ngOnInit(): void {
+        this.pendingRequests = [];
+        this.approvedRequests = [];
+        this.rejectedRequests = [];
         this.user = this.authService.getLoggedInUser();
         this.restService.getRequestsById(this.user.userId).subscribe(async (result: any) => {
             if (result) {
