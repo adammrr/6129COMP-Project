@@ -11,16 +11,17 @@ import { RestService } from '../services/rest.service';
   styleUrls: ['./view-practices.component.scss']
 })
 export class ViewPracticesComponent implements OnInit {
+  //Variables
   public practiceId: number | undefined;
   public userId: number | undefined;
-  
-  modalRef?: BsModalRef;
-  selectedPractice:any;
-  practices: any = [];
+  private modalRef?: BsModalRef;
+  public selectedPractice:any;
+  public practices: any = [];
 
   constructor(private modalService: BsModalService, public loadingService: LoadingService, private restService: RestService, private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
 
-  ngOnInit(): void {
+  //Initialise data
+  public ngOnInit(): void {
     this.loadingService.setLoaded(false);
     this.userId = this.authService.getUserId();
 
@@ -31,18 +32,20 @@ export class ViewPracticesComponent implements OnInit {
       this.practices = data;
       this.loadingService.setLoaded(true);
     });
-
   }
 
-  openPracticeModal(template: TemplateRef<any>, i: number) {
+  //Open modal
+  public openPracticeModal(template: TemplateRef<any>, i: number) {
     this.selectedPractice = this.practices.data[i];
     this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
   }
-  
-  onCloseModal() {
+
+  //Close Modal
+  public onCloseModal() {
     this.modalRef?.hide();
   }
 
+  //Reload practices data
   public reloadPractices(): void {
     this.loadingService.setLoaded(false);
     this.restService.getUserPracticeLinks(this.userId).subscribe( data => {

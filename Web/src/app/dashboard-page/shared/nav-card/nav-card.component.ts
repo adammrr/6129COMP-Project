@@ -7,12 +7,12 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class NavCardComponent implements OnInit {
 
-  @Input() title: string = "";
-  @Input() svg: string = "";
+  @Input() public title: string = "";
+  @Input() public svg: string = "";
 
   constructor() {  }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
 }

@@ -6,13 +6,10 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './navigation-bar.component.html',
   styleUrls: ['./navigation-bar.component.scss']
 })
-export class NavigationBarComponent implements OnInit {
+export class NavigationBarComponent {
 
-  collapsed = true;
+  public collapsed = true;
 
   constructor(public authService: AuthService) { }
-
-  ngOnInit(): void {
-  }
 
 }

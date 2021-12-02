@@ -12,20 +12,20 @@ import { RestService } from 'src/app/services/rest.service';
   styleUrls: ['./new-user.component.scss']
 })
 export class NewUserComponent implements OnInit {
+  //Variables
   private sub: any;
   public type: string = "patient";
-  modalRef?: BsModalRef;
-
-  messageConfirmState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageConfirmStateObs: Observable<boolean> = this.messageConfirmState.asObservable();
-
-  messageErrorState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageErrorStateObs: Observable<boolean> = this.messageErrorState.asObservable();
-  errorMessage: string = "";
+  private modalRef?: BsModalRef;
+  public messageConfirmState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageConfirmStateObs: Observable<boolean> = this.messageConfirmState.asObservable();
+  public messageErrorState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageErrorStateObs: Observable<boolean> = this.messageErrorState.asObservable();
+  public errorMessage: string = "";
 
   constructor(private route: ActivatedRoute, public loadingService: LoadingService, private restService: RestService, private formBuilder: FormBuilder, private modalService: BsModalService) { }
 
-  detailsForm = this.formBuilder.group({
+  //Form Builder Group for the New User Form
+  public detailsForm = this.formBuilder.group({
     email: '',
     firstName: '',
     surname: '',
@@ -37,11 +37,13 @@ export class NewUserComponent implements OnInit {
     postcode: ''
   });
 
-  onSubmit(template: TemplateRef<any>): void {
+  //Opens the modal
+  public onSubmit(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
-  onConfirmModal(){
+  //Confirm modal and do action
+  public onConfirmModal(){
     let updateDetails = {
       email: this.detailsForm.controls['email'].value,
       firstName: this.detailsForm.controls['firstName'].value,
@@ -55,40 +57,42 @@ export class NewUserComponent implements OnInit {
       accountType: this.type
     };
     this.restService.createUser(updateDetails).subscribe(async (updateResult: any) => {
-      console.log(updateResult);
       this.onCloseConfirmToast();
       this.onCloseErrorToast();
-
       if(updateResult.error == true){
         this.errorMessage = updateResult.data.code;
         this.messageErrorState.next(true);
       }else{
         this.messageConfirmState.next(true);
       }
-
       this.modalRef?.hide();
     });
   }
 
-  onDeclineModal(){
+  //Close modal
+  public onDeclineModal(){
     this.modalRef?.hide();
   }
 
-  onCloseConfirmToast(){
+  //Close confirm popup toast
+  public onCloseConfirmToast(){
     this.messageConfirmState.next(false);
   }
 
-  onCloseErrorToast(){
+  //Close error popup toast
+  public onCloseErrorToast(){
     this.messageErrorState.next(false);
   }
 
-  ngOnInit(): void {
+  //Initilaise page and get type from router link
+  public ngOnInit(): void {
     this.sub = this.route.params.subscribe(params => {
       this.type = params['type'];
     });
   }
 
-  ngOnDestroy() {
+  //On destroy, kill the subscription
+  public ngOnDestroy() {
     this.sub.unsubscribe();
   }
 

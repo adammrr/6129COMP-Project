@@ -13,31 +13,32 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class NewFilmComponent implements OnInit {
 
-  modalRef?: BsModalRef;
+  //Variables
+  private modalRef?: BsModalRef;
+  public messageConfirmState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageConfirmStateObs: Observable<boolean> = this.messageConfirmState.asObservable();
+  public messageErrorState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageErrorStateObs: Observable<boolean> = this.messageErrorState.asObservable();
+  public errorMessage: string = "";
 
-  messageConfirmState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageConfirmStateObs: Observable<boolean> = this.messageConfirmState.asObservable();
+  constructor(public loadingService: LoadingService, private restService: RestService, private formBuilder: FormBuilder, private modalService: BsModalService) { }
 
-  messageErrorState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageErrorStateObs: Observable<boolean> = this.messageErrorState.asObservable();
-  errorMessage: string = "";
-
-  constructor(private route: ActivatedRoute, public loadingService: LoadingService, private restService: RestService, private formBuilder: FormBuilder, private modalService: BsModalService) { }
-
-  filmDetailsForm = this.formBuilder.group({
+  //Form Builder for new film details
+  public filmDetailsForm = this.formBuilder.group({
     filmName: '',
     filmDescription: '',
     genre: '',
     runTime: '',
     imageURL: '',
-
   });
 
-  onSubmit(template: TemplateRef<any>): void {
+  //Opens relevant modal
+  public onSubmit(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
-  onConfirmModal(){
+  //When modal confirm is clicked
+  public onConfirmModal(){
     let updateDetails = {
       filmName: this.filmDetailsForm.controls['filmName'].value,
       filmDescription: this.filmDetailsForm.controls['filmDescription'].value,
@@ -62,23 +63,22 @@ export class NewFilmComponent implements OnInit {
     });
   }
 
-  onDeclineModal(){
+  //Closes the modal
+  public onDeclineModal(){
     this.modalRef?.hide();
   }
 
-  onCloseConfirmToast(){
+  //Closes the Confirm Popup
+  public onCloseConfirmToast(){
     this.messageConfirmState.next(false);
   }
 
-  onCloseErrorToast(){
+  //Closes the Error Popup
+  public onCloseErrorToast(){
     this.messageErrorState.next(false);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
   }
-
-  ngOnDestroy() {
-  }
-
 }

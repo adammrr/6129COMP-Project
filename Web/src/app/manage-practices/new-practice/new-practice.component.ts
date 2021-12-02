@@ -12,18 +12,17 @@ import { RestService } from 'src/app/services/rest.service';
   styleUrls: ['./new-practice.component.scss']
 })
 export class NewPracticeComponent implements OnInit {
-  modalRef?: BsModalRef;
-
-  messageConfirmState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageConfirmStateObs: Observable<boolean> = this.messageConfirmState.asObservable();
-
-  messageErrorState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageErrorStateObs: Observable<boolean> = this.messageErrorState.asObservable();
-  errorMessage: string = "";
+  //Variables
+  private modalRef?: BsModalRef;
+  public messageConfirmState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageConfirmStateObs: Observable<boolean> = this.messageConfirmState.asObservable();
+  public messageErrorState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageErrorStateObs: Observable<boolean> = this.messageErrorState.asObservable();
+  public errorMessage: string = "";
 
   constructor(private route: ActivatedRoute, public loadingService: LoadingService, private restService: RestService, private formBuilder: FormBuilder, private modalService: BsModalService) { }
-
-  detailsForm = this.formBuilder.group({
+  //Form builder group for practice details form
+  public detailsForm = this.formBuilder.group({
     practiceName: '',
     address1: '',
     address2: '',
@@ -32,11 +31,13 @@ export class NewPracticeComponent implements OnInit {
     telephone: ''
   });
 
-  onSubmit(template: TemplateRef<any>): void {
+  //Open the relevant modal
+  public onSubmit(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
-  onConfirmModal(){
+  //Confirm modal and take action
+  public onConfirmModal(){
     let updateDetails = {
       practiceName: this.detailsForm.controls['practiceName'].value,
       address1: this.detailsForm.controls['address1'].value,
@@ -49,31 +50,30 @@ export class NewPracticeComponent implements OnInit {
       console.log(updateResult);
       this.onCloseConfirmToast();
       this.onCloseErrorToast();
-
       if(updateResult.error == true){
         this.errorMessage = updateResult.data.code;
         this.messageErrorState.next(true);
       }else{
         this.messageConfirmState.next(true);
       }
-
       this.modalRef?.hide();
     });
   }
 
-  onDeclineModal(){
+  //Close the Modal
+  public onDeclineModal(){
     this.modalRef?.hide();
   }
 
-  onCloseConfirmToast(){
+  //Close the Confirm Popup
+  public onCloseConfirmToast(){
     this.messageConfirmState.next(false);
   }
 
-  onCloseErrorToast(){
+  //Close the Error Popup
+  public onCloseErrorToast(){
     this.messageErrorState.next(false);
   }
 
-  ngOnInit(): void {
-
-  }
+  public ngOnInit(): void { }
 }

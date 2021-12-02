@@ -12,24 +12,25 @@ import { RestService } from '../services/rest.service';
   styleUrls: ['./manage-requests.component.scss']
 })
 export class ManageRequestsComponent implements OnInit {
-  pendingRequests: any = [];
-  approvedRequests: any = [];
-  rejectedRequests: any = [];
-  selectedRequest: any;
-
-  messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageStateObs: Observable<boolean> = this.messageState.asObservable();
-
-  modalRef?: BsModalRef;
+  //Variables
+  public pendingRequests: any = [];
+  public approvedRequests: any = [];
+  public rejectedRequests: any = [];
+  public selectedRequest: any;
+  public  messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageStateObs: Observable<boolean> = this.messageState.asObservable();
+  private modalRef?: BsModalRef;
 
   constructor(private modalService: BsModalService, public loadingService: LoadingService, private router: Router, private restService: RestService, private authService: AuthService) { }
 
-  ngOnInit(): void {
+  //Initialise data, load the requests in
+  public ngOnInit(): void {
     this.loadingService.setLoaded(false);
 
     if(this.authService.getAccountType() != 'administrator'){
       this.router.navigate(['/home']);
     }
+
     this.restService.getRequests("Pending").subscribe( data => {
       this.pendingRequests = data.data;
       for (let i = 0; i < this.pendingRequests.length; i++) {
@@ -54,6 +55,7 @@ export class ManageRequestsComponent implements OnInit {
     });
   }
 
+  //Reload the request data
   public reloadRequests(): void {
     this.loadingService.setLoaded(false);
     this.restService.getRequests("Pending").subscribe( data => {
@@ -80,32 +82,34 @@ export class ManageRequestsComponent implements OnInit {
     });
   }
 
-  onSubmit(template: TemplateRef<any>, selectedRequest: number): void {
+  //Open the modal and set selectedRequest to the one clicked
+  public onSubmit(template: TemplateRef<any>, selectedRequest: number): void {
     this.selectedRequest = selectedRequest;
-    console.log("Selected Request:", this.selectedRequest);
     this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
   }
 
-  onConfirmModal(status: string){
+  //Confirm selection and action it
+  public onConfirmModal(status: string){
     let updateDetails = {
       reviewedBy: this.authService.getUserId(),
       status: status,
       requestId: this.selectedRequest.requestId,
-
     };
+
     this.restService.updateRequest(updateDetails, this.selectedRequest).subscribe(async (updateResult: any) => {
-      console.log(updateResult);
       this.modalRef?.hide();
       this.reloadRequests();
       this.messageState.next(true);
     });
   }
 
-  onCloseToast(){
+  //Close popup toast
+  public onCloseToast(){
     this.messageState.next(false);
   }
 
-  onDeclineModal(){
+  //Close modal
+  public onDeclineModal(){
     this.modalRef?.hide();
   }
 }

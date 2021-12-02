@@ -12,18 +12,18 @@ import { RestService } from 'src/app/services/rest.service';
   styleUrls: ['./view-practice.component.scss']
 })
 export class ViewPracticeComponent implements OnInit {
-  practiceId: number = 0;
-  practice:any;
-
-  messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageStateObs: Observable<boolean> = this.messageState.asObservable();
-
+  //Variables
+  public practiceId: number = 0;
+  public practice:any;
+  public messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageStateObs: Observable<boolean> = this.messageState.asObservable();
   private sub: any;
+  private modalRef?: BsModalRef;
 
-  modalRef?: BsModalRef;
   constructor(private modalService: BsModalService, private route: ActivatedRoute, private restService: RestService, public loadingService: LoadingService, private formBuilder: FormBuilder) { }
 
-  detailsForm = this.formBuilder.group({
+  //Form Builder Group for the practice details
+  public detailsForm = this.formBuilder.group({
     practiceId: '',
     practiceName: '',
     address1: '',
@@ -33,11 +33,13 @@ export class ViewPracticeComponent implements OnInit {
     telephone: ''
   });
 
-  onSubmit(template: TemplateRef<any>): void {
+  //Open relevant modal
+  public onSubmit(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
-  onConfirmModal(){
+  //Confirm modal and do action
+  public onConfirmModal(){
     let updateDetails = {
       practiceId: this.detailsForm.controls['practiceId'].value,
       practiceName: this.detailsForm.controls['practiceName'].value,
@@ -54,27 +56,25 @@ export class ViewPracticeComponent implements OnInit {
     });
   }
 
-  onDeclineModal(){
+  //Close modal
+  public onDeclineModal(){
     this.modalRef?.hide();
   }
 
-  onCloseToast(){
+  //Close Popup Toast
+  public onCloseToast(){
     this.messageState.next(false);
   }
 
-  ngOnInit(): void {
-    console.log("START");
+  //Intitilaises the page, loads the practice's data
+  public ngOnInit(): void {
+    this.loadingService.setLoaded(false);
     this.sub = this.route.params.subscribe(params => {
       this.practiceId = +params['id'];
     });
-    console.log("END");
-    console.log("GET USER");
-
-    this.loadingService.setLoaded(false);
     this.restService.getPractice(this.practiceId).subscribe( data => {
       this.practice = data.data;
       console.log(this.practice);
-      this.loadingService.setLoaded(true);
       this.detailsForm.controls['practiceId'].setValue(this.practice.practiceId);
       this.detailsForm.controls['practiceName'].setValue(this.practice.practiceName);
       this.detailsForm.controls['address1'].setValue(this.practice.address1);
@@ -82,9 +82,7 @@ export class ViewPracticeComponent implements OnInit {
       this.detailsForm.controls['address3'].setValue(this.practice.address3);
       this.detailsForm.controls['postcode'].setValue(this.practice.postcode);
       this.detailsForm.controls['telephone'].setValue(this.practice.telephone);
-
-
+      this.loadingService.setLoaded(true);
     });
   }
-
 }

@@ -9,29 +9,20 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./sign-in.component.scss']
 })
 
-export class SignInComponent implements OnInit {
+export class SignInComponent {
 
   constructor(private titleService: Title, private authService: AuthService, private formBuilder: FormBuilder) { this.titleService.setTitle("Sign In"); }
 
-  signInForm = this.formBuilder.group({
+  //Form Builder Group for sign in form
+  public signInForm = this.formBuilder.group({
     email: '',
     password: '',
     rememberMe: false
   })
 
-  ngOnInit(): void {
-  }
-
-  onSubmit(): void {
+  //Form submitted, uses auth service to sign in
+  public onSubmit(): void {
     console.log("Sign In Clicked");
-    //console.log("Email: " + this.signInForm.get("email")?.value);
-    //console.log("Password: " + this.signInForm.get("password")?.value);
-
     this.authService.signIn(this.signInForm.get("email")?.value, this.signInForm.get("password")?.value, this.signInForm.get("rememberMe")?.value);
-  }
-
-  signIn() {
-    //TODO Add login code here
-    console.log("NOT IMPLEMENTED YET");
   }
 }

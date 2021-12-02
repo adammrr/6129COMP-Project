@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './routing-error.component.html',
   styleUrls: ['./routing-error.component.scss']
 })
-export class RoutingErrorComponent implements OnInit {
+export class RoutingErrorComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

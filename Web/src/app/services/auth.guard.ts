@@ -14,6 +14,7 @@ export class AuthGuard implements CanActivate {
     this.authService.isLoggedIn().subscribe((value: boolean) => { this.signedIn = value;});
   };
 
+  //Checks if user is signed into system
   canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
   {
     if (!this.signedIn){
