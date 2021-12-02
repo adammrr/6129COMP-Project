@@ -14,26 +14,26 @@ import { RestService } from 'src/app/services/rest.service';
   styleUrls: ['./view-user.component.scss']
 })
 export class ViewUserComponent implements OnInit {
-  userId: number = 0;
-  user:any;
-  practices:any;
-  practiceLinks:any;
-  selectedPractice:any;
-  returnString: string = "";
-  messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageStateObs: Observable<boolean> = this.messageState.asObservable();
-  messageEpilepsyState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageEpilepsyStateObs: Observable<boolean> = this.messageState.asObservable();
-
-  events: any;
-  signedInAccountType: string = "";
-
+  //Variables
+  public userId: number = 0;
+  public user:any;
+  public practices:any;
+  public practiceLinks:any;
+  public selectedPractice:any;
+  public returnString: string = "";
+  public messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageStateObs: Observable<boolean> = this.messageState.asObservable();
+  public messageEpilepsyState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageEpilepsyStateObs: Observable<boolean> = this.messageState.asObservable();
+  public events: any;
+  public signedInAccountType: string = "";
   private sub: any;
-  modalRef?: BsModalRef;
+  private modalRef?: BsModalRef;
 
   constructor(private location: Location, private modalService: BsModalService, private route: ActivatedRoute, public authService: AuthService, private restService: RestService, public loadingService: LoadingService, private formBuilder: FormBuilder) { }
 
-  detailsForm = this.formBuilder.group({
+  //Form Builder Group for user details form
+  public detailsForm = this.formBuilder.group({
     userId: '',
     email: '',
     firstName: '',
@@ -46,73 +46,79 @@ export class ViewUserComponent implements OnInit {
     postcode: ''
   });
 
-  epilepsyDetailsForm = this.formBuilder.group({
+  //Form Builder Group for user epilepsy details form
+  public epilepsyDetailsForm = this.formBuilder.group({
     seizureType: '',
     frequency: '',
     yearsSuffering: '',
     triggerDetails: '',
   });
 
-  assignForm = this.formBuilder.group({
+  //Form for assigning user to a practice
+  public assignForm = this.formBuilder.group({
     practiceInput: ''
   });
 
-  assignPractice(template: TemplateRef<any>) {
-    console.log("CLICK");
+  //Open Modal to assign user to practice
+  public assignPractice(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
-
   }
 
-  previousPage() {
+  //Navigate to the previous page
+  public previousPage() {
     this.location.back();
   }
 
-  onAssignConfirm() {
+  //On confirm modal add user to practice by userId and practiceId
+  public onAssignConfirm() {
     let updateDetails = {
       userId: this.userId,
       practiceId: this.assignForm.controls['practiceInput'].value
     };
     this.restService.addPracticeLink(updateDetails).subscribe(async (updateResult: any) => {
-      console.log(updateResult);
       this.reloadPracticeLinks();
       this.modalRef?.hide();
     });
   }
 
-  reloadPracticeLinks() {
+  //Reload the data to show user assigned practices
+  public reloadPracticeLinks() {
     this.loadingService.setLoaded(false);
     this.restService.getUserPracticeLinks(this.user.userId).subscribe( data => {
-      console.log("LINK DATA");
-      console.log(data);
       this.practiceLinks = data;
       this.loadingService.setLoaded(true);
-
     });
   }
 
-  deletePatientLink(userId: number, practiceId: number, i: number) {
+  //remove user from a practice
+  public deletePatientLink(userId: number, practiceId: number, i: number) {
     if(window.confirm('Do you want to go ahead?')) {
       this.restService.deleteUserPracticeLink(userId, practiceId).subscribe((res) => {
         if(!res.error){
           this.practiceLinks.data.splice(i, 1);
         }
-      })
+      });
     }
   }
 
-  openPracticeModal(template: TemplateRef<any>, i: number) {
+  //Open details about practice in modal
+  public openPracticeModal(template: TemplateRef<any>, i: number) {
     this.selectedPractice = this.practiceLinks.data[i];
     this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
   }
-  onCloseModal() {
+
+  //Close modal
+  public onCloseModal() {
     this.modalRef?.hide();
   }
 
-  onSubmit(template: TemplateRef<any>): void {
+  //Open generic modal
+  public onSubmit(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
-  onConfirmModal() {
+  //Update user details on confirm from modal
+  public onConfirmModal() {
     let updateDetails = {
       userId: this.detailsForm.controls['userId'].value,
       email: this.detailsForm.controls['email'].value,
@@ -126,13 +132,13 @@ export class ViewUserComponent implements OnInit {
       postcode: this.detailsForm.controls['postcode'].value,
     };
     this.restService.updateUser(updateDetails).subscribe(async (updateResult: any) => {
-      console.log(updateResult);
       this.modalRef?.hide();
       this.messageState.next(true);
     });
   }
 
-  onConfirmEpilepsyModal() {
+  //update user epilepsy details on confirm from modal
+  public onConfirmEpilepsyModal() {
     let updateDetails = {
       userId: this.detailsForm.controls['userId'].value,
       seizureType: this.epilepsyDetailsForm.controls['seizureType'].value,
@@ -141,25 +147,24 @@ export class ViewUserComponent implements OnInit {
       triggerDetails: this.epilepsyDetailsForm.controls['triggerDetails'].value,
     };
     this.restService.updateUserSeizure(updateDetails).subscribe(async (updateResult: any) => {
-      console.log(updateResult);
       this.modalRef?.hide();
       this.messageEpilepsyState.next(true);
     });
   }
 
-  onCloseToast() {
+  //Close popup toast
+  public onCloseToast() {
     this.messageState.next(false);
   }
 
-  ngOnInit(): void {
+  //Initialise page with data for user details, user epilepsy details and practices assigned to
+  public ngOnInit(): void {
     this.loadingService.setLoaded(false);
     this.signedInAccountType = this.authService.getAccountType();
-    console.log("START");
     this.sub = this.route.params.subscribe(params => {
       console.log(params);
       this.userId = +params['id'];
       this.returnString = params['returnLink'];
-      console.log("THIS IS THE RETURN STRING", this.returnString);
     });
 
     this.restService.getUser(this.userId).subscribe( data => {
@@ -177,16 +182,16 @@ export class ViewUserComponent implements OnInit {
       this.restService.getPractices().subscribe( data => {
         this.practices = data.data;
       });
+
       this.restService.getUserPracticeLinks(this.userId).subscribe( data => {
-        console.log(data);
         this.practiceLinks = data;
       });
+
       this.restService.getUserEvents(this.userId).subscribe( data => {
         this.events = data.data;
         this.loadingService.setLoaded(true);
-
-
       });
+
       this.restService.getUserEpilepsyDetails(this.userId).subscribe( data => {
         if(data.data[0] != undefined){
           this.epilepsyDetailsForm.controls['seizureType'].setValue(data.data[0].seizureType);
@@ -196,11 +201,11 @@ export class ViewUserComponent implements OnInit {
         }
         this.loadingService.setLoaded(true);
       });
-
     });
   }
 
-  ngOnDestroy() {
+  //Unsubscribe from subscription when page destroyed
+  public ngOnDestroy() {
     this.sub.unsubscribe();
   }
 }

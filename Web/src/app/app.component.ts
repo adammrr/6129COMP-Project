@@ -9,15 +9,9 @@ import { LoadingService } from './services/loading.service';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    signedIn: boolean = false;
-
+    public signedIn: boolean = false;
 
     constructor(public router: Router, public authService: AuthService, public loadingService: LoadingService) {
       this.authService.isLoggedIn().subscribe((value: boolean) => {this.signedIn = value;});
-      console.log("Changed signedIn Value to:" + this.signedIn);
     }
-
-    ngOnInit() {
-    }
-
 }

@@ -6,7 +6,7 @@
 <div class="container pb-3" *ngIf="loadingService.loadedObs | async ;else loadingIcon">
   <div class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
     <div>
-      <div class="btn btn-outline-primary me-2 mb-2" [routerLink]="['new-film']">
+      <div class="btn btn-outline-primary me-2 mb-2" [routerLink]="['new-film']" *ngIf="signedInAccountType != 'practitioner'">
         Add Film <img class="img-fluid" src="/assets/img/person-plus.svg" alt="Add Film">
       </div>
       <div class="btn btn-outline-primary mb-2" (click)="reloadFilms()">

@@ -14,20 +14,16 @@ import { RestService } from 'src/app/services/rest.service';
   styleUrls: ['./manage-account-page.component.scss']
 })
 export class ManageAccountPageComponent implements OnInit {
-  userId: number = 0;
-  user:any;
-  
-  messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageStateObs: Observable<boolean> = this.messageState.asObservable();
-
-  private sub: any;
-  modalRef?: BsModalRef;
-
-
-  
+  //Variables
+  public userId: number = 0;
+  public user:any;
+  public messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageStateObs: Observable<boolean> = this.messageState.asObservable();
+  private modalRef?: BsModalRef;
 
   constructor(private modalService: BsModalService, private route: ActivatedRoute, private restService: RestService, public loadingService: LoadingService, private formBuilder: FormBuilder) { }
-  detailsForm = this.formBuilder.group({
+  //Form Builder Group for the Logged in User details
+  public detailsForm = this.formBuilder.group({
     userId: '',
     email: '',
     firstName: '',
@@ -39,21 +35,15 @@ export class ManageAccountPageComponent implements OnInit {
     address3: '',
     postcode: ''
   });
-  assignForm = this.formBuilder.group({
-    practiceInput: ''
-  });
 
-  ngOnInit(): void {
-    console.log("LOADING ON");
+  //Initialises the page and loads the user details
+  public ngOnInit(): void {
     this.loadingService.setLoaded(false);
-
     this.restService.getUser(0).subscribe( data => {
       this.user = data;
       console.log(data);
       this.loadingService.setLoaded(true);
-     console.log("LOADING OFF");
-    
     });
-}
+  }
 }
 

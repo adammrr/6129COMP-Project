@@ -8,15 +8,15 @@ import { User } from './User.model';
   providedIn: 'root'
 })
 export class AuthService {
-
+  //Variables
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public loggedInObs: Observable<boolean> = this.loggedIn.asObservable();
-
   private user!: User;
 
   constructor(private router: Router, private restService: RestService) { }
 
-  setCookie(name: string, value:string , days: number) {
+  //Sets local cookie to match one stored in server
+  private setCookie(name: string, value:string , days: number) {
     var expires = "";
     if (days) {
         var date = new Date();
@@ -24,19 +24,22 @@ export class AuthService {
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/;secure=true";
-}
-getCookie(name: string):string {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return "";
-}
+  }
 
-  signIn(email: string, password: string, rememberMe: boolean) {
+  //Gets stored local cookie
+  private getCookie(name: string):string {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+          while (c.charAt(0)==' ') c = c.substring(1,c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+      }
+      return "";
+  }
+
+  //Validates user and signed in
+  public signIn(email: string, password: string, rememberMe: boolean) {
     this.restService.validateUser(email, password, rememberMe).subscribe(async (validationResult: any) => {
       if(validationResult.data.accountType == "patient"){
         alert("Sorry, you are unable to use this system. Please use the mobile app");
@@ -55,25 +58,27 @@ getCookie(name: string):string {
         alert("You have entered a wrong Email/Password, please try again.");
       }
     });
-
   }
 
-  signOut() {
+  //Signs out and resets local cookie
+  public signOut() {
     this.loggedIn.next(false);
     this.setCookie("cookie", "", 0);
   }
 
-  getUserId(): number {
+  public getUserId(): number {
     return this.user.userId;
   }
-  isLoggedIn(): Observable<boolean>  {
+
+  public isLoggedIn(): Observable<boolean>  {
     if(this.loggedIn.value == false){
       this.checkCookie();
     }
     return this.loggedIn;
   }
 
-  checkCookie() {
+  //Checks signed in cookie against database cookie
+  public checkCookie() {
     var savedCookie = this.getCookie("cookie");
     this.restService.validateCookie(savedCookie).subscribe(async (validationResult: any) => {
       if(validationResult.data.result == false){
@@ -86,10 +91,11 @@ getCookie(name: string):string {
     });
   }
 
-  getAccountType() {
+  public getAccountType() {
     return this.user.accountType;
   }
-  getName() {
+
+  public getName() {
     return this.user.firstName + " " + this.user.surname;
   }
 }

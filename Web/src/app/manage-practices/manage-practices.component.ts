@@ -9,28 +9,30 @@ import { RestService } from '../services/rest.service';
   styleUrls: ['./manage-practices.component.scss']
 })
 export class ManagePracticesComponent implements OnInit {
-  practices: any = [];
+  //Variables
+  public practices: any = [];
 
   constructor(private restService: RestService, public loadingService: LoadingService) {  }
 
-  ngOnInit() {
+  //Inititialise practices from database
+  public ngOnInit() {
     this.loadingService.setLoaded(false);
-
     this.restService.getPractices().subscribe( data => {
       this.practices = data;
       this.loadingService.setLoaded(true);
     });
   }
 
+  //Reload the practices data
   public reloadPractices(): void {
     this.loadingService.setLoaded(false);
-
     this.restService.getPractices().subscribe( data => {
       this.practices = data;
       this.loadingService.setLoaded(true);
     });
   }
 
+  //Delete a practice from its ID
   public deletePractice(id:any, i:any) {
     if(window.confirm('Do you want to go ahead?')) {
       this.restService.deletePractice(id).subscribe((res) => {

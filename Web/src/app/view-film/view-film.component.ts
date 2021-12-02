@@ -13,22 +13,23 @@ import { RestService } from '../services/rest.service';
   styleUrls: ['./view-film.component.scss']
 })
 export class ViewFilmComponent implements OnInit {
+  //Variables
   private sub: any;
-
-  filmId: number = 0;
-  film: any;
-  signedInAccountType: string = "";
-  triggers: any;
-  selectedTriggerId = 0;
-  modalRef?: BsModalRef;
-  messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageStateObs: Observable<boolean> = this.messageState.asObservable();
-  messageTriggerState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  messageTriggerStateObs: Observable<boolean> = this.messageTriggerState.asObservable();
+  public filmId: number = 0;
+  public film: any;
+  public signedInAccountType: string = "";
+  public triggers: any;
+  public selectedTriggerId = 0;
+  private modalRef?: BsModalRef;
+  public messageState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageStateObs: Observable<boolean> = this.messageState.asObservable();
+  public messageTriggerState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public messageTriggerStateObs: Observable<boolean> = this.messageTriggerState.asObservable();
 
   constructor(private route: ActivatedRoute, private router: Router,private modalService: BsModalService, public authService: AuthService, private restService: RestService, public loadingService: LoadingService, private formBuilder: FormBuilder) { }
 
-  filmDetailsForm = this.formBuilder.group({
+  //Form Builder Group for film details form
+  public filmDetailsForm = this.formBuilder.group({
     filmId: '',
     filmName: '',
     genre: '',
@@ -37,18 +38,23 @@ export class ViewFilmComponent implements OnInit {
     filmDescription: '',
   });
 
-  onSubmit(template: TemplateRef<any>): void {
+  //Open modal
+  public onSubmit(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
-  onCloseToast() {
+  //Close toast popup
+  public onCloseToast() {
     this.messageState.next(false);
   }
-  onCloseTriggerToast() {
+
+  //Close trigger toast popup
+  public onCloseTriggerToast() {
     this.messageTriggerState.next(false);
   }
 
-  onConfirmModal() {
+  //On confirm modal update details
+  public onConfirmModal() {
     let updateDetails = {
       filmId: this.filmDetailsForm.controls['filmId'].value,
       filmName: this.filmDetailsForm.controls['filmName'].value,
@@ -58,44 +64,42 @@ export class ViewFilmComponent implements OnInit {
       filmDescription: this.filmDetailsForm.controls['filmDescription'].value,
     };
     this.restService.updateFilm(updateDetails).subscribe(async (updateResult: any) => {
-      console.log(updateResult);
       this.modalRef?.hide();
       this.messageState.next(true);
     });
   }
 
-  onConfirmDeleteModal() {
+  //On confirm modal delete film
+  public onConfirmDeleteModal() {
     this.restService.deleteFilm(this.filmId).subscribe(async (updateResult: any) => {
-      console.log(updateResult);
       this.modalRef?.hide();
       this.router.navigate(["/films"])
     });
   }
 
-  onConfirmTriggerDeleteModal() {
+  //On confirm modal delete trigger attatched to film
+  public onConfirmTriggerDeleteModal() {
     this.restService.deleteTrigger(this.selectedTriggerId).subscribe(async (updateResult: any) => {
-      console.log(updateResult);
       this.modalRef?.hide();
       this.messageTriggerState.next(true);
     });
   }
-  onCloseModal() {
+
+  //Close modal
+  public onCloseModal() {
     this.modalRef?.hide();
   }
 
-  ngOnInit(): void {
+  //Initialise film data and trigger data
+  public ngOnInit(): void {
     this.loadingService.setLoaded(false);
     this.signedInAccountType = this.authService.getAccountType();
     this.sub = this.route.params.subscribe(params => {
-      console.log(params);
       this.filmId = +params['id'];
     });
 
-
     this.restService.getFilmById(this.filmId).subscribe( data => {
       this.film = data.data[0];
-      console.log(this.filmId);
-      console.log("film", data.data[0]);
       this.filmDetailsForm.controls['filmId'].setValue(this.film.filmId);
       this.filmDetailsForm.controls['filmName'].setValue(this.film.filmName);
       this.filmDetailsForm.controls['genre'].setValue(this.film.genre);
@@ -103,16 +107,14 @@ export class ViewFilmComponent implements OnInit {
       this.filmDetailsForm.controls['imageURL'].setValue(this.film.imageURL);
       this.filmDetailsForm.controls['filmDescription'].setValue(this.film.filmDescription);
       this.restService.getFilmTriggers(this.filmId).subscribe( data => {
-        console.log(data);
         this.triggers = data.data;
-        console.log("Triggers:", this.triggers);
-
         this.loadingService.setLoaded(true);
       });
     });
   }
 
-  ngOnDestroy() {
+  //Unsubscribe from subscription on destroy
+  public ngOnDestroy() {
     this.sub.unsubscribe();
   }
 

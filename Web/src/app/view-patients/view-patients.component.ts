@@ -11,18 +11,19 @@ import { RestService } from '../services/rest.service';
   styleUrls: ['./view-patients.component.scss']
 })
 export class ViewPatientsComponent implements OnInit {
+  //Variables
   private sub: any;
   public practiceId: number | undefined;
   public practiceName: string | undefined;
-  modalRef?: BsModalRef;
-  selectedPatient:any;
+  private modalRef?: BsModalRef;
+  public selectedPatient:any;
   public patients: any = [];
 
   constructor(private modalService: BsModalService, public loadingService: LoadingService, private restService: RestService, private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
 
-  ngOnInit(): void {
+  //Initialises data for patients assigned to this practice
+  public ngOnInit(): void {
     this.loadingService.setLoaded(false);
-
     this.sub = this.route.params.subscribe(params => {
       this.practiceId = +params['id'];
     });
@@ -30,41 +31,41 @@ export class ViewPatientsComponent implements OnInit {
     if(this.authService.getAccountType() != 'practitioner'){
       this.router.navigate(['/home']);
     }
+
     if(this.practiceId){
       this.restService.getPracticePatients(this.practiceId).subscribe( data => {
-        console.log(data);
         this.patients = data.data.patientsResults;
-        console.log(this.patients);
         this.practiceName = data.data.practiceName;
         this.loadingService.setLoaded(true);
       });
     }else{
       this.loadingService.setLoaded(true);
     }
-
   }
 
-  openPatientModal(template: TemplateRef<any>, i: number) {
+  //Open patient details in modal
+  public openPatientModal(template: TemplateRef<any>, i: number) {
     this.selectedPatient = this.patients[i];
     this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
   }
 
-  onCloseModal() {
+  //Close modal
+  public onCloseModal() {
     this.modalRef?.hide();
   }
 
+  //Reload patient data
   public reloadPatients(): void {
     this.loadingService.setLoaded(false);
     this.restService.getPracticePatients(this.practiceId).subscribe( data => {
-      console.log(data);
       this.patients = data.data.patientsResults;
-      console.log(this.patients);
       this.practiceName = data.data.practiceName;
       this.loadingService.setLoaded(true);
     });
   }
-  ngOnDestroy(): void {
+
+  //Unsubscribe from subscription on destroy
+  public ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
-
 }

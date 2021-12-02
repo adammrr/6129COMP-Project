@@ -10,14 +10,16 @@ import { RestService } from '../services/rest.service';
   styleUrls: ['./film-page.component.scss']
 })
 export class FilmPageComponent implements OnInit {
-  films:any = [];
+  //Variables
+  public films:any = [];
+  public signedInAccountType: any;
 
+  constructor(private authService: AuthService, private restService: RestService, public loadingService: LoadingService) { }
 
-  constructor(private restService: RestService, public loadingService: LoadingService) { }
-
-  ngOnInit(): void {
+  //Initialises the Film Page
+  public ngOnInit(): void {
     this.loadingService.setLoaded(false);
-
+    this.signedInAccountType = this.authService.getAccountType();
     this.restService.getFilms().subscribe( data => {
       this.films = data;
       console.log(data);
@@ -25,19 +27,13 @@ export class FilmPageComponent implements OnInit {
     });
   }
 
-  reloadFilms(): void {
+  //Initialises the Films List on the page
+  public reloadFilms(): void {
     this.loadingService.setLoaded(false);
-
     this.restService.getFilms().subscribe( data => {
       this.films = data;
       console.log(data);
       this.loadingService.setLoaded(true);
     });
-  }
-
-  newFilm(): void {
-
   }
 }
-
-
