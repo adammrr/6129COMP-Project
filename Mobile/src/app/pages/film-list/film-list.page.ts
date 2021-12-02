@@ -23,6 +23,6 @@ export class FilmListPage implements OnInit {
     }
 
     public navigateToFilmPage(filmId: number): void {
-        this.navCtrl.navigateForward(`/film-list/film/${filmId}`);
+        this.navCtrl.navigateForward(['/film-list/film/', filmId]);
     }
 }

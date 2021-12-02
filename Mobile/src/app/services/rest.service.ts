@@ -62,6 +62,14 @@ export class RestService {
             );
     }
 
+    public getFilmTriggers(id: any): Observable<any> {
+        const API_URL = `${this.REST_API}/film-triggers/${id}`;
+        return this.httpClient.get(API_URL, { headers: this.httpHeaders })
+            .pipe(map((res: any) => res || { error: 'ERROR' }),
+                catchError(this.handleError)
+            );
+    }
+
     /** GET Ends */
 
     /** POST */

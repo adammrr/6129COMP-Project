@@ -9,4 +9,24 @@
 
 <ion-content>
 
+    <ion-list>
+        <ion-list-header>
+            Below is a list of epileptic triggers which occur during the film
+        </ion-list-header>
+        <div *ngIf="triggers; else noResults">
+            <ion-item *ngFor="let trigger of triggers">
+                <ion-icon name="warning-outline"></ion-icon>
+                <ion-label>
+                    <p>{{trigger['timestamp']}} - {{trigger['description']}}</p>
+                </ion-label>
+            </ion-item>
+        </div>
+    </ion-list>
+
+    <ng-template #noResults>
+        <div class="ion-text-center">
+            <p class="no-results">There are no current triggers for this film</p>
+        </div>
+    </ng-template>
+
 </ion-content>

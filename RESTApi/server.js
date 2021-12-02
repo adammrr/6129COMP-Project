@@ -197,6 +197,17 @@ app.get('/epilepsy-information/:id', function (req, res) {
     });
 });
 
+app.get('/film-triggers/:id', function (req, res) {
+    let filmId = req.params.id;
+    if (!filmId) {
+        return res.status(400).send({ error: true, message: 'Please provide filmiD' });
+    }
+    dbConn.query('SELECT timestamp, description FROM triggers WHERE filmId=?', filmId, function (error, results) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'Trigger Details' });
+    });
+});
+
 /** GET Ends */
 
 /** POST */
