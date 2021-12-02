@@ -49,19 +49,21 @@ export class CreateRequestPage implements OnInit {
     this.user = this.authService.getLoggedInUser();
     console.log(this.user.userId);
   }
-
+  //Hides form when not selected
   public toggleFilm() {
     this.hideFilm = !this.hideFilm;
     this.hideSpace = !this.hideSpace;
     this.hideTriggerButton = !this.hideTriggerButton;
   }
-
+  
+  //Hides form when not selected
   public toggleTrigger() {
     this.hideTrigger = !this.hideTrigger;
     this.hideSpace = !this.hideSpace;
     this.hideFilmButton = !this.hideFilmButton;
   }
-
+  
+  //Submit film request to db
   public submitFilm(): void {
     const formValues = this.newFilm.value;
     this.filmDetails = {
@@ -75,7 +77,8 @@ export class CreateRequestPage implements OnInit {
     this.alert.presentToast('New film request submitted');
     this.navCtrl.back();
   }
-
+  
+  //Submit tirgger to db
   public submitTrigger(): void {
     const formValues = this.newTrigger.value;
     this.triggerDetails = {

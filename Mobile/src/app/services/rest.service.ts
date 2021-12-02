@@ -65,7 +65,7 @@ export class RestService {
     /** GET Ends */
 
     /** POST */
-
+    
     public newFilmRequest(id: number, filmDetails: { filmName: string, filmDesc: string, genre: string, runtime: string }) {
         console.log(id);
         console.log(filmDetails);
