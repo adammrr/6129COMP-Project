@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AlertController, NavController } from '@ionic/angular';
+import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -24,7 +26,9 @@ export class LogSeizurePage implements OnInit {
     constructor(
         private restService: RestService,
         private formBuilder: FormBuilder,
-        private authService: AuthService
+        private authService: AuthService,
+        private alert: AlertService,
+        private navCtrl: NavController
     ) {
         this.newSeizure = this.formBuilder.group({
             trigger: '',
@@ -61,6 +65,8 @@ export class LogSeizurePage implements OnInit {
             }
         }
 
+        this.triggers.sort()
+
         console.log("Movie trigger count: ", this.triggers.length)
     }
 
@@ -75,5 +81,8 @@ export class LogSeizurePage implements OnInit {
 
         this.restService.newSeizure(this.user, this.seizureDetails).subscribe(async (result: any) => {
         });
+
+        this.alert.presentToast('New Seizure Even Logged');
+        this.navCtrl.back()
     }
 }

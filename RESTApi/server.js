@@ -62,7 +62,7 @@ app.get('/practices', function (req, res) {
     dbConn.query('SELECT * FROM practices', function (error, results, fields) {
         if (error) throw error;
         //setTimeout(function() { //EXAMPLE DELAY TO SHOW THE LOADING SCREEN (2 SECOND DELAY)
-            return res.send({ error: false, data: results, message: 'practices list.' });
+        return res.send({ error: false, data: results, message: 'practices list.' });
         //  }, 500);
     });
 });
@@ -78,7 +78,7 @@ app.post('/get-practice-patients', function (req, res) {
         dbConn.query(`SELECT practiceName FROM practices WHERE practiceId = ${practiceId}`, function (error, results, fields) {
             if (error) throw error;
             console.log(results);
-            return res.send({ error: false, data: {practiceName: results[0].practiceName, patientsResults: patientResults}, message: 'practice patient list.' });
+            return res.send({ error: false, data: { practiceName: results[0].practiceName, patientsResults: patientResults }, message: 'practice patient list.' });
 
         });
 
@@ -91,16 +91,16 @@ app.post('/get-practice-patients', function (req, res) {
 app.post('/get-requests', function (req, res) {
     console.log("SERVER: Getting Requests");
     let status = req.body.status;
-    if(status == "Pending" || status == "Approved" || status == "Rejected"){
+    if (status == "Pending" || status == "Approved" || status == "Rejected") {
         dbConn.query(`SELECT requests.*, madeBy.email AS "madeBy_email", reviewedBy.email as "reviewedBy_email" FROM requests INNER JOIN users madeBy on requests.madeBy = madeBy.userId LEFT JOIN users reviewedBy on requests.reviewedBy = reviewedBy.userId WHERE requests.status="${status}"`, function (error, results) {
             if (error) throw error;
             return res.send({ error: false, data: results, message: 'requests list.' });
         });
-    }else{
+    } else {
         return res.send({ error: true, data: results, message: 'requests list error invalid status.' });
 
     }
-    
+
 });
 // get film by id 
 app.post('/get-film-by-id', function (req, res) {
@@ -130,16 +130,16 @@ app.get('/triggers', function (req, res) {
 });
 
 // Retrieve all requests
-app.get('/requests', function (req, res ) {
+app.get('/requests', function (req, res) {
     console.log("SERVER: Getting Requests");
-    dbConn.query('SELECT * FROM requests', function (error, results ) {
+    dbConn.query('SELECT * FROM requests', function (error, results) {
         if (error) throw error;
-        return res.send({error: false, data: results, message: 'requests list'});
+        return res.send({ error: false, data: results, message: 'requests list' });
     })
 })
 
 // Retrieve all user requests
-app.get('/requests/:id', function (req, res ) {
+app.get('/requests/:id', function (req, res) {
     let userId = req.params.id;
     console.log("SERVER: Getting Requests for user" + userId);
     if (!userId) {
@@ -147,7 +147,7 @@ app.get('/requests/:id', function (req, res ) {
     }
     dbConn.query('SELECT * FROM requests where madeBy=?', userId, function (error, results) {
         if (error) throw error;
-        return res.send({error: false, data: results, message: 'requests list for user'});
+        return res.send({ error: false, data: results, message: 'requests list for user' });
     })
 })
 
@@ -162,6 +162,20 @@ app.get('/read-user/:id', function (req, res) {
     dbConn.query('SELECT * FROM users where userId=?', user_id, function (error, results) {
         if (error) throw error;
         return res.send({ error: false, data: results[0], message: 'users list.' });
+    });
+});
+
+app.get('/history/:id', function (req, res) {
+    let user_id = req.params.id;
+
+    if (!user_id) {
+        return res.status(400).send({ error: true, message: 'Please provide user_id' });
+    }
+
+    dbConn.query(`SELECT events.severity, events.details, triggers.description, triggers.timestamp, films.filmName FROM events INNER JOIN triggers ON events.triggerId = triggers.triggerId INNER JOIN films ON triggers.filmId = films.filmId WHERE events.userId=${user_id}`, function (error, results) {
+        if (error) throw error;
+        console.log(error);
+        return res.send({ error: false, data: results, message: 'Seizure History.' });
     });
 });
 
@@ -186,7 +200,7 @@ app.get('/epilepsy-information/:id', function (req, res) {
 
 /** POST */
 
-app.post('/create-film-request', function (req, res){
+app.post('/create-film-request', function (req, res) {
     console.log(req.body);
     let userId = req.body.id;
     let filmName = req.body.filmDetails.filmName;
@@ -200,13 +214,13 @@ app.post('/create-film-request', function (req, res){
     });
 });
 
-app.post('/create-trigger-request', function (req, res){
+app.post('/create-trigger-request', function (req, res) {
     console.log(req.body);
     let userId = req.body.id;
     let film = req.body.triggerDetails.film;
     let timestamp = req.body.triggerDetails.timestamp;
     let details = req.body.triggerDetails.details;
-    
+
 
     dbConn.query(`INSERT INTO requests (madeBy, details, status) VALUES (${userId},'{"requestType": "New Trigger", "data":{"filmName":"${film}","timestamp":"${timestamp}" ,"details":"${details}"}}',"PENDING")`, function (error, results) {
         if (error) throw error;
@@ -214,13 +228,13 @@ app.post('/create-trigger-request', function (req, res){
     });
 });
 
-app.post('/log-seizure', function (req, res){
+app.post('/log-seizure', function (req, res) {
     console.log(req.body);
     let userId = req.body.id;
     let trigger = req.body.seizureDetails.trigger;
     let severity = req.body.seizureDetails.severity;
     let details = req.body.seizureDetails.details;
-    
+
     dbConn.query(`INSERT INTO events (userId, triggerId, severity, details) VALUES (${userId},${trigger},${severity},"${details}")`, function (error, results) {
         if (error) throw error;
         return res.send({ error: false, data: results, message: 'Seizure successfully logged' })
@@ -245,33 +259,33 @@ app.post('/validate-user', function (req, res) {
             if (password === results[0].password) {
                 console.log("Correct Password");
                 let cookie = "";
-                if(rememberMe){
-                        let cookie = Math.floor(100000000 + Math.random() * 900000000);
-                        console.log("Trying cookie: " + cookie);
-                        dbConn.query(`SELECT COUNT(1) as cookieCount FROM cookies WHERE cookie="${210120012}"`, function (error, cookieResults, fields) {
-                            if (error) throw error;
-                            console.log("Count: " + cookieResults[0].cookieCount);
-                            if(cookieResults[0].cookieCount > 0) {
-                                console.log("Already asigned cookie: " + cookieResults[0].userId);
-                                console.log("Skipping Cookie Creation");
+                if (rememberMe) {
+                    let cookie = Math.floor(100000000 + Math.random() * 900000000);
+                    console.log("Trying cookie: " + cookie);
+                    dbConn.query(`SELECT COUNT(1) as cookieCount FROM cookies WHERE cookie="${210120012}"`, function (error, cookieResults, fields) {
+                        if (error) throw error;
+                        console.log("Count: " + cookieResults[0].cookieCount);
+                        if (cookieResults[0].cookieCount > 0) {
+                            console.log("Already asigned cookie: " + cookieResults[0].userId);
+                            console.log("Skipping Cookie Creation");
+                            return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId, cookie: cookie }, message: 'validated user.' });
+
+                        } else {
+                            let expiryUnix = Math.round((new Date()).getTime() / 1000) + 86400; //cookie valid for 86400 seconds (24 hours)
+                            async function insertCookie() {
+                                await dbConn.query(`INSERT INTO cookies (cookie, userId, expiryUnix) VALUES (${cookie}, ${results[0].userId}, ${expiryUnix})`, function (error, cookieResults, fields) {
+                                    if (error) throw error;
+                                });
+                                console.log("Returning cookie: " + cookie);
                                 return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId, cookie: cookie }, message: 'validated user.' });
-            
-                            } else {
-                                let expiryUnix = Math.round((new Date()).getTime() / 1000) + 86400; //cookie valid for 86400 seconds (24 hours)
-                                async function insertCookie() {
-                                    await dbConn.query(`INSERT INTO cookies (cookie, userId, expiryUnix) VALUES (${cookie}, ${results[0].userId}, ${expiryUnix})`, function (error, cookieResults, fields) {
-                                        if (error) throw error;
-                                    });
-                                    console.log("Returning cookie: " + cookie);
-                                    return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId, cookie: cookie }, message: 'validated user.' });
-                                }
-                                insertCookie();
                             }
-                        });
+                            insertCookie();
+                        }
+                    });
                     console.log("Set cookie: " + cookie + " for user: " + results[0].userId);
                 } else {
                     return res.send({ error: false, data: { result: true, accountType: results[0].accountType, userId: results[0].userId }, message: 'validated user.' });
-                }      
+                }
             } else {
                 console.log("Incorrect Password");
                 return res.send({ error: false, data: { result: false, accountType: null, userId: null }, message: '403 Forbidden' });
@@ -291,7 +305,7 @@ app.post('/validate-cookie', function (req, res) {
     dbConn.query(`SELECT * FROM cookies WHERE cookie="${cookie}"`, function (error, results, fields) {
         if (error) throw error;
         try {
-            if(results){
+            if (results) {
                 return res.send({ error: false, data: { result: true, userId: results[0].userId }, message: 'Good Cookie' });
             } else {
                 return res.send({ error: true, data: { result: false, userId: null }, message: 'Bad Cookie' });
@@ -330,35 +344,35 @@ app.post('/validate-user-mobile', function (req, res) {
 });
 //Update practice details
 app.post('/update-practice', function (req, res) {
-  console.log("UPDATING PRACTICE");
+    console.log("UPDATING PRACTICE");
 
-  let practiceId = req.body.data.practiceId
-  let practiceName = req.body.data.practiceName;
-  let address1 = req.body.data.address1;
-  let address2 = req.body.data.address2;
-  let address3 = req.body.data.address3;
-  let postcode = req.body.data.postcode;
-  let telephone = req.body.data.telephone;
+    let practiceId = req.body.data.practiceId
+    let practiceName = req.body.data.practiceName;
+    let address1 = req.body.data.address1;
+    let address2 = req.body.data.address2;
+    let address3 = req.body.data.address3;
+    let postcode = req.body.data.postcode;
+    let telephone = req.body.data.telephone;
 
-  dbConn.query(`UPDATE practices SET practiceName="${practiceName}", address1="${address1}", address2="${address2}", address3="${address3}" , postcode="${postcode}", telephone="${telephone}" WHERE practiceId="${practiceId}"`, function (error, results) {
-      if (error) {
-          console.log(error);
-          return res.send({ error: true, message: 'update unsuccessful' });
-      }
-      return res.send({ error: false, data: results, message: 'update successful' });
-  });
+    dbConn.query(`UPDATE practices SET practiceName="${practiceName}", address1="${address1}", address2="${address2}", address3="${address3}" , postcode="${postcode}", telephone="${telephone}" WHERE practiceId="${practiceId}"`, function (error, results) {
+        if (error) {
+            console.log(error);
+            return res.send({ error: true, message: 'update unsuccessful' });
+        }
+        return res.send({ error: false, data: results, message: 'update successful' });
+    });
 });
 // Retrieve practice by id 
 app.get('/read-practice/:id', function (req, res) {
 
-  let practiceId = req.params.id;
-  if (!practiceId) {
-      return res.status(400).send({ error: true, message: 'Please provide practiceId' });
-  }
-  dbConn.query('SELECT * FROM practices where practiceId=?', practiceId, function (error, results, fields) {
-      if (error) throw error;
-      return res.send({ error: false, data: results[0], message: 'users list.' });
-  });
+    let practiceId = req.params.id;
+    if (!practiceId) {
+        return res.status(400).send({ error: true, message: 'Please provide practiceId' });
+    }
+    dbConn.query('SELECT * FROM practices where practiceId=?', practiceId, function (error, results, fields) {
+        if (error) throw error;
+        return res.send({ error: false, data: results[0], message: 'users list.' });
+    });
 
 });
 //Update film details

@@ -4,6 +4,11 @@
         <ion-buttons slot="start">
             <ion-menu-button menu="main-menu"></ion-menu-button>
         </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button (click)="ngOnInit()">
+                <ion-icon name="refresh"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
@@ -11,24 +16,24 @@
     <app-central-container>
         <h2>Welcome {{user.firstName}}</h2>
         <div align-items-center>
-                <ion-card>
-                    <ion-card-header>
-                        <h3>Requests</h3>
-                    </ion-card-header>
-                    <ion-item>
-                        <h4>You have {{pending}} requests pending</h4>
-                    </ion-item>
-                    <ion-button routerLink="/user-requests">See More</ion-button>
-                </ion-card>
-                <ion-card>
-                    <ion-card-header>
-                        <h3>Epileptic Events</h3>
-                    </ion-card-header>
-                    <ion-item>
-                        <h4>You have had 3 epileptic events</h4>
-                    </ion-item>
-                    <ion-button routerLink="/user-profile">See More</ion-button>
-                </ion-card>
+            <ion-card>
+                <ion-card-header>
+                    <h3>Requests</h3>
+                </ion-card-header>
+                <ion-item text-center>
+                    <p>Number of requests you have pending: {{pendingRequests.length}}</p>
+                </ion-item>
+                <ion-button routerLink="/user-requests">See More</ion-button>
+            </ion-card>
+            <ion-card align-items-center>
+                <ion-card-header>
+                    <h3>Epileptic Events</h3>
+                </ion-card-header>
+                <ion-item text-center>
+                    <p>Number of seizures logged: {{seizures.length}}</p>
+                </ion-item>
+                <ion-button routerLink="/user-profile">See More</ion-button>
+            </ion-card>
         </div>
     </app-central-container>
 </ion-content>
