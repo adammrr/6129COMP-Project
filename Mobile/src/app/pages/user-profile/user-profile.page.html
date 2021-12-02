@@ -7,7 +7,6 @@
     </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
     <ion-card color="primary">
         <div class="img-wrapper">
@@ -25,7 +24,6 @@
         </ion-card-content>
     </ion-card>
 
-
     <ion-toolbar>
         <ion-segment (ionChange)="segmentChanged()" value="all" color="tertiary" scrollable="true" mode="ios"
             [(ngModel)]="segmentModel">
@@ -34,18 +32,15 @@
                 <ion-label>User Information</ion-label>
             </ion-segment-button>
 
-            <ion-segment-button value="seizure-information">
-                <ion-label>seizure Information</ion-label>
+            <ion-segment-button value="medical-information">
+                <ion-label>Medical Information</ion-label>
             </ion-segment-button>
 
             <ion-segment-button value="seizure-history">
-                <ion-label>seizure Information</ion-label>
+                <ion-label>Seizure History</ion-label>
             </ion-segment-button>
         </ion-segment>
     </ion-toolbar>
-
-
-
 
     <form [formGroup]="userInformationForm" *ngIf="segmentModel === 'user-information'"
         (ngSubmit)="updateUserInformation()">
@@ -116,7 +111,7 @@
     </form>
 
     <form [formGroup]="epilepsyInformationForm" (ngSubmit)="updateEpilepsyInformation()"
-        *ngIf="segmentModel === 'seizure-information'">
+        *ngIf="segmentModel === 'medical-information'">
 
         <ion-item>
             <ion-label>Seizure Type</ion-label>
