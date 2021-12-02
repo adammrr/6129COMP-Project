@@ -1,7 +1,5 @@
 /* eslint-disable max-len */
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
-import { async } from '@angular/core/testing';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -23,7 +21,7 @@ export class UserProfilePage implements OnInit {
     public segmentModel = 'user-information';
     public userInformationFormChanged = 0;
 
-    public history:any = [];
+    public history: any = [];
 
     constructor(
         private authService: AuthService,
@@ -58,9 +56,8 @@ export class UserProfilePage implements OnInit {
         console.log(this.user.userId);
 
         this.restService.getSeizureHistory(this.user.userId).subscribe(async (result: any) => {
-            console.log(result.data)
-            this.history= result.data;
-        })
+            this.history = result.data;
+        });
         this.userInformationForm.patchValue({
             firstName: this.user.firstName,
             surname: this.user.surname,

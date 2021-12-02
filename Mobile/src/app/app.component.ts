@@ -8,10 +8,10 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
     constructor(
-      private authService: AuthService
+        private authService: AuthService
     ) { }
 
     public signOut(): void {
-      this.authService.signOut();
+        this.authService.signOut();
     }
 }

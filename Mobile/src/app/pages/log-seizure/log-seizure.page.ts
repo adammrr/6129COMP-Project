@@ -39,7 +39,6 @@ export class LogSeizurePage implements OnInit {
 
     public ngOnInit(): void {
         this.user = this.authService.getLoggedInUserId();
-        console.log("USER ID: ", this.user);
         this.restService.getFilms().subscribe(async (filmResult: any) => {
             this.filmList = filmResult.data;
         });
@@ -52,24 +51,15 @@ export class LogSeizurePage implements OnInit {
 
     //Finds triggers for user when they select a film they watched
     public findTriggers(): void {
-
         this.triggers = [];
+        const f = this.film;
 
-        console.log("Movie trigger count: ", this.triggers.length)
-
-        let f = this.film;
-
-        for (let trigger of this.triggerList) {
-            console.log("Trigger film ID: ", trigger.filmId)
-            console.log("Film ID: ", f)
+        for (const trigger of this.triggerList) {
             if (trigger.filmId === f) {
-                this.triggers.push(trigger)
+                this.triggers.push(trigger);
             }
         }
-
-        this.triggers.sort()
-
-        console.log("Movie trigger count: ", this.triggers.length)
+        this.triggers.sort();
     }
 
     //Posts seizure to db
@@ -86,6 +76,6 @@ export class LogSeizurePage implements OnInit {
         });
 
         this.alert.presentToast('New Seizure Even Logged');
-        this.navCtrl.back()
+        this.navCtrl.back();
     }
 }

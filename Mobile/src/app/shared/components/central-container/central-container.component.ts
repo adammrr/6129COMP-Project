@@ -9,6 +9,7 @@ export class CentralContainerComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  public ngOnInit(): void {
 
+  }
 }

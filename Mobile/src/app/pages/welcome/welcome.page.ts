@@ -12,10 +12,8 @@ import { RestService } from 'src/app/services/rest.service';
 export class WelcomePage implements OnInit {
 
     public user: any;
-
-    public pendingRequests:any = [];
-
-    public seizures:any = [];
+    public pendingRequests: any = [];
+    public seizures: any = [];
 
     constructor(
         private authService: AuthService,
@@ -23,7 +21,6 @@ export class WelcomePage implements OnInit {
     ) { }
 
     public ngOnInit(): void {
-
         this.seizures = [];
         this.pendingRequests = [];
 
@@ -37,15 +34,11 @@ export class WelcomePage implements OnInit {
                     }
                 }
             }
-        })
+        });
 
         this.restService.getSeizureHistory(this.user.userId).subscribe(async (result: any) => {
             this.seizures = result.data;
             console.log(result);
-        })
-        
-        console.log("USER: ", this.user.userId);
-        console.log("PENDING: ", this.pendingRequests);
-        console.log("SEIZURES: ", this.seizures);
+        });
     }
 }

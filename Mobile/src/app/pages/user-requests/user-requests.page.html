@@ -22,12 +22,12 @@
                     <h2>Request Type: {{pendingRequest.requestType}}</h2>
                     <h3>Details:</h3>
                     <p>Film Name: {{pendingRequest.data.filmName}}</p>
-                    <div *ngIf = "pendingRequest.requestType === 'New Film';">
+                    <div *ngIf="pendingRequest.requestType === 'New Film';">
                         <p>{{pendingRequest.data.filmDesc}}</p>
                         <p>Genre: {{pendingRequest.data.genre}}</p>
                         <p>Runtime: {{pendingRequest.data.runtime}}</p>
                     </div>
-                    <div *ngIf = "pendingRequest.requestType === 'New Trigger';">
+                    <div *ngIf="pendingRequest.requestType === 'New Trigger';">
                         <p>{{pendingRequest.data.details}}</p>
                         <p>At: {{pendingRequest.data.timestamp}}</p>
                     </div>
@@ -49,12 +49,12 @@
                     <h2>Request Type: {{approvedRequest.requestType}}</h2>
                     <h3>Details:</h3>
                     <p>Film Name: {{approvedRequest.data.filmName}}</p>
-                    <div *ngIf = "approvedRequest.requestType === 'New Film';">
+                    <div *ngIf="approvedRequest.requestType === 'New Film';">
                         <p>{{approvedRequest.data.filmDesc}}</p>
                         <p>Genre: {{approvedRequest.data.genre}}</p>
                         <p>Runtime: {{approvedRequest.data.runtime}}</p>
                     </div>
-                    <div *ngIf = "approvedRequest.requestType === 'New Trigger';">
+                    <div *ngIf="approvedRequest.requestType === 'New Trigger';">
                         <p>{{approvedRequest.data.details}}</p>
                         <p>At: {{approvedRequest.data.timestamp}}</p>
                     </div>
@@ -76,12 +76,12 @@
                     <h2>Request Type: {{rejectedRequest.requestType}}</h2>
                     <h3>Details:</h3>
                     <p>Film Name: {{rejectedRequest.data.filmName}}</p>
-                    <div *ngIf = "rejectedRequest.requestType === 'New Film';">
+                    <div *ngIf="rejectedRequest.requestType === 'New Film';">
                         <p>{{rejectedRequest.data.filmDesc}}</p>
                         <p>Genre: {{rejectedRequest.data.genre}}</p>
                         <p>Runtime: {{rejectedRequest.data.runtime}}</p>
                     </div>
-                    <div *ngIf = "rejectedRequest.requestType === 'New Trigger';">
+                    <div *ngIf="rejectedRequest.requestType === 'New Trigger';">
                         <p>{{rejectedRequest.data.details}}</p>
                         <p>At: {{rejectedRequest.data.timestamp}}</p>
                     </div>

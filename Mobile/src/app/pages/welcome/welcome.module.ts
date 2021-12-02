@@ -5,7 +5,6 @@ import { IonicModule } from '@ionic/angular';
 import { WelcomePageRoutingModule } from './welcome-routing.module';
 import { WelcomePage } from './welcome.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
     imports: [

@@ -25,8 +25,7 @@ export class UserRequestsPage implements OnInit {
         this.restService.getRequestsById(this.user.userId).subscribe(async (result: any) => {
             if (result) {
                 for (const request of result.data) {
-                    
-                    let jRequest = JSON.parse(request.details);
+                    const jRequest = JSON.parse(request.details);
                     request.details = jRequest;
 
 

@@ -7,14 +7,14 @@ import { CreateRequestPage } from './create-request.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    IonicModule,
-    CreateRequestPageRoutingModule,
-    SharedModule
-  ],
-  declarations: [CreateRequestPage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        IonicModule,
+        CreateRequestPageRoutingModule,
+        SharedModule
+    ],
+    declarations: [CreateRequestPage]
 })
-export class CreateRequestPageModule {}
+export class CreateRequestPageModule { }

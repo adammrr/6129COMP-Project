@@ -65,8 +65,8 @@ export class RestService {
     /** GET Ends */
 
     /** POST */
-    
-    public newFilmRequest(id: number, filmDetails: { filmName: string, filmDesc: string, genre: string, runtime: string }) {
+
+    public newFilmRequest(id: number, filmDetails: { filmName: string; filmDesc: string; genre: string; runtime: string }) {
         console.log(id);
         console.log(filmDetails);
         const API_URL = `${this.REST_API}`;
@@ -74,7 +74,7 @@ export class RestService {
             catchError(this.handleError));
     }
 
-    public newTriggerRequest(id: number, triggerDetails: { film: string, timestamp: string, details: string }) {
+    public newTriggerRequest(id: number, triggerDetails: { film: string; timestamp: string; details: string }) {
         console.log(id);
         console.log(triggerDetails);
         const API_URL = `${this.REST_API}`;
@@ -82,7 +82,7 @@ export class RestService {
             catchError(this.handleError));
     }
 
-    public newSeizure(id: number, seizureDetails: { trigger: number, severity: number, details: string }) {
+    public newSeizure(id: number, seizureDetails: { trigger: number; severity: number; details: string }) {
         console.log(id);
         console.log(seizureDetails);
         const API_URL = `${this.REST_API}`;

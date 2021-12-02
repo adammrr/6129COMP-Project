@@ -9,7 +9,7 @@
 
 <ion-content>
     <ion-card *ngFor="let film of filmList">
-        <img *ngIf="'film.imageURL'; else noImage" [src]="film.imageURl" />
+        <img *ngIf="'film.imageURL'; else noImage" [src]="film.imageURL" />
         <ion-card-header>
             <ion-card-title>{{film.filmName}}</ion-card-title>
         </ion-card-header>

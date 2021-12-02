@@ -27,12 +27,10 @@ export class AuthService {
   public signIn(email: string, password: string): void {
     this.restService.validateUser(email, password).subscribe(async (validationResult: any) => {
       if (validationResult.data.result) {
-        console.log('CRUD: Validated');
         const response = await this.restService.getUserById(validationResult.data.userId).toPromise();
         this.user = new User(response.data);
         this.loggedIn.next(true);
       } else {
-        console.log('CRUD: NOT validated');
         this.alert.presentToast('Incorrect username or password, please try again');
       }
     });
@@ -52,7 +50,7 @@ export class AuthService {
 
   public getLoggedInUser() {
     return this.user;
-  } 
+  }
 
   public getLoggedInUserId() {
     return this.user.userId;

@@ -21,8 +21,8 @@ import { SharedModule } from './shared/shared.module';
         AppRoutingModule,
         SharedModule,
         HttpClientModule,
-        BrowserModule, 
-        FormsModule, 
+        BrowserModule,
+        FormsModule,
         ReactiveFormsModule
     ],
     providers: [
