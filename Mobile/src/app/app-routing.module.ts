@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
     {
@@ -11,27 +12,27 @@ const routes: Routes = [
         loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
     },
     {
-        path: 'user-profile',
+        path: 'user-profile', canActivate: [AuthGuard],
         loadChildren: () => import('./pages/user-profile/user-profile.module').then(m => m.UserProfilePageModule)
     },
     {
-        path: 'user-requests',
+        path: 'user-requests', canActivate: [AuthGuard],
         loadChildren: () => import('./pages/user-requests/user-requests.module').then(m => m.UserRequestsPageModule)
     },
     {
-        path: 'log-seizure',
+        path: 'log-seizure' , canActivate: [AuthGuard],
         loadChildren: () => import('./pages/log-seizure/log-seizure.module').then(m => m.LogSeizurePageModule)
     },
     {
-        path: 'film-list',
+        path: 'film-list' , canActivate: [AuthGuard],
         loadChildren: () => import('./pages/film-list/film-list.module').then(m => m.FilmListPageModule)
     },
     {
-        path: 'create-request',
+        path: 'create-request' , canActivate: [AuthGuard],
         loadChildren: () => import('./pages/create-request/create-request.module').then(m => m.CreateRequestPageModule)
     },
     {
-        path: 'welcome',
+        path: 'welcome' , canActivate: [AuthGuard],
         loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomePageModule)
     },
     {
