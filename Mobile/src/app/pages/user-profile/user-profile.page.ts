@@ -28,6 +28,7 @@ export class UserProfilePage implements OnInit {
         private formBuilder: FormBuilder,
         private alertService: AlertService
     ) {
+        // TODO: Validate forms with Reactive Form validation.
         this.userInformationForm = this.formBuilder.group({
             firstName: '',
             surname: '',
@@ -140,4 +141,6 @@ export class UserProfilePage implements OnInit {
             this.epilepsyInformation = epilepticInformation.data.results;
         });
     }
+
+    // TODO: Automatically update profile page when data changes
 }

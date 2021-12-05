@@ -15,4 +15,6 @@ export class FooterComponent implements OnInit {
          }
 
     public ngOnInit(): void { }
+
+    //TODO: Implement ability to pass in paramaters of custom buttons and icons
 }
