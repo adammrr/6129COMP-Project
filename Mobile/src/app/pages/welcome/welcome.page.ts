@@ -23,9 +23,9 @@ export class WelcomePage implements OnInit {
     public ngOnInit(): void {
         this.seizures = [];
         this.pendingRequests = [];
-
         this.user = this.authService.getLoggedInUser();
 
+        // Displays list of pending requests.
         this.restService.getRequestsById(this.user.userId).subscribe(async (result: any) => {
             if (result) {
                 for (const request of result.data) {
@@ -38,7 +38,6 @@ export class WelcomePage implements OnInit {
 
         this.restService.getSeizureHistory(this.user.userId).subscribe(async (result: any) => {
             this.seizures = result.data;
-            console.log(result);
         });
     }
 }

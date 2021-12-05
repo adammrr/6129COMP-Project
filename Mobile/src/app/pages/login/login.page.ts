@@ -31,6 +31,7 @@ export class LoginPage implements OnInit {
             email: formValues.email,
             password: formValues.password,
         };
+        // Checks if user is authorised and navigates them into the app.
         this.authService.signIn(this.loginObject.email, this.loginObject.password);
         this.authService.isLoggedIn().subscribe(async (validationResult: any) => {
             if (validationResult === true) {

@@ -12,7 +12,6 @@ import { RestService } from 'src/app/services/rest.service';
 
 })
 export class UserProfilePage implements OnInit {
-
     public user;
     public epilepsyInformation;
     public today = new Date();
@@ -103,6 +102,7 @@ export class UserProfilePage implements OnInit {
         });
     }
 
+    // Called when tab is clicked to patch form for epilepsy information on click rather than onInit
     public segmentChanged(): void {
         if (this.epilepsyInformation !== undefined) {
             this.epilepsyInformationForm.patchValue({

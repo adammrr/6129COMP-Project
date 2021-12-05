@@ -12,14 +12,11 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class LogSeizurePage implements OnInit {
 
-    newSeizure?: FormGroup;
-    seizureDetails;
-
-    filmList = [];
-    triggerList = [];
-
-    triggers = [];
-
+    public newSeizure?: FormGroup;
+    public seizureDetails;
+    public filmList = [];
+    public triggerList = [];
+    public triggers = [];
     public film;
     public user: any;
 
@@ -48,7 +45,6 @@ export class LogSeizurePage implements OnInit {
 
     }
 
-
     //Finds triggers for user when they select a film they watched
     public findTriggers(): void {
         this.triggers = [];
@@ -70,7 +66,6 @@ export class LogSeizurePage implements OnInit {
             severity: formValues.severity,
             details: formValues.details
         };
-        console.log(this.user);
 
         this.restService.newSeizure(this.user, this.seizureDetails).subscribe(async (result: any) => {
         });
