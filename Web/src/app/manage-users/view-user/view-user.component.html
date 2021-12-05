@@ -79,7 +79,7 @@
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onCloseToast()"></button>
       </div>
-      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit" *ngIf="signedInAccountType != 'practitioner'" [disabled]="!detailsForm.valid" tooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Update Details</button>
+      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-1" type="submit" *ngIf="signedInAccountType != 'practitioner'" [disabled]="!detailsForm.valid">Update Details</button>
       <p *ngIf="!detailsForm.valid">Please ensure the form above is fully filled in.</p>
     </form>
 
