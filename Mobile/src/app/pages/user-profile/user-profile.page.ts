@@ -53,8 +53,6 @@ export class UserProfilePage implements OnInit {
     public ngOnInit(): void {
         this.user = this.authService.getLoggedInUser();
 
-        console.log(this.user.userId);
-
         this.restService.getSeizureHistory(this.user.userId).subscribe(async (result: any) => {
             this.history = result.data;
         });
@@ -126,6 +124,7 @@ export class UserProfilePage implements OnInit {
         if (this.epilepsyInformation) {
             this.restService.updateEpilepsyInformation(this.user.userId, updateInformation).subscribe(async (result: any) => {
                 this.alertService.presentToast('Success epilepsy details for ' + this.user.firstName + ' Have been updated.');
+                this.getEpilepsyInformation();
             });
         }
         else {
