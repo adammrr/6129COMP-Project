@@ -57,6 +57,11 @@ export class AuthService {
     return this.user;
   }
 
+  public async updateLoggedInUser(userId: number): Promise<void> {
+    const response = await this.restService.getUserById(userId).toPromise();
+    this.user = new User(response.data);
+  }
+
   public getLoggedInUserId() {
     return this.user.userId;
   }
