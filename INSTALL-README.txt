@@ -26,12 +26,14 @@ To Configure Machine for Ionic and Angular Development
 
 Node.js
 1) Navigate to https://nodejs.org/en/ 
-2) Install recommended version.
+2) Install recommended version (16.13.1 LTS)
 
 Angular CLI
 1) Open a command prompt as an administrator on your machine
 2) Run the command `npm install -g @angular/cli`
-3) npm install -g @ionic/cli
+
+Ionic CLI
+1) npm install -g @ionic/cli
 
 
 
