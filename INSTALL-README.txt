@@ -26,16 +26,17 @@ To Configure Machine for Ionic and Angular Development
 
 Node.js
 1) Navigate to https://nodejs.org/en/ 
-2) Install recommended version (16.13.1 LTS)
+2) Install recommended version (16.13.1 LTS) (This is the current version at the time of reading this)
 
 Angular CLI
 1) Open a command prompt as an administrator on your machine
-2) Run the command `npm install -g @angular/cli`
-3) To verify this is installed run the commmand 'ng --version' you should see 'Angular CLI' being presented in red text.
+2) Run the command - npm install -g @angular/cli
+3) To verify this is installed run the commmand - ng --version if successful you should see 'Angular CLI' being presented in red text.
 
 Ionic CLI
-1) npm install -g @ionic/cli
-2) To verify this is installed run the command 'ionic' you should see Ionic and the CLI version on your machine with 
+1) Run the command - npm install -g @ionic/cli
+2) To verify this is installed run the command - ionic if successful you should see 'Ionic' and the CLI version on your machine presented in text 
+
 
 
 
@@ -49,7 +50,7 @@ Run the following commands in this order using Command Prompt or an integrated t
 4) npm start
 
 You should now see in the console - 'Node app is running on port xxxx' where 'xxxx' is the assigned port.
-You now must leave this command prompt running in the background.a
+You now must leave this command prompt running in the background.
 
 
 
@@ -57,7 +58,7 @@ You now must leave this command prompt running in the background.a
 
 Run the following commands in this order using Command Prompt or an integrated terminal in a code editor of your choice.
 
-1) cd `<extracted-path>/6129COMP-Project/Mobile`
+1) cd <extracted-path>/6129COMP-Project/Mobile
 2) npm install
 3) ionic serve
 
@@ -77,6 +78,7 @@ amayagordon@yahoo.co.uk		|  pass
 
 
 
+
 ------------------------------ Building the Web App -----------------------------------
 
 Run the following commands in this order using Command Prompt or an integrated terminal in a code editor of your choice.
@@ -87,9 +89,7 @@ Run the following commands in this order using Command Prompt or an integrated t
 
 Your web browser will now open displaying the web app.
 You can verify page scale responsivity by opening your web browsers display tools and selecting responsive layout.
-You can change this to a mobile view by opening your browsers developer tools and selecting a device e.g, Google Pixel 2.
 You can now interact with the mobile app.
-
 
 Example Logins
 
@@ -100,6 +100,7 @@ robbie@itsolutions.co.uk	|  pass         | System Administrator
 dr.jones@gmail.co.uk		|  pass		| Practitioner
 rebecca.jane841@yahoo.com	|  pass		| Practitioner
 --------------------------------|---------------|-------------------------------
+
 
 
 
