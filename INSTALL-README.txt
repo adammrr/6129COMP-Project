@@ -31,9 +31,11 @@ Node.js
 Angular CLI
 1) Open a command prompt as an administrator on your machine
 2) Run the command `npm install -g @angular/cli`
+3) To verify this is installed run the commmand 'ng --version' you should see 'Angular CLI' being presented in red text.
 
 Ionic CLI
 1) npm install -g @ionic/cli
+2) To verify this is installed run the command 'ionic' you should see Ionic and the CLI version on your machine with 
 
 
 
