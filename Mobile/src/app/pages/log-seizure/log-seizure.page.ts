@@ -75,7 +75,7 @@ export class LogSeizurePage implements OnInit {
         this.restService.newSeizure(this.user, this.seizureDetails).subscribe(async (result: any) => {
         });
 
-        this.alert.presentToast('New Seizure Even Logged');
+        this.alert.presentToast('New Seizure Event Logged');
         this.navCtrl.back();
     }
 }
