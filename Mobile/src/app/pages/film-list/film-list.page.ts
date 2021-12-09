@@ -25,4 +25,7 @@ export class FilmListPage implements OnInit {
     public navigateToFilmPage(filmId: number): void {
         this.navCtrl.navigateForward(['/film-list/film/', filmId]);
     }
+
+    // TODO: Show count of epileptic episodes
+    // TODO: Better handling of the film description due to its character size.
 }

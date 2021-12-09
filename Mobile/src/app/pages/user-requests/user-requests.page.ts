@@ -31,21 +31,20 @@ export class UserRequestsPage implements OnInit {
                     const jRequest = JSON.parse(request.details);
                     request.details = jRequest;
 
-
                     if (request.status === 'Pending') {
                         this.pendingRequests.push(jRequest);
-                        console.log(jRequest);
+
                     }
                     if (request.status === 'Approved') {
                         this.approvedRequests.push(jRequest);
-                        console.log(jRequest);
                     }
                     if (request.status === 'Rejected') {
                         this.rejectedRequests.push(jRequest);
-                        console.log(jRequest);
                     }
                 }
             }
         });
     }
+
+    // TODO: Automatic live refreshing of requests when status changes.
 }

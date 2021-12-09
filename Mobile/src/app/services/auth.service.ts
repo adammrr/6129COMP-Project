@@ -24,14 +24,19 @@ export class AuthService {
     });
   }
 
+  // Checks if a user is an admin or practitioner and denies them entry into the app
   public signIn(email: string, password: string): void {
     this.restService.validateUser(email, password).subscribe(async (validationResult: any) => {
-      if (validationResult.data.result) {
+      if (validationResult.data.accountType === 'administrator' || validationResult.data.accountType === 'practitioner') {
+        this.alert.presentToast('This account belongs to an admin or practitioner please sign into the web portal');
+        return;
+      }
+      if (!validationResult.data.result) {
+        this.alert.presentToast('Incorrect username or password, please try again');
+      } else {
         const response = await this.restService.getUserById(validationResult.data.userId).toPromise();
         this.user = new User(response.data);
         this.loggedIn.next(true);
-      } else {
-        this.alert.presentToast('Incorrect username or password, please try again');
       }
     });
   }
@@ -52,15 +57,20 @@ export class AuthService {
     return this.user;
   }
 
+  public async updateLoggedInUser(userId: number): Promise<void> {
+    const response = await this.restService.getUserById(userId).toPromise();
+    this.user = new User(response.data);
+  }
+
   public getLoggedInUserId() {
     return this.user.userId;
-}
+  }
 
   public getName(): string {
     return this.user.firstName + ' ' + this.user.surname;
   }
 
-  public getForename(): string{
+  public getForename(): string {
     return this.user.firstName;
   }
 

@@ -17,4 +17,6 @@ export class AlertService {
         });
         toast.present();
     }
+
+    // TODO: Implement custom styling and sizes of toast messages.
 }

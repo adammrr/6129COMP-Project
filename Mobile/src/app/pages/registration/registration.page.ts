@@ -20,6 +20,7 @@ export class RegistrationPage implements OnInit {
         private navCtrl: NavController,
         private alert: AlertService
     ) {
+      // TODO: Validate forms using Reactive Form Validation
         this.registrationForm = this.formBuilder.group({
             firstName: '',
             surname: '',

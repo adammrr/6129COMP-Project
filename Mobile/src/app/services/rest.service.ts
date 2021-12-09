@@ -75,25 +75,16 @@ export class RestService {
     /** POST */
 
     public newFilmRequest(id: number, filmDetails: { filmName: string; filmDesc: string; genre: string; runtime: string }) {
-        console.log(id);
-        console.log(filmDetails);
-        const API_URL = `${this.REST_API}`;
         return this.httpClient.post(`${this.REST_API}/create-film-request`, { headers: this.httpHeaders, id, filmDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
             catchError(this.handleError));
     }
 
     public newTriggerRequest(id: number, triggerDetails: { film: string; timestamp: string; details: string }) {
-        console.log(id);
-        console.log(triggerDetails);
-        const API_URL = `${this.REST_API}`;
         return this.httpClient.post(`${this.REST_API}/create-trigger-request`, { headers: this.httpHeaders, id, triggerDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
             catchError(this.handleError));
     }
 
     public newSeizure(id: number, seizureDetails: { trigger: number; severity: number; details: string }) {
-        console.log(id);
-        console.log(seizureDetails);
-        const API_URL = `${this.REST_API}`;
         return this.httpClient.post(`${this.REST_API}/log-seizure`, { headers: this.httpHeaders, id, seizureDetails }).pipe(map((res: any) => res || { error: 'ERROR' }),
             catchError(this.handleError));
     }
